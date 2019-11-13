@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>T4J-BOOT</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta charset="UTF-8" />
+	<link th:href="@{/css/common.css}" rel="stylesheet"></link>
+	<script th:src="@{/js/common.js}"></script>
+</head>
+<body>
+
+	<h1 th:text="'■T4J-BOOT menu■'"></h1>
+
+	<div class="border">
+		<ul>
+			<li><a href="#" th:href="@{/t4j-boot/view/images/tweet/id}" 
+			                th:text="'TweetID を指定して メディア情報を取得'"></a>
+			<li><a href="#" th:href="@{/t4j-boot/view/images/tweet/url}" 
+			                th:text="'TweetURL を指定(複数可)して メディア情報を取得'"></a>
+		</ul>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>T4J-BOOT</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta charset="UTF-8" />
+	<link th:href="@{/css/common.css}" rel="stylesheet"></link>
+	<script th:src="@{/js/common.js}"></script>
+</head>
+<body>
+
+	<h1 th:text="'■T4J-BOOT■'"></h1>
+
+	<form action="/t4j-boot/view/images/tweet/url" method="post">
+		<textarea name="urls"
+				rows="10" placeholder="ツイートのURLを入力（改行で複数可）"></textarea>
+		<button type="submit">メディアURL取得</button>
+	</form>
+	<div class="border">
+		<textarea rows="5" th:text="${detail}" readonly="readonly">
+			test
+		</textarea>
+	</div>
+
+</body>
+</html>
