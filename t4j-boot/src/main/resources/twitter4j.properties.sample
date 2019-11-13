@@ -1,0 +1,9 @@
+#! 下記Twitter開発者ページでMyAppの認証情報（oauth）を埋めて、
+#! このファイルを twitter4j.properties にリネームしてください。
+#! https://developer.twitter.com/en/apps
+
+debug=true
+oauth.consumerKey={api-key}
+oauth.consumerSecret={api-secret-key}
+oauth.accessToken={access-token}
+oauth.accessTokenSecret={access-token-secret}
