@@ -3,6 +3,8 @@ package sugaryo.t4jboot.app.module;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +12,8 @@ import sugaryo.t4jboot.app.api.TwitterApiCall;
 
 @Component
 public class NyappiCall {
+	
+	private static final Logger log = LoggerFactory.getLogger( NyappiCall.class );
 	
 	private final RandomHolder random;
 	
@@ -90,6 +94,7 @@ public class NyappiCall {
 		
 		// 制御乱数でヒットしたら、にゃっぴキャンセルからの特殊コール。
 		if ( this.random.rand() ) {
+			log.info( "特殊にゃっぴこーる。" );
 			
 			NyappiTweetKind[] kinds = NyappiTweetKind.values();
 			int nano13 = LocalDateTime.now().getNano() % 13;
@@ -99,6 +104,7 @@ public class NyappiCall {
 		} 
 		// ヒットしなかった場合は、通常のにゃっぴこーる。
 		else {
+			log.info( "通常にゃっぴこーる。" );
 			this.call();
 		}
 	}
