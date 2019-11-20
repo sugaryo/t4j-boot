@@ -79,7 +79,7 @@ public class TwitterApiCall {
 	public Status retweet( final long id ) {
 		
 		try {
-			log.info( "▼リツイート" );
+			log.info( "▼リツイート▼" );
 			// 既にリツイート済みの場合はいったん解除する。
 			if ( this.getTweet( id ).isRetweetedByMe() ) {
 				log.info( "◇リツイートの解除" );
@@ -88,7 +88,8 @@ public class TwitterApiCall {
 			
 			// 解除したうえでリツイートする。
 			var rt = this.twitter.retweetStatus( id );
-			log.info( "▲リツイート[{}:{}]", 
+			log.info( "▲リツイート▲[{} > {} : {}]",
+					id, 
 					rt.getId(), 
 					rt.getText() );
 			
