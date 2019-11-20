@@ -47,7 +47,7 @@ public class TwitterApiCall {
 			MediaTweet media = new MediaTweet( userName, userId, tweetId, url );
 			
 			medias.add( media );
-			log.info( media.toString() );
+			log.debug( media.toString() );
 		}
 		return medias;
 	}
@@ -66,7 +66,7 @@ public class TwitterApiCall {
 	public void tweet( String message ) {
 		
 		try {
-			log.info( message );
+			log.debug( "tweet:[{}]", message );
 			twitter.updateStatus( message );
 		}
 		// 検査例外はRuntimeでくるんでポイ。
@@ -79,16 +79,16 @@ public class TwitterApiCall {
 	public Status retweet( final long id ) {
 		
 		try {
-			log.info( "▼リツイート▼" );
+			log.debug( "▼リツイート▼" );
 			// 既にリツイート済みの場合はいったん解除する。
 			if ( this.getTweet( id ).isRetweetedByMe() ) {
-				log.info( "◇リツイートの解除" );
+				log.debug( "◇リツイートの解除" );
 				this.twitter.unRetweetStatus( id );
 			}
 			
 			// 解除したうえでリツイートする。
 			var rt = this.twitter.retweetStatus( id );
-			log.info( "▲リツイート▲[{} > {} : {}]",
+			log.debug( "▲リツイート▲[{} > {} : {}]",
 					id, 
 					rt.getId(), 
 					rt.getText() );

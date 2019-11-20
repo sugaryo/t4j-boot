@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import sugaryo.t4jboot.app.api.TwitterApiCall;
+import sugaryo.t4jboot.common.utility.ThreadUtil;
 import twitter4j.Status;
 
 @Component
@@ -23,54 +24,27 @@ public class SelfRetweet {
 		return this.twitter.retweet( id );
 	}
 
-	
-	//FIXME：これ系はenumストラテジに変更。
-	public void rtHimiruIllust() {
+	public void retweets() {
+
+		// TODO：あとでこれはDBかプロパティか何かに変える。
+		long[] ids = {
+				920625245786013696L,
+				1171421232203538432L,
+				1164938246050070528L,
+				
+				1137625774620471296L,
+				1155808360224002049L,
+				1171850493502447616L,
+				1129740738860867590L,
+				
+				1194181882650357760L,
+				1194537527924772865L,
 		
-		final DateTimeFormatter YMDHMS = DateTimeFormatter.ISO_DATE_TIME;
+		};
 		
-		LocalDateTime now = LocalDateTime.now();
-		String timestamp = now.format( YMDHMS );
-		
-		String message = "にゃっぴコールはキャンセルされました。"
-				+ "\r\n" + "かわりに 固定ツイート を宣伝RTします。"
-				+ "\r\n"
-				+ "\r\n" + timestamp + " #にゃっぴこーる"
-				+ "\r\n"
-				+ "\r\n" + "https://twitter.com/ellnorePZDR297/status/920625245786013696";
-		this.twitter.tweet( message );
+		for ( long id : ids ) {
+			this.twitter.retweet( id );
+			ThreadUtil.sleep( 1000 );
+		}
 	}
-	
-	public void rtCurryNote() {
-		
-		final DateTimeFormatter YMDHMS = DateTimeFormatter.ISO_DATE_TIME;
-		
-		LocalDateTime now = LocalDateTime.now();
-		String timestamp = now.format( YMDHMS );
-		
-		String message = "にゃっぴコールはキャンセルされました。"
-				+ "\r\n" + "かわりに カレーnote を宣伝します!!"
-				+ "\r\n"
-				+ "\r\n" + timestamp + " #にゃっぴこーる"
-				+ "\r\n"
-				+ "\r\n" + "https://sugaryo1224.hatenablog.com/entry/2019/07/15/040443";
-		this.twitter.tweet( message );
-	}
-	
-	public void rtQiitaSpringBoot() {
-		
-		final DateTimeFormatter YMDHMS = DateTimeFormatter.ISO_DATE_TIME;
-		
-		LocalDateTime now = LocalDateTime.now();
-		String timestamp = now.format( YMDHMS );
-		
-		String message = "にゃっぴコールはキャンセルされました。"
-				+ "\r\n" + "かわりに Qiita記事 を宣伝します。"
-				+ "\r\n"
-				+ "\r\n" + timestamp + " #にゃっぴこーる"
-				+ "\r\n" + "SpringBootに入門する為の助走本（随時更新）"
-				+ "\r\n" + "https://qiita.com/sugaryo/items/5695bfcc21365f429767 #Qiita";
-		this.twitter.tweet( message );
-	}
-	
 }
