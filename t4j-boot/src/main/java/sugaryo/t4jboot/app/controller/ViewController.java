@@ -1,7 +1,5 @@
 package sugaryo.t4jboot.app.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -15,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import sugaryo.t4jboot.app.api.TwitterApiCall;
+import sugaryo.t4jboot.app.module.MediaTweetCrawller;
 import sugaryo.t4jboot.common.utility.JsonMapper;
 import sugaryo.t4jboot.data.values.MediaTweet;
 
@@ -26,7 +24,7 @@ public class ViewController {
 	private static final Logger log = LoggerFactory.getLogger( ViewController.class );
 	
 	@Autowired
-	TwitterApiCall twitter;
+	MediaTweetCrawller mediatweet;
 	
 	@RequestMapping("/")
 	public String index() {
@@ -41,7 +39,7 @@ public class ViewController {
 		
 		if ( 0 != id ) {
 			
-			var medias = this.twitter.medias( id );
+			var medias = this.mediatweet.crawlMediaTweets( id );
 			
 			String ln = "";
 			for ( MediaTweet media : medias ) {
@@ -85,7 +83,7 @@ public class ViewController {
 			String ln = "";
 			for ( long id : ids ) {
 				
-				var medias = this.twitter.medias( id );
+				var medias = this.mediatweet.crawlMediaTweets( id );
 				for ( MediaTweet media : medias ) {
 
 					sb.append( ln );

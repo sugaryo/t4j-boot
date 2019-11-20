@@ -1,4 +1,4 @@
-package sugaryo.t4jboot.app.controller;
+package sugaryo.t4jboot.app.module;
 
 import java.util.Date;
 import java.util.Random;
@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 
-// FIXME：controllerからmoduleに移動。
 @Component
 public class RandomHolder {
 	
