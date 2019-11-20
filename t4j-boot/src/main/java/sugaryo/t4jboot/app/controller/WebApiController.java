@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import sugaryo.t4jboot.app.module.TwitterApiCall;
+import sugaryo.t4jboot.app.api.TwitterApiCall;
 import sugaryo.t4jboot.common.utility.JsonMapper;
 import sugaryo.t4jboot.common.utility.ThreadUtil;
 

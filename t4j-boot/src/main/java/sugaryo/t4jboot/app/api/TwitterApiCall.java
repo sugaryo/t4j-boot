@@ -1,4 +1,4 @@
-package sugaryo.t4jboot.app.module;
+package sugaryo.t4jboot.app.api;
 
 import java.util.ArrayList;
 import java.util.List;
