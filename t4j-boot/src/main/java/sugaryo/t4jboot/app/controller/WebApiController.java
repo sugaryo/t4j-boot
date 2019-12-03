@@ -74,10 +74,11 @@ public class WebApiController {
 	}
 	
 
-	
+	private static final String CRLF = "\r\n";
+
 	@GetMapping("test/random/{count}")
 	String testRandomHolder(@PathVariable int count) {
-		
+	
 		// ここではDIコンテナ管理しているRandomHolderとは別にテスト実行したいので普通にnewする。
 		var random = new RandomHolder();
 		
@@ -87,10 +88,12 @@ public class WebApiController {
 			
 			if ( 0 == n % 10 ) {
 				sb.append( crlf );
-				crlf = "\r\n"; // 初回だけ無視したいので遅延代入。
+				crlf = CRLF; // 初回だけ無視したいので遅延代入。
 			}
 			sb.append( random.rand() ? "●" : "○" );
 		}
+		sb.append( crlf ); // 最後に改行入れておかないとcurlの結果が変になるので末尾改行しておく。
+
 		return sb.toString();
 	}
 	
