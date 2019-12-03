@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import sugaryo.t4jboot.app.config.ConfigSet;
 import sugaryo.t4jboot.app.module.MediaTweetCrawller;
 import sugaryo.t4jboot.app.module.NyappiCall;
 import sugaryo.t4jboot.app.module.RandomHolder;
@@ -35,6 +36,8 @@ public class WebApiController {
 	
 	@Autowired
 	SelfRetweet self;
+	
+	@Autowired ConfigSet config;
 
 	
 	@GetMapping("images/tweet/{id}")
@@ -80,7 +83,7 @@ public class WebApiController {
 	String testRandomHolder(@PathVariable int count) {
 	
 		// ここではDIコンテナ管理しているRandomHolderとは別にテスト実行したいので普通にnewする。
-		var random = new RandomHolder();
+		var random = new RandomHolder( this.config );
 		
 		var sb = new StringBuilder();
 		String crlf = "";

@@ -6,7 +6,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import sugaryo.t4jboot.app.config.ConfigSet;
+import sugaryo.t4jboot.app.config.NyappiConfig;
+
 
 
 @Component
@@ -14,17 +19,18 @@ public class RandomHolder {
 	
 	private static final Logger log = LoggerFactory.getLogger( RandomHolder.class );
 	
-	// FIXME：あとでプロパティにしておく。
-	private static final int PREVENT_LEVEL = 2;
-	private static final int HIT_RATIO = 50;
-	private static final int MISS_LIMIT = 10;
-	
 	// FIXME：Atomicカウンタが二種類だと間でズレが生じる危険があるので後で修正。
 	private AtomicInteger prevent = new AtomicInteger(0);
 	private AtomicInteger missing = new AtomicInteger(0);
 		
 	private Random random = new Random( new Date().getTime() );
 	
+	private final NyappiConfig.RandomHolderConfig conf;
+	
+	public RandomHolder( @Autowired ConfigSet config ) {
+		this.conf = config.nyappi.random;
+	}
+
 	public boolean rand() {
 		
 		log.debug( "----------------------------------------" );
@@ -42,24 +48,24 @@ public class RandomHolder {
 
 		// 抑止中でない場合は乱数を引いてヒットテスト。
 		final int r = this.random.nextInt( 100 );
-		final boolean hit = r % HIT_RATIO == 0;
+		final boolean hit = r % this.conf.hitRatio == 0;
 		log.debug( "  - random : {}", r );
 
 		// ■ヒットした場合：
 		if ( hit ) {
 			// 抑止カウンタを設定・連続ミスカウンタをリセットしておわり。
 			log.info( "◇ 制御乱数[hit]" );
-			this.prevent.set( PREVENT_LEVEL );
+			this.prevent.set( this.conf.preventLevel );
 			this.missing.set( 0 );
 			return true;
 		}
 
 		// ヒットしなかった場合、連続ミスカウンタをインクリメントして連続上限判定。
 		final int miss = this.missing.incrementAndGet();
-		if ( MISS_LIMIT <= miss ) {
+		if ( this.conf.missLimit <= miss ) {
 			// ミス限界を超えていた場合は強制ヒット。
 			log.info( "◇ 制御乱数[force-hit]" );
-			this.prevent.set( PREVENT_LEVEL );
+			this.prevent.set( this.conf.preventLevel );
 			this.missing.set( 0 );
 			return true;
 		}
