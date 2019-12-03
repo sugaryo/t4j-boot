@@ -27,7 +27,7 @@ public class SelfRetweet {
 	
 	public void retweets() {
 		
-		final long[] ids = config.nyappi.selfrtIds;
+		final long[] ids = config.nyappi.selfrt.ids;
 		for ( final long id : ids ) {
 			this.twitter.retweet( id );
 			ThreadUtil.sleep( 1000 );
