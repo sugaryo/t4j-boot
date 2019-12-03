@@ -82,13 +82,12 @@ public class WebApiController {
 		var random = new RandomHolder();
 		
 		var sb = new StringBuilder();
-
-		String separator = "";
+		String crlf = "";
 		for ( int n = 0; n < count; n++ ) {
 			
 			if ( 0 == n % 10 ) {
-				sb.append( separator );
-				separator = " - "; // 初回だけ無視したいので遅延代入。
+				sb.append( crlf );
+				crlf = "\r\n"; // 初回だけ無視したいので遅延代入。
 			}
 			sb.append( random.rand() ? "●" : "○" );
 		}
