@@ -26,22 +26,26 @@ public class RandomHolder {
 
 		log.debug( "★ prevent-counter : {}", this.prevent.get() );
 		
+		// 抑止中の場合は抑止カウンタをデクリメントしておわり。
 		if ( 0 < this.prevent.get() ) {
-			// 抑止中の場合は抑止カウンタをデクリメントしておわり。
-			log.debug( "◇連続ヒットの抑止中。" );
+			log.info( "◇ 制御乱数[prevent] - 連続ヒットの抑止中。" );
 			this.prevent.decrementAndGet();
 			return false;
 		}
-		
-		int r = this.random.nextInt( 100 );
 
+		// 抑止中でない場合は乱数を引いてヒットテスト。
+		final int r = this.random.nextInt( 100 );
+		final boolean hit = r % HIT_RATIO == 0;
 		log.debug( "  - random : {}", r );
 
-		boolean hit = r % HIT_RATIO == 0;
+		// ヒットした場合、抑止カウンタを設定する。
 		if ( hit ) {
-			// 抑止カウンタ
-			log.debug( "◇連続ヒットの抑止を設定。" );
+			log.info( "◇ 制御乱数[hit] - 連続ヒットの抑止を設定。" );
 			this.prevent.set( PREVENT_LEVEL );
+		}
+		// ヒットしなかった場合、なにもしない。
+		else {
+			log.info( "◇ 制御乱数[miss]" );
 		}
 		return hit;
 	}
