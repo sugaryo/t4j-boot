@@ -74,7 +74,7 @@ public class WebApiController {
 	}
 	
 
-	private static final String CRLF = "\r\n";
+	private static final String CRLF = System.getProperty("line.separator");
 
 	@GetMapping("test/random/{count}")
 	String testRandomHolder(@PathVariable int count) {
