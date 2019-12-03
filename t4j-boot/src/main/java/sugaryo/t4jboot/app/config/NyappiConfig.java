@@ -21,11 +21,6 @@ public class NyappiConfig {
 			this.ids = JsonMapper.parse( ids, long[].class );
 			this.interval = interval;
 		}
-		
-		private SelfRetweetConfig( long[] ids, long interval ) {
-			this.ids = ids;
-			this.interval = interval;
-		}
 	}
 	
 	public static final class RandomHolderConfig {
@@ -37,7 +32,7 @@ public class NyappiConfig {
 		/** <b>連続ミス限界：</b> 抑止中を含めた連続ミス時に、強制的にヒット扱いする境界値。 */
 		public final int missLimit;
 
-		public RandomHolderConfig( int hitRatio, int preventLevel, int missLimit ) {
+		private RandomHolderConfig( int hitRatio, int preventLevel, int missLimit ) {
 			this.hitRatio = hitRatio;
 			this.preventLevel = preventLevel;
 			this.missLimit = missLimit;
