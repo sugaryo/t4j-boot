@@ -2,6 +2,7 @@ package sugaryo.t4jboot.app.module;
 
 import java.util.Date;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,16 +18,16 @@ public class RandomHolder {
 	private static final int PREVENT_LEVEL = 3;
 	private static final int HIT_RATIO = 10;
 	
-	private int prevent = 0; //TODO：一応AtomicIntegerにするべきじゃない？
-	
+	private AtomicInteger prevent = new AtomicInteger(0);
+		
 	private Random random = new Random( new Date().getTime() );
 	
 	public boolean rand() {
 		
-		if ( 0 < this.prevent ) {
+		if ( 0 < this.prevent.get() ) {
 			// 抑止中の場合は抑止カウンタをデクリメントしておわり。
 			log.debug( "◇連続ヒットの抑止中。" );
-			this.prevent--;
+			this.prevent.decrementAndGet();
 			return false;
 		}
 		
@@ -36,7 +37,7 @@ public class RandomHolder {
 		if ( hit ) {
 			// 抑止カウンタ
 			log.debug( "◇抑止を設定。" );
-			this.prevent = PREVENT_LEVEL;
+			this.prevent.set( PREVENT_LEVEL );
 		}
 		return hit;
 	}
