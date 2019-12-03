@@ -23,6 +23,8 @@ public class RandomHolder {
 	private Random random = new Random( new Date().getTime() );
 	
 	public boolean rand() {
+
+		log.debug( "★ prevent-counter : {}", this.prevent.get() );
 		
 		if ( 0 < this.prevent.get() ) {
 			// 抑止中の場合は抑止カウンタをデクリメントしておわり。
@@ -32,11 +34,13 @@ public class RandomHolder {
 		}
 		
 		int r = this.random.nextInt( 100 );
+
+		log.debug( "  - random : {}", r );
+
 		boolean hit = r % HIT_RATIO == 0;
-		
 		if ( hit ) {
 			// 抑止カウンタ
-			log.debug( "◇抑止を設定。" );
+			log.debug( "◇連続ヒットの抑止を設定。" );
 			this.prevent.set( PREVENT_LEVEL );
 		}
 		return hit;
