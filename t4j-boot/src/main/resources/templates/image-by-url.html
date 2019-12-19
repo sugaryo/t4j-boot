@@ -17,9 +17,10 @@
 		<button type="submit">メディアURL取得</button>
 	</form>
 	<div class="border">
-		<textarea rows="5" th:text="${detail}" readonly="readonly">
+		<textarea rows="5" th:text="${detail}" readonly="readonly" id="metadata">
 			test
 		</textarea>
+		<button type="button" onclick="copy('metadata');">copy</button>
 	</div>
 
 </body>
