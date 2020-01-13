@@ -26,7 +26,7 @@ public class NyappiConfig {
 		/** <b>処理インターバル：</b> {@link #ids} を処理する際のインターバルタイム（{@code Thread.sleep(interval);}）. */
 		public final long interval;
 
-		public SelfRetweetConfig( String namedIdsMap, long interval ) {
+		private SelfRetweetConfig( String namedIdsMap, long interval ) {
 			
 			HashMap<String, Long[]> map = JsonMapper.parse( namedIdsMap, new TypeReference<HashMap<String, Long[]>>() {} );
 			this.namedIdsMap = new HashMap<>();
@@ -38,7 +38,7 @@ public class NyappiConfig {
 			}
 			this.interval = interval;
 		}
-		public SelfRetweetConfig( Map<String, NamedIds> namedIdsMap, long interval ) {
+		private SelfRetweetConfig( Map<String, NamedIds> namedIdsMap, long interval ) {
 			this.namedIdsMap = namedIdsMap;
 			this.interval = interval;
 		}
@@ -91,8 +91,8 @@ public class NyappiConfig {
 		public final int preventLevel;
 		/** <b>連続ミス限界：</b> 抑止中を含めた連続ミス時に、強制的にヒット扱いする境界値。 */
 		public final int missLimit;
-
-		public RandomHolderConfig( int hitRatio, int preventLevel, int missLimit ) {
+		
+		private RandomHolderConfig( int hitRatio, int preventLevel, int missLimit ) {
 			this.hitRatio = hitRatio;
 			this.preventLevel = preventLevel;
 			this.missLimit = missLimit;
