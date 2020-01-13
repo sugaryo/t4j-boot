@@ -65,12 +65,22 @@ public class WebApiController {
 	
 	@GetMapping("retweets")
 	public void selfrts() {
+		
+		// category/all と同じ。
 		this.self.retweets();
 	}
 	
 	@GetMapping("retweets/category/{category}")
 	public void selfrts( @PathVariable String category ) {
-		this.self.retweets( category );
+
+		// category/all は別名定義。
+		if ( "all".equals( category ) ) {
+			this.self.retweets();
+		} 
+		// category を指定してリツイート。
+		else {
+			this.self.retweets( category );
+		}
 	}
 	
 	@RequestMapping("retweet/{id}")
