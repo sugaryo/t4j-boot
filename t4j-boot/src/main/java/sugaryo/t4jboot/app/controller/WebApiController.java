@@ -63,13 +63,18 @@ public class WebApiController {
 		this.nyappi.call();
 	}
 	
-	@GetMapping("self-rt") 
-	public void selfrt() {
+	@GetMapping("retweets")
+	public void selfrts() {
 		this.self.retweets();
 	}
 	
-	@RequestMapping("self-rt/{id}") 
-	public String selfrt(@PathVariable long id) {
+	@GetMapping("retweets/category/{category}")
+	public void selfrts( @PathVariable String category ) {
+		this.self.retweets( category );
+	}
+	
+	@RequestMapping("retweet/{id}")
+	public String selfrt( @PathVariable long id ) {
 		
 		var rt = this.self.retweet( id );
 		
