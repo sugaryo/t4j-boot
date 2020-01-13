@@ -26,9 +26,21 @@ public class SelfRetweet {
 		return this.twitter.retweet( id );
 	}
 	
+	//TODO：APIのレスポンス用に戻り値を用意したい。
 	public void retweets() {
 		
-		final long[] ids    = config.nyappi.selfrt.ids;
+		final long[] ids    = config.nyappi.selfrt.all();
+		final long interval = config.nyappi.selfrt.interval;
+		
+		for ( final long id : ids ) {
+			this.twitter.retweet( id );
+			sleep( interval );
+		}
+	}
+	//TODO：APIのレスポンス用に戻り値を用意したい。
+	public void retweets(String category) {
+		
+		final long[] ids    = config.nyappi.selfrt.of( category );
 		final long interval = config.nyappi.selfrt.interval;
 		
 		for ( final long id : ids ) {

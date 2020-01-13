@@ -1,10 +1,19 @@
 package sugaryo.t4jboot.app.config;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import sugaryo.t4jboot.common.utility.JsonMapper;
+import sugaryo.t4jboot.data.values.NamedIds;
 
 @Configuration
 @PropertySource(value = "classpath:t4jboot.properties", encoding = "UTF-8")
@@ -12,19 +21,65 @@ public class NyappiConfig {
 	
 	public static final class SelfRetweetConfig {
 		
-		/** <b>SelfRT-IDs：</b> セルフRTするツイートID（{@code status.id}）の配列. */
-		public final long[] ids;
+		public final Map<String, NamedIds> namedIdsMap;
+		
 		/** <b>処理インターバル：</b> {@link #ids} を処理する際のインターバルタイム（{@code Thread.sleep(interval);}）. */
 		public final long interval;
-		
-		private SelfRetweetConfig( String ids, long interval ) {
-			this.ids = JsonMapper.parse( ids, long[].class );
+
+		public SelfRetweetConfig( String namedIdsMap, long interval ) {
+			
+			HashMap<String, Long[]> map = JsonMapper.parse( namedIdsMap, new TypeReference<HashMap<String, Long[]>>() {} );
+			this.namedIdsMap = new HashMap<>();
+			for ( Entry<String, Long[]> entry : map.entrySet() ) {
+				NamedIds nids = new NamedIds( 
+						entry.getKey(), 
+						array(entry.getValue()) );
+				this.namedIdsMap.put( nids.name, nids );
+			}
+			this.interval = interval;
+		}
+		public SelfRetweetConfig( Map<String, NamedIds> namedIdsMap, long interval ) {
+			this.namedIdsMap = namedIdsMap;
 			this.interval = interval;
 		}
 		
-		private SelfRetweetConfig( long[] ids, long interval ) {
-			this.ids = ids;
-			this.interval = interval;
+		public long[] of(final String name) {
+			long[] ids = this.namedIdsMap.containsKey( name ) 
+					? this.namedIdsMap.get( name ).ids 
+					: new long[] {}; 
+			return ids;
+		}
+		
+		public long[] all() {
+			
+			List<Long> ids = new ArrayList<>();
+			
+			for ( NamedIds itor : this.namedIdsMap.values() ) {
+				for ( long id : itor.ids ) {
+					ids.add( id );
+				}
+			}
+			
+			return array( ids );
+		}
+		
+		
+		// TODO：ユーティリティ整理。
+		
+		private static long[] array( List<Long> longs ) {
+			long[] array = new long[longs.size()];
+			for ( int i = 0; i < array.length; i++ ) {
+				array[i] = longs.get( i );
+			}
+			return array;
+		}
+		
+		private static long[] array( Long[] longs ) {
+			long[] array = new long[longs.length];
+			for ( int i = 0; i < array.length; i++ ) {
+				array[i] = longs[i];
+			}
+			return array;
 		}
 	}
 	
