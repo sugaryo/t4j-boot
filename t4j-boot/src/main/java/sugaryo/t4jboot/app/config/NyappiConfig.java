@@ -1,7 +1,7 @@
 package sugaryo.t4jboot.app.config;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -50,9 +50,10 @@ public class NyappiConfig {
 			return ids;
 		}
 		
-		public long[] all() {
+		public long[] union() {
 			
-			List<Long> ids = new ArrayList<>();
+			// 同一IDはここで畳み込む。
+			HashSet<Long> ids = new HashSet<>();
 			
 			for ( NamedIds itor : this.namedIdsMap.values() ) {
 				for ( long id : itor.ids ) {
@@ -72,6 +73,10 @@ public class NyappiConfig {
 				array[i] = longs.get( i );
 			}
 			return array;
+		}
+		
+		private static long[] array( HashSet<Long> longs ) {
+			return array( longs.stream().toArray(Long[]::new) );
 		}
 		
 		private static long[] array( Long[] longs ) {

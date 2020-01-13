@@ -39,7 +39,7 @@ public class SelfRetweet {
 		
 		log.info( "SelfRetweet retweets preset all." );
 		
-		final long[] ids    = config.nyappi.selfrt.all();
+		final long[] ids    = config.nyappi.selfrt.union();
 		final long interval = config.nyappi.selfrt.interval;
 		
 		log.info( "  - ids.length : {}", ids.length );
