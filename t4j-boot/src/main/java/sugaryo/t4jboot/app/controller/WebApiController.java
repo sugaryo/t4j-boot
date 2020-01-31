@@ -73,6 +73,8 @@ public class WebApiController {
 	@GetMapping("retweets/category/{category}")
 	public void selfrts( @PathVariable String category ) {
 
+		log.info( "★ /api/retweets/category/{}", category );
+
 		// category/all は別名定義。
 		if ( "all".equals( category ) ) {
 			this.self.retweets();
@@ -80,6 +82,20 @@ public class WebApiController {
 		// category を指定してリツイート。
 		else {
 			this.self.retweets( category );
+		}
+	}
+	@GetMapping("retweets/category/{category}/{size}")
+	public void selfrts( @PathVariable String category, @PathVariable int size ) {
+
+		log.info( "★ /api/retweets/category/{}/{}", category, size );
+
+		// category/all は別名定義。
+		if ( "all".equals( category ) ) {
+			this.self.retweets( size );
+		} 
+		// category,size を指定してリツイート。
+		else {
+			this.self.retweets( category, size );
 		}
 	}
 	
