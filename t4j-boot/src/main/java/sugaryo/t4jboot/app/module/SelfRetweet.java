@@ -2,6 +2,8 @@ package sugaryo.t4jboot.app.module;
 
 import static sugaryo.t4jboot.common.utility.ThreadUtil.sleep;
 
+import java.util.stream.LongStream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,18 +36,24 @@ public class SelfRetweet {
 		return this.twitter.retweet( id );
 	}
 	
-	
-	//TODO：APIのレスポンス用に戻り値を用意したい。
+
 	public void retweets() {
-		
+
 		log.info( "SelfRetweet retweets preset all." );
 		
 		final long[] ids    = config.nyappi.selfrt.union();
 		final long interval = config.nyappi.selfrt.interval;
 		this.execute( ids, interval );
 	}
-	//TODO：APIのレスポンス用に戻り値を用意したい。
-	public void retweets(String category) {
+	public void retweets(final int limit) {
+		
+		log.info( "SelfRetweet retweets preset all / limit[{}].", limit );
+		
+		final long[] ids    = config.nyappi.selfrt.union();
+		final long interval = config.nyappi.selfrt.interval;
+		this.execute( suppress(ids, limit), interval );
+	}
+	public void retweets(final String category) {
 
 		log.info( "SelfRetweet retweets preset of category[{}].", category );
 		
@@ -53,7 +61,16 @@ public class SelfRetweet {
 		final long interval = config.nyappi.selfrt.interval;
 		this.execute( ids, interval );
 	}
+	public void retweets(final String category, final int limit) {
 
+		log.info( "SelfRetweet retweets preset of category[{}] / limit[{}].", category, limit );
+		
+		final long[] ids    = config.nyappi.selfrt.of( category );
+		final long interval = config.nyappi.selfrt.interval;
+		this.execute( suppress(ids, limit), interval );
+	}
+
+	//TODO：APIのレスポンス用に戻り値を用意したい。
 	private void execute(
 		final long[] ids,
 		final long interval ) {
@@ -63,5 +80,14 @@ public class SelfRetweet {
 			this.twitter.retweet( id );
 			sleep( interval );
 		}
+	}
+
+	private static final long[] suppress(final long[] ids, final int size) {
+
+		// 配列が指定した要素数以内の場合はそのまま返す。
+		if ( ids.length <= size ) return ids;
+
+		// TODO：JavaのStreamだとランダムな抽出処理を組み難かったので、とりあえず先頭から指定個数を抜くだけにしとく。
+		return LongStream.of(ids).limit(size).toArray();
 	}
 }
