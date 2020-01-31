@@ -34,6 +34,7 @@ public class SelfRetweet {
 		return this.twitter.retweet( id );
 	}
 	
+	
 	//TODO：APIのレスポンス用に戻り値を用意したい。
 	public void retweets() {
 		
@@ -41,12 +42,7 @@ public class SelfRetweet {
 		
 		final long[] ids    = config.nyappi.selfrt.union();
 		final long interval = config.nyappi.selfrt.interval;
-		
-		log.info( "  - ids.length : {}", ids.length );
-		for ( final long id : ids ) {
-			this.twitter.retweet( id );
-			sleep( interval );
-		}
+		this.execute( ids, interval );
 	}
 	//TODO：APIのレスポンス用に戻り値を用意したい。
 	public void retweets(String category) {
@@ -55,7 +51,13 @@ public class SelfRetweet {
 		
 		final long[] ids    = config.nyappi.selfrt.of( category );
 		final long interval = config.nyappi.selfrt.interval;
+		this.execute( ids, interval );
+	}
 
+	private void execute(
+		final long[] ids,
+		final long interval ) {
+		
 		log.info( "  - ids.length : {}", ids.length );
 		for ( final long id : ids ) {
 			this.twitter.retweet( id );
