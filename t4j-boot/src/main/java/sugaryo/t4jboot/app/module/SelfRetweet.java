@@ -2,6 +2,8 @@ package sugaryo.t4jboot.app.module;
 
 import static sugaryo.t4jboot.common.utility.ThreadUtil.sleep;
 
+import java.time.LocalDateTime;
+import java.util.Random;
 import java.util.stream.LongStream;
 
 import org.slf4j.Logger;
@@ -87,7 +89,18 @@ public class SelfRetweet {
 		// 配列が指定した要素数以内の場合はそのまま返す。
 		if ( ids.length <= size ) return ids;
 
-		// TODO：JavaのStreamだとランダムな抽出処理を組み難かったので、とりあえず先頭から指定個数を抜くだけにしとく。
-		return LongStream.of(ids).limit(size).toArray();
+		// 配列ids を 乱数di の位置から、指定した数size の要素を抜き出して 新しい配列suppresed に詰めて返す。
+		final int n = ids.length;
+		final int di = new Random( LocalDateTime.now().getNano() ).nextInt( n );
+		final long[] suppressed = new long[size];
+		for ( int i = 0; i < suppressed.length; i++ ) {
+			int index = ( di + i ) % n;
+			suppressed[i] = ids[index];
+		}
+
+		log.debug( "suppress(ids, {})", size );
+		log.debug( "    - before : {}", ids );
+		log.debug( "    - after  : {}", suppressed );
+		return suppressed;
 	}
 }
