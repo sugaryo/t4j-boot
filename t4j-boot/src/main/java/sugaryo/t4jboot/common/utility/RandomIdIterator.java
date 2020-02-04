@@ -1,11 +1,16 @@
 package sugaryo.t4jboot.common.utility;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.stream.IntStream;
 
 public class RandomIdIterator {
+
+	private static final Logger log = LoggerFactory.getLogger( RandomIdIterator.class );
 
     private long[] ids;
 
@@ -29,7 +34,9 @@ public class RandomIdIterator {
         ////////////////////
         
         // 指定個数のインデクサを生成。
-        int[] indexes = indexer( ids.length, n ); 
+        int[] indexes = indexer( ids.length, n );
+
+        log.debug("{} / {} : {}", n, ids.length, indexes );
         
         // 元配列から指定個数の要素を抜き出して新しい配列に詰めて返す。
         long[] extracted = new long[n];
