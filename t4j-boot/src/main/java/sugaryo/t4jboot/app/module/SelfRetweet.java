@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import sugaryo.t4jboot.app.api.TwitterApiCall;
 import sugaryo.t4jboot.app.config.ConfigSet;
+import sugaryo.t4jboot.common.utility.RandomIdIterator;
 import twitter4j.Status;
 
 @Component
@@ -86,18 +87,7 @@ public class SelfRetweet {
 
 	private static final long[] suppress(final long[] ids, final int size) {
 
-		// 配列が指定した要素数以内の場合はそのまま返す。
-		if ( ids.length <= size ) return ids;
-
-		// 配列ids を 乱数di の位置から、指定した数size の要素を抜き出して 新しい配列suppresed に詰めて返す。
-		final int n = ids.length;
-		final int di = new Random( LocalDateTime.now().getNano() ).nextInt( n );
-		final long[] suppressed = new long[size];
-		for ( int i = 0; i < suppressed.length; i++ ) {
-			int index = ( di + i ) % n;
-			suppressed[i] = ids[index];
-		}
-
+		final long[] suppressed = RandomIdIterator.iterate( ids, size );
 		log.debug( "suppress(ids, {})", size );
 		log.debug( "    - before : {}", ids );
 		log.debug( "    - after  : {}", suppressed );

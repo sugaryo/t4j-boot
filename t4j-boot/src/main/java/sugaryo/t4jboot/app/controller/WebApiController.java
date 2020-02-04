@@ -19,6 +19,7 @@ import sugaryo.t4jboot.app.module.NyappiCall;
 import sugaryo.t4jboot.app.module.RandomHolder;
 import sugaryo.t4jboot.app.module.SelfRetweet;
 import sugaryo.t4jboot.common.utility.JsonMapper;
+import sugaryo.t4jboot.common.utility.RandomIdIterator;
 import sugaryo.t4jboot.data.values.MediaTweet;
 
 
@@ -131,6 +132,15 @@ public class WebApiController {
 		return sb.toString();
 	}
 	
+	@GetMapping("test/random-id-iterator/{s}/{n}")
+	String testRandomIdIterator(@PathVariable int s, @PathVariable int n) {
+
+		int[] index = RandomIdIterator.indexer( s, n );
+
+		String json = JsonMapper.stringify( index );
+		log.info( "総数 {} - 抽出 {} : {}", s, n, json );
+		return json;
+	}
 	
 	@RequestMapping("test/ex")
 	String testException() throws Exception {
