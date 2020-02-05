@@ -15,11 +15,11 @@ public class SelfRtScheduler {
 	@Scheduled(cron = "0 0 9 * 1-5 *")
 	public void weekday() {
 		// 平日は９時に。
-		this.self.retweets();
+		this.self.retweets( 10 ); // FIXME：全RTが死ぬほどウザかったので取り敢えず１０件にしとく。
 	}
 	@Scheduled(cron = "0 0 12 * 6-7 *")
 	public void holiday() {
 		// 土日は１２時に。
-		this.self.retweets();
+		this.self.retweets( 10 ); // FIXME：全RTが死ぬほどウザかったので取り敢えず１０件にしとく。
 	}
 }
