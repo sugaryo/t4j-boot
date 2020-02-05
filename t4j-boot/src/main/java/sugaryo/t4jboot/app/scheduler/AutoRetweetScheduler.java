@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import sugaryo.t4jboot.app.module.SelfRetweet;
 
 @Component
-public class SelfRtScheduler {
+public class AutoRetweetScheduler {
 
 	@Autowired
 	SelfRetweet self;
