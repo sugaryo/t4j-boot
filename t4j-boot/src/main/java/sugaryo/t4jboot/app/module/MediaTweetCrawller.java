@@ -21,6 +21,15 @@ public class MediaTweetCrawller {
 		return this.twitter.medias( id );
 	}
 	public String[] crawlMediaUrls( final long id ) {
-		return this.twitter.medias( id ).stream().map( x -> x.url ).toArray( String[]::new );
+		return this.twitter.medias( id )
+				.stream().map( x -> x.url ).toArray( String[]::new );
+	}
+	
+	public List<MediaTweet> crawlListMediaTweets( final long listId ) {
+		return this.twitter.mediasOfList( listId );
+	}
+	public String[] crawlListMediaUrls( final long listId ) {
+		return this.twitter.mediasOfList( listId )
+				.stream().map( x -> x.url ).toArray( String[]::new );
 	}
 }
