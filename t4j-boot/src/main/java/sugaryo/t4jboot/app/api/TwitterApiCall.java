@@ -73,7 +73,9 @@ public class TwitterApiCall {
 		
 		List<MediaTweet> medias = new ArrayList<>();
 		
-		for ( int page = 0; page < p; page++ ) {
+		for ( int page = 1; page <= p; page++ ) {
+			
+			log.info( "page {} of list[{}]", page, listId );
 			
 			var paging = new Paging( page );
 			var tweets = this.lst( listId, paging );
