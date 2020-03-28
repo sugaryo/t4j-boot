@@ -44,12 +44,11 @@ public class WebApiController {
 	@GetMapping("images/tweet/{id}")
 	public String imagesByTweetId( @PathVariable long id ) throws Exception {
 		
-		String[] urls = mediatweets.crawlMediaUrls( id );
+		String[] urls = this.mediatweets.crawlMediaUrls( id );
 		
 		String json = JsonMapper.stringify( urls );
 		return json;
 	}
-	
 	@GetMapping("images/tweet/{id}/detail")
 	public String imagesByTweetIdDetail( @PathVariable long id ) throws Exception {
 		
@@ -58,6 +57,24 @@ public class WebApiController {
 		String json = JsonMapper.stringify( medias );
 		return json;
 	}
+
+	@GetMapping("images/list/{id}")
+	public String imagesByListId( @PathVariable long id ) {
+		
+		String[] urls = this.mediatweets.crawlListMediaUrls( id );
+
+		String json = JsonMapper.stringify( urls );
+		return json;
+	}
+	@GetMapping("images/list/{id}/detail")
+	public String imagesByListIdDetail( @PathVariable long id ) {
+		
+		List<MediaTweet> medias = this.mediatweets.crawlListMediaTweets( id );
+
+		String json = JsonMapper.stringify( medias );
+		return json;
+	}
+	
 
 	@GetMapping("nyappi") 
 	public void nyappi() {
@@ -107,6 +124,8 @@ public class WebApiController {
 		
 		return JsonMapper.stringify( rt );
 	}
+	
+
 	
 
 	private static final String CRLF = System.getProperty("line.separator");
