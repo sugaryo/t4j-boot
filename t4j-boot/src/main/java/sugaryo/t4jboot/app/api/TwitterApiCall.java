@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import sugaryo.t4jboot.data.values.MediaTweet;
 import twitter4j.MediaEntity;
+import twitter4j.Paging;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -30,9 +31,10 @@ public class TwitterApiCall {
 	}
 	
 	
+	
 	public List<MediaTweet> medias( final long id ) {
 		
-		var tweet = this.getTweet( id );
+		Status tweet = this.get( id );
 		
 		final String userName = tweet.getUser().getScreenName();
 		final long userId = tweet.getUser().getId();
@@ -47,12 +49,12 @@ public class TwitterApiCall {
 			MediaTweet media = new MediaTweet( userName, userId, tweetId, url );
 			
 			medias.add( media );
-			log.debug( media.toString() );
+			log.debug( "media : {}", media );
 		}
 		return medias;
 	}
 	
-	private Status getTweet( final long id ) {
+	private Status get( final long id ) {
 		
 		try {
 			return twitter.showStatus( id );
@@ -81,7 +83,7 @@ public class TwitterApiCall {
 		try {
 			log.debug( "▼リツイート▼" );
 			// 既にリツイート済みの場合はいったん解除する。
-			if ( this.getTweet( id ).isRetweetedByMe() ) {
+			if ( this.get( id ).isRetweetedByMe() ) {
 				log.debug( "◇リツイートの解除" );
 				this.twitter.unRetweetStatus( id );
 			}
@@ -89,16 +91,16 @@ public class TwitterApiCall {
 			// 解除したうえでリツイートする。
 			var rt = this.twitter.retweetStatus( id );
 			log.debug( "▲リツイート▲[{} > {} : {}]",
-					id, 
-					rt.getId(), 
+					id,
+					rt.getId(),
 					rt.getText() );
 			
 			return rt;
 		}
-		// 検査例外はRuntimeでくるんでポイ。 
+		// 検査例外はRuntimeでくるんでポイ。
 		catch ( TwitterException ex ) {
 			throw new RuntimeException( ex );
 		}
 	}
-
+	
 }
