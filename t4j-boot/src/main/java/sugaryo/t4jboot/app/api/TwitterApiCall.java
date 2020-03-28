@@ -34,23 +34,11 @@ public class TwitterApiCall {
 	
 	public List<MediaTweet> medias( final long id ) {
 		
+		List<MediaTweet> medias = new ArrayList<>();
 		Status tweet = this.get( id );
 		
-		final String userName = tweet.getUser().getScreenName();
-		final long userId = tweet.getUser().getId();
-		final long tweetId = tweet.getId();
-		
-		List<MediaTweet> medias = new ArrayList<>();
-		
-		final MediaEntity[] mediaEntities = tweet.getMediaEntities();
-		for ( MediaEntity entity : mediaEntities ) {
-			final String url = entity.getMediaURLHttps();
-			
-			MediaTweet media = new MediaTweet( userName, userId, tweetId, url );
-			
-			medias.add( media );
-			log.debug( "media : {}", media );
-		}
+		mediasUrlFrom( medias, tweet );
+
 		return medias;
 	}
 	
@@ -65,36 +53,23 @@ public class TwitterApiCall {
 		}
 	}
 	
-	
-	
 	public List<MediaTweet> mediasOfList( final long listId ) {
 		
-		final int p = 5; //FIXME：後でパラメータ化。
+		final int pBegin = 1; //FIXME：後でパラメータ化。
+		final int pages = 10; //FIXME：後でパラメータ化。
 		
 		List<MediaTweet> medias = new ArrayList<>();
 		
-		for ( int page = 1; page <= p; page++ ) {
+		for ( int i = 0; i < pages; i++ ) {
 			
+			final int page = pBegin + i;
+
 			log.info( "page {} of list[{}]", page, listId );
 			
-			var paging = new Paging( page );
+			var paging = new Paging( page ); //FIXME：ページング操作もあとでパラメータ化
 			var tweets = this.lst( listId, paging );
-			
 			for ( Status tweet : tweets ) {
-
-				final String userName = tweet.getUser().getScreenName();
-				final long userId = tweet.getUser().getId();
-				final long tweetId = tweet.getId();
-				
-				final MediaEntity[] mediaEntities = tweet.getMediaEntities();
-				for ( MediaEntity entity : mediaEntities ) {
-					final String url = entity.getMediaURLHttps();
-					
-					MediaTweet media = new MediaTweet( userName, userId, tweetId, url );
-					
-					medias.add( media );
-					log.debug( "media : {}", media );
-				}
+				mediasUrlFrom( medias, tweet );
 			}
 		}
 		return medias;
@@ -111,6 +86,26 @@ public class TwitterApiCall {
 		}
 	}
 	
+	private static void mediasUrlFrom( final List<MediaTweet> medias, final Status tweet ) {
+
+		// ツイートに関するメタデータを取得。
+		final String userName = tweet.getUser().getScreenName();
+		final long userId     = tweet.getUser().getId();
+		final long tweetId    = tweet.getId();
+
+		// ツイートに含まれるメディアURLを取得。
+		final MediaEntity[] mediaEntities = tweet.getMediaEntities();
+		for ( MediaEntity entity : mediaEntities ) {
+			final String url = entity.getMediaURLHttps();
+			
+			MediaTweet media = new MediaTweet( userName, userId, tweetId, url );
+			
+			medias.add( media );
+			log.debug( "media : {}", media );
+		}
+	}
+
+
 	
 	public void tweet( String message ) {
 		
