@@ -64,7 +64,52 @@ public class TwitterApiCall {
 			throw new RuntimeException( ex );
 		}
 	}
+	
+	
+	
+	public List<MediaTweet> mediasOfList( final long listId ) {
+		
+		final int p = 5; //FIXME：後でパラメータ化。
+		
+		List<MediaTweet> medias = new ArrayList<>();
+		
+		for ( int page = 0; page < p; page++ ) {
+			
+			var paging = new Paging( page );
+			var tweets = this.lst( listId, paging );
+			
+			for ( Status tweet : tweets ) {
 
+				final String userName = tweet.getUser().getScreenName();
+				final long userId = tweet.getUser().getId();
+				final long tweetId = tweet.getId();
+				
+				final MediaEntity[] mediaEntities = tweet.getMediaEntities();
+				for ( MediaEntity entity : mediaEntities ) {
+					final String url = entity.getMediaURLHttps();
+					
+					MediaTweet media = new MediaTweet( userName, userId, tweetId, url );
+					
+					medias.add( media );
+					log.debug( "media : {}", media );
+				}
+			}
+		}
+		return medias;
+	}
+	
+	private List<Status> lst( final long listId, Paging paging ) {
+		
+		try {
+			return this.twitter.getUserListStatuses( listId, paging );
+		}
+		// 検査例外はRuntimeでくるんでポイ。
+		catch ( TwitterException ex ) {
+			throw new RuntimeException( ex );
+		}
+	}
+	
+	
 	public void tweet( String message ) {
 		
 		try {
