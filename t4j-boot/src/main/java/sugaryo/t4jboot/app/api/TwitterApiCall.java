@@ -1,5 +1,6 @@
 package sugaryo.t4jboot.app.api;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,21 +48,32 @@ public class TwitterApiCall {
 		}
 	}
 	
-	public List<Status> list( final long listId ) {
+	public List<Status> list( final long listId, final int begin, final int pages ) {
 		
-		final int pBegin = 1; //FIXME：後でパラメータ化。
-		final int pages = 10; //FIXME：後でパラメータ化。
+		// begin のガード句
+		if ( begin < 1 ) throw new IllegalArgumentException( MessageFormat.format( 
+				"開始ページの指定（{0}）が少なすぎます。"
+				+ "開始ページ（ page : 1-based-number）は１以上を指定して下さい。"
+				, begin )
+		);
+		
+		// pages のガード句
+		if ( 10 < pages ) throw new IllegalArgumentException( MessageFormat.format( 
+				"ページ数の指定（{0}）が多すぎます。"
+				+ "API制限対策のため、１０ページ以上のリクエストは分割して、時間をあけて実行して下さい。"
+				, pages )
+		);
 		
 		
 		List<Status> tweets = new ArrayList<>();
 		
 		for ( int i = 0; i < pages; i++ ) {
 			
-			final int page = pBegin + i;
+			final int page = begin + i;
 
 			log.info( "page {} of list[{}]", page, listId );
 			
-			var paging = new Paging( page ); //FIXME：ページング操作もあとでパラメータ化
+			var paging = new Paging( page );
 			tweets.addAll( this.lst( listId, paging ) );
 		}
 		return tweets;

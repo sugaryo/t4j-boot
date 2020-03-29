@@ -30,11 +30,23 @@ public class MediaTweetCrawller {
 		return medias;
 	}
 	
+	
+	public static final class ListPagingDefault {
+		public static final int BEGIN_PAGE = 1;
+		public static final int PAGE_SIZE = 5;
+	}
+	
 	public List<MediaTweet> byList( final long listId ) {
+		return this.byList( listId, ListPagingDefault.BEGIN_PAGE );
+	}
+	public List<MediaTweet> byList( final long listId, final int begin ) {
+		return this.byList( listId, begin, ListPagingDefault.PAGE_SIZE );
+	}
+	public List<MediaTweet> byList( final long listId, final int begin, final int pages ) {
 
 		List<MediaTweet> medias = new ArrayList<>();
 		
-		List<Status> tweets = this.twitter.list( listId );
+		List<Status> tweets = this.twitter.list( listId, begin, pages );
 		for ( Status tweet : tweets ) {
 			mediasUrlFrom( medias, tweet );
 		}
