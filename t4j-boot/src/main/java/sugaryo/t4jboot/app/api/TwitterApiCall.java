@@ -1,5 +1,6 @@
 package sugaryo.t4jboot.app.api;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import sugaryo.t4jboot.data.values.MediaTweet;
-import twitter4j.MediaEntity;
 import twitter4j.Paging;
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -30,16 +29,12 @@ public class TwitterApiCall {
 		this.twitter = new TwitterFactory().getInstance();
 	}
 	
+	// ■GET
 	
-	
-	public List<MediaTweet> medias( final long id ) {
+	public Status tweet( final long id ) {
 		
-		List<MediaTweet> medias = new ArrayList<>();
 		Status tweet = this.get( id );
-		
-		mediasUrlFrom( medias, tweet );
-
-		return medias;
+		return tweet;
 	}
 	
 	private Status get( final long id ) {
@@ -53,26 +48,35 @@ public class TwitterApiCall {
 		}
 	}
 	
-	public List<MediaTweet> mediasOfList( final long listId ) {
+	public List<Status> list( final long listId, final int begin, final int pages ) {
 		
-		final int pBegin = 1; //FIXME：後でパラメータ化。
-		final int pages = 10; //FIXME：後でパラメータ化。
+		// begin のガード句
+		if ( begin < 1 ) throw new IllegalArgumentException( MessageFormat.format( 
+				"開始ページの指定（{0}）が少なすぎます。"
+				+ "開始ページ（ page : 1-based-number）は１以上を指定して下さい。"
+				, begin )
+		);
 		
-		List<MediaTweet> medias = new ArrayList<>();
+		// pages のガード句
+		if ( 10 < pages ) throw new IllegalArgumentException( MessageFormat.format( 
+				"ページ数の指定（{0}）が多すぎます。"
+				+ "API制限対策のため、１０ページ以上のリクエストは分割して、時間をあけて実行して下さい。"
+				, pages )
+		);
+		
+		
+		List<Status> tweets = new ArrayList<>();
 		
 		for ( int i = 0; i < pages; i++ ) {
 			
-			final int page = pBegin + i;
+			final int page = begin + i;
 
 			log.info( "page {} of list[{}]", page, listId );
 			
-			var paging = new Paging( page ); //FIXME：ページング操作もあとでパラメータ化
-			var tweets = this.lst( listId, paging );
-			for ( Status tweet : tweets ) {
-				mediasUrlFrom( medias, tweet );
-			}
+			var paging = new Paging( page );
+			tweets.addAll( this.lst( listId, paging ) );
 		}
-		return medias;
+		return tweets;
 	}
 	
 	private List<Status> lst( final long listId, Paging paging ) {
@@ -86,44 +90,30 @@ public class TwitterApiCall {
 		}
 	}
 	
-	private static void mediasUrlFrom( final List<MediaTweet> medias, final Status tweet ) {
-
-		// ツイートに関するメタデータを取得。
-		final String userName = tweet.getUser().getScreenName();
-		final long userId     = tweet.getUser().getId();
-		final long tweetId    = tweet.getId();
-
-		// ツイートに含まれるメディアURLを取得。
-		final MediaEntity[] mediaEntities = tweet.getMediaEntities();
-		for ( MediaEntity entity : mediaEntities ) {
-			final String url = entity.getMediaURLHttps();
-			
-			MediaTweet media = new MediaTweet( userName, userId, tweetId, url );
-			
-			medias.add( media );
-			log.debug( "media : {}", media );
-		}
-	}
-
 
 	
-	public void tweet( String message ) {
+	// ■POST
+	
+	public Status tweet( String message ) {
 		
 		try {
-			log.debug( "tweet:[{}]", message );
-			twitter.updateStatus( message );
+			log.debug( "▼tweet▼" );
+			log.debug( "message : {}", message );
+			var t = twitter.updateStatus( message );
+			log.debug( "▲tweet▲[{}]", t.getId() );
+			
+			return t;
 		}
 		// 検査例外はRuntimeでくるんでポイ。
 		catch ( TwitterException ex ) {
 			throw new RuntimeException( ex );
 		}
-		
 	}
 	
 	public Status retweet( final long id ) {
 		
 		try {
-			log.debug( "▼リツイート▼" );
+			log.debug( "▼retweet▼[]", id );
 			// 既にリツイート済みの場合はいったん解除する。
 			if ( this.get( id ).isRetweetedByMe() ) {
 				log.debug( "◇リツイートの解除" );
@@ -132,10 +122,8 @@ public class TwitterApiCall {
 			
 			// 解除したうえでリツイートする。
 			var rt = this.twitter.retweetStatus( id );
-			log.debug( "▲リツイート▲[{} > {} : {}]",
-					id,
-					rt.getId(),
-					rt.getText() );
+			log.debug( "message : {}", rt.getText() );
+			log.debug( "▲retweet▲[{}]", rt.getId() );
 			
 			return rt;
 		}
