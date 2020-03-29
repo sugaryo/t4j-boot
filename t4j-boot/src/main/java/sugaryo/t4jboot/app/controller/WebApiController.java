@@ -57,6 +57,16 @@ public class WebApiController {
 		
 		return urls;
 	}
+	@GetMapping("images-metadata/tweet/{id}")
+	public String[] imgMetadataByTweet( @PathVariable long id ) throws Exception {
+		
+		String[] metadata = this.mediatweets.byTweet( id )
+				.stream()
+				.map( x -> x.metadata() )
+				.toArray( String[]::new );
+		
+		return metadata;
+	}
 
 	@GetMapping("images/list/{id}")
 	public List<MediaTweet> imgByList( @PathVariable long id ) {
@@ -73,6 +83,16 @@ public class WebApiController {
 				.toArray( String[]::new );
 
 		return urls;
+	}
+	@GetMapping("images-metadata/list/{id}")
+	public String[] imgMetadataByList( @PathVariable long id ) {
+		
+		String[] metadata = this.mediatweets.byList( id )
+				.stream()
+				.map( x -> x.metadata() )
+				.toArray( String[]::new );
+
+		return metadata;
 	}
 	
 

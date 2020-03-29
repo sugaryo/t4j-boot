@@ -44,7 +44,7 @@ public class ViewController {
 			String ln = "";
 			for ( MediaTweet media : medias ) {
 				sb.append( ln );
-				sb.append( media.toString() );
+				sb.append( media.metadata() );
 				ln = "\n";
 			}
 		}
@@ -87,7 +87,7 @@ public class ViewController {
 				for ( MediaTweet media : medias ) {
 
 					sb.append( ln );
-					sb.append( media.toString() );
+					sb.append( media.metadata() );
 					ln = "\n";
 				}
 			}
