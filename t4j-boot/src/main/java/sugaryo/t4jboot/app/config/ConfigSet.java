@@ -7,8 +7,12 @@ import org.springframework.stereotype.Component;
 public class ConfigSet {
 	
 	public final NyappiConfig nyappi;
+	public final ScheduleConfig schedule;
 	
-	public ConfigSet( @Autowired NyappiConfig nyappi ) {
+	public ConfigSet( 
+			@Autowired NyappiConfig nyappi,
+			@Autowired ScheduleConfig schedule ) {
 		this.nyappi = nyappi;
+		this.schedule = schedule;
 	}
 }

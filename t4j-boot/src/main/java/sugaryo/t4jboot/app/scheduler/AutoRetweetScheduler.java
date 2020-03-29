@@ -14,16 +14,15 @@ public class AutoRetweetScheduler {
 	SelfRetweet self;
 
 	@Autowired
-	ConfigSet conf;
+	ConfigSet config;
 	
-
 	@Scheduled(cron = "${schedule.autort.weekday.cron}")
 	public void weekday() {
-		this.self.retweets( 5 ); // FIXME：全RTが死ぬほどウザかったので取り敢えず5件にしとく。
+		this.self.retweets( config.schedule.autoRt.counts.weekday );
 	}
-
+	
 	@Scheduled(cron = "${schedule.autort.holiday.cron}")
 	public void holiday() {
-		this.self.retweets( 5 ); // FIXME：全RTが死ぬほどウザかったので取り敢えず5件にしとく。
+		this.self.retweets( config.schedule.autoRt.counts.holiday );
 	}
 }
