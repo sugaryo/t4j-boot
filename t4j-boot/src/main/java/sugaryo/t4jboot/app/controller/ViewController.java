@@ -39,7 +39,7 @@ public class ViewController {
 		
 		if ( 0 != id ) {
 			
-			var medias = this.mediatweet.crawlMediaTweets( id );
+			var medias = this.mediatweet.byTweet( id );
 			
 			String ln = "";
 			for ( MediaTweet media : medias ) {
@@ -83,7 +83,7 @@ public class ViewController {
 			String ln = "";
 			for ( long id : ids ) {
 				
-				var medias = this.mediatweet.crawlMediaTweets( id );
+				var medias = this.mediatweet.byTweet( id );
 				for ( MediaTweet media : medias ) {
 
 					sb.append( ln );

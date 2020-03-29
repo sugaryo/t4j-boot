@@ -42,37 +42,37 @@ public class WebApiController {
 
 	
 	@GetMapping("images/tweet/{id}")
-	public String imagesByTweetId( @PathVariable long id ) throws Exception {
+	public List<MediaTweet> imgByTweet( @PathVariable long id ) throws Exception {
 		
-		String[] urls = this.mediatweets.crawlMediaUrls( id );
-		
-		String json = JsonMapper.stringify( urls );
-		return json;
+		List<MediaTweet> medias = this.mediatweets.byTweet( id );
+		return medias;
 	}
-	@GetMapping("images/tweet/{id}/detail")
-	public String imagesByTweetIdDetail( @PathVariable long id ) throws Exception {
+	@GetMapping("images-url/tweet/{id}")
+	public String[] imgUrlByTweet( @PathVariable long id ) throws Exception {
 		
-		List<MediaTweet> medias = this.mediatweets.crawlMediaTweets( id );
+		String[] urls = this.mediatweets.byTweet( id )
+				.stream()
+				.map( x -> x.url )
+				.toArray( String[]::new );
 		
-		String json = JsonMapper.stringify( medias );
-		return json;
+		return urls;
 	}
 
 	@GetMapping("images/list/{id}")
-	public String imagesByListId( @PathVariable long id ) {
+	public List<MediaTweet> imgByList( @PathVariable long id ) {
 		
-		String[] urls = this.mediatweets.crawlListMediaUrls( id );
-
-		String json = JsonMapper.stringify( urls );
-		return json;
+		List<MediaTweet> medias = this.mediatweets.byList( id );
+		return medias;
 	}
-	@GetMapping("images/list/{id}/detail")
-	public String imagesByListIdDetail( @PathVariable long id ) {
+	@GetMapping("images-url/list/{id}")
+	public String[] imgUrlByList( @PathVariable long id ) {
 		
-		List<MediaTweet> medias = this.mediatweets.crawlListMediaTweets( id );
+		String[] urls = this.mediatweets.byList( id )
+				.stream()
+				.map( x -> x.url )
+				.toArray( String[]::new );
 
-		String json = JsonMapper.stringify( medias );
-		return json;
+		return urls;
 	}
 	
 
