@@ -119,8 +119,8 @@ public class WebApiController {
 			@PathVariable(required = false) Optional<Integer> n ) {
 
 		List<MediaTweet> medias = n.isPresent()
-				? this.mediatweets.byList( id, p )
-				: this.mediatweets.byList( id, p, n.get() );
+				? this.mediatweets.byList( id, p, n.get() )
+				: this.mediatweets.byList( id, p );
 		
 		return medias;
 	}
@@ -134,8 +134,8 @@ public class WebApiController {
 			@PathVariable(required = false) Optional<Integer> n ) {
 		
 		List<MediaTweet> medias = n.isPresent()
-				? this.mediatweets.byList( id, p )
-				: this.mediatweets.byList( id, p, n.get() );
+				? this.mediatweets.byList( id, p, n.get() )
+				: this.mediatweets.byList( id, p );
 
 		String[] urls = medias
 				.stream()
@@ -154,8 +154,8 @@ public class WebApiController {
 			@PathVariable(required = false) Optional<Integer> n ) {
 
 		List<MediaTweet> medias = n.isPresent()
-				? this.mediatweets.byList( id, p )
-				: this.mediatweets.byList( id, p, n.get() );
+				? this.mediatweets.byList( id, p, n.get() )
+				: this.mediatweets.byList( id, p );
 		
 		String[] metadata = medias
 				.stream()
