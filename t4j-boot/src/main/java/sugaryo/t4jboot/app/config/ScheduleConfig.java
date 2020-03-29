@@ -12,11 +12,11 @@ public class ScheduleConfig {
 
         public static class Counts {
             public final int weekday;
-            public final int holiday;
+            public final int weekend;
     
-            private Counts( int weekday, int holiday ) {
+            private Counts( int weekday, int weekend ) {
                 this.weekday = weekday;
-                this.holiday = holiday;
+                this.weekend = weekend;
             }
         }
 
@@ -31,11 +31,11 @@ public class ScheduleConfig {
 
 	public ScheduleConfig(
             @Value("${schedule.autort.weekday.count}") int autoRtCountWeekday,
-            @Value("${schedule.autort.holiday.count}") int autoRtCountHoliday
+            @Value("${schedule.autort.weekend.count}") int autoRtCountWeekend
 			) {
 
         this.autoRt = new AutoRetweet( new AutoRetweet.Counts(
                 autoRtCountWeekday, 
-                autoRtCountHoliday ));
+                autoRtCountWeekend ) );
 	}
 }

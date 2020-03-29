@@ -21,8 +21,8 @@ public class AutoRetweetScheduler {
 		this.self.retweets( config.schedule.autoRt.counts.weekday );
 	}
 	
-	@Scheduled(cron = "${schedule.autort.holiday.cron}")
+	@Scheduled(cron = "${schedule.autort.weekend.cron}")
 	public void holiday() {
-		this.self.retweets( config.schedule.autoRt.counts.holiday );
+		this.self.retweets( config.schedule.autoRt.counts.weekend );
 	}
 }
