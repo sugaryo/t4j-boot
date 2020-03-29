@@ -21,6 +21,7 @@ import sugaryo.t4jboot.app.module.RandomHolder;
 import sugaryo.t4jboot.app.module.SelfRetweet;
 import sugaryo.t4jboot.common.utility.JsonMapper;
 import sugaryo.t4jboot.common.utility.RandomIdIterator;
+import sugaryo.t4jboot.common.utility.StringUtil;
 import sugaryo.t4jboot.data.values.MediaTweet;
 
 
@@ -62,14 +63,16 @@ public class WebApiController {
 		return urls;
 	}
 	@GetMapping("images-metadata/tweet/{id}")
-	public String[] imgMetadataByTweet( @PathVariable long id ) throws Exception {
+	public String imgMetadataByTweet( @PathVariable long id ) throws Exception {
 		
 		String[] metadata = this.mediatweets.byTweet( id )
 				.stream()
 				.map( x -> x.metadata() )
 				.toArray( String[]::new );
-		
-		return metadata;
+
+		String planetext = StringUtil.join( "\n", metadata );
+		log.debug( planetext );
+		return planetext;
 	}
 	
 	
@@ -92,14 +95,16 @@ public class WebApiController {
 		return urls;
 	}
 	@GetMapping("images-metadata/list/{id}")
-	public String[] imgMetadataByList( @PathVariable long id ) {
+	public String imgMetadataByList( @PathVariable long id ) {
 		
 		String[] metadata = this.mediatweets.byList( id )
 				.stream()
 				.map( x -> x.metadata() )
 				.toArray( String[]::new );
-
-		return metadata;
+		
+		String planetext = StringUtil.join( "\n", metadata );
+		log.debug( planetext );
+		return planetext;
 	}
 	
 	// ListID 指定 ＋ページング指定 でのメディアURL情報取得
@@ -143,7 +148,7 @@ public class WebApiController {
 		"images-metadata/list/{id}/page/{p}",
 		"images-metadata/list/{id}/page/{p}/{n}"
 	})
-	public String[] imgMetadataByPagingList( 
+	public String imgMetadataByPagingList( 
 			@PathVariable final long id, 
 			@PathVariable final int p, 
 			@PathVariable(required = false) Optional<Integer> n ) {
@@ -156,8 +161,10 @@ public class WebApiController {
 				.stream()
 				.map( x -> x.metadata() )
 				.toArray( String[]::new );
-
-		return metadata;
+		
+		String planetext = StringUtil.join( "\n", metadata );
+		log.debug( planetext );
+		return planetext;
 	}
 	
 
