@@ -19,7 +19,6 @@ import sugaryo.t4jboot.app.module.MediaTweetCrawller;
 import sugaryo.t4jboot.app.module.NyappiCall;
 import sugaryo.t4jboot.app.module.RandomHolder;
 import sugaryo.t4jboot.app.module.SelfRetweet;
-import sugaryo.t4jboot.app.module.MediaTweetCrawller.ListPagingDefault;
 import sugaryo.t4jboot.common.utility.JsonMapper;
 import sugaryo.t4jboot.common.utility.RandomIdIterator;
 import sugaryo.t4jboot.data.values.MediaTweet;
@@ -107,32 +106,33 @@ public class WebApiController {
 	
 	@GetMapping({
 			"images/list/{id}/page/{p}",
-			"images/list/{id}/page/{p}/{N}"
+			"images/list/{id}/page/{p}/{n}"
 	})
 	public List<MediaTweet> imgByPagingList( 
 			@PathVariable final long id, 
 			@PathVariable final int p, 
-			@PathVariable(required = false) Optional<Integer> N ) {
+			@PathVariable(required = false) Optional<Integer> n ) {
 
-		//FIXME：JavaのOptionalのプリミティブが気持ち悪いので何とかしたい。
-		final int n = N.orElse( ListPagingDefault.PAGE_SIZE );
+		List<MediaTweet> medias = n.isPresent()
+				? this.mediatweets.byList( id, p )
+				: this.mediatweets.byList( id, p, n.get() );
 		
-		List<MediaTweet> medias = this.mediatweets.byList( id, p, n );
 		return medias;
 	}
 	@GetMapping({
 		"images-url/list/{id}/page/{p}",
-		"images-url/list/{id}/page/{p}/{N}"
+		"images-url/list/{id}/page/{p}/{n}"
 	})
 	public String[] imgUrlByPagingList( 
 			@PathVariable final long id, 
 			@PathVariable final int p, 
-			@PathVariable(required = false) Optional<Integer> N ) {
-
-		//FIXME：JavaのOptionalのプリミティブが気持ち悪いので何とかしたい。
-		final int n = N.orElse( ListPagingDefault.PAGE_SIZE );
+			@PathVariable(required = false) Optional<Integer> n ) {
 		
-		String[] urls = this.mediatweets.byList( id, p, n )
+		List<MediaTweet> medias = n.isPresent()
+				? this.mediatweets.byList( id, p )
+				: this.mediatweets.byList( id, p, n.get() );
+
+		String[] urls = medias
 				.stream()
 				.map( x -> x.url )
 				.toArray( String[]::new );
@@ -141,17 +141,18 @@ public class WebApiController {
 	}
 	@GetMapping({
 		"images-metadata/list/{id}/page/{p}",
-		"images-metadata/list/{id}/page/{p}/{N}"
+		"images-metadata/list/{id}/page/{p}/{n}"
 	})
 	public String[] imgMetadataByPagingList( 
 			@PathVariable final long id, 
 			@PathVariable final int p, 
-			@PathVariable(required = false) Optional<Integer> N ) {
+			@PathVariable(required = false) Optional<Integer> n ) {
 
-		//FIXME：JavaのOptionalのプリミティブが気持ち悪いので何とかしたい。
-		final int n = N.orElse( ListPagingDefault.PAGE_SIZE );
+		List<MediaTweet> medias = n.isPresent()
+				? this.mediatweets.byList( id, p )
+				: this.mediatweets.byList( id, p, n.get() );
 		
-		String[] metadata = this.mediatweets.byList( id, p, n )
+		String[] metadata = medias
 				.stream()
 				.map( x -> x.metadata() )
 				.toArray( String[]::new );
