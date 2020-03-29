@@ -12,10 +12,8 @@ public class NyappiScheduler {
 	@Autowired
 	NyappiCall nyappi;
 	
-	@Scheduled(cron = "0 0 * * * *")
+	@Scheduled(cron = "${schedule.nyappi_call.cron}")
 	public void cron() {
-		// 毎時間０分ちょうどでランダムにゃっぴこーる。
 		this.nyappi.randomcall();
 	}
-	
 }
