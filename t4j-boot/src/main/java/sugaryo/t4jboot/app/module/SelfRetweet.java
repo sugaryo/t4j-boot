@@ -2,10 +2,6 @@ package sugaryo.t4jboot.app.module;
 
 import static sugaryo.t4jboot.common.utility.ThreadUtil.sleep;
 
-import java.time.LocalDateTime;
-import java.util.Random;
-import java.util.stream.LongStream;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
