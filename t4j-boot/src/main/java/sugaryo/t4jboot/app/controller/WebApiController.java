@@ -214,6 +214,24 @@ public class WebApiController {
 		
 		var rt = this.self.retweet( id );
 		
+		String json = JsonMapper.map()
+				.put( "id", rt.getId() )
+				.put( "name", rt.getUser().getName() )
+				.put( "text", rt.getText() )
+				.nest( "retweeted" )
+						.put( "fv-count", rt.getRetweetedStatus().getFavoriteCount() )
+						.put( "rt-count", rt.getRetweetedStatus().getRetweetCount() )
+				.stringify();
+		return json;
+	}
+	@RequestMapping({
+		"retweet-verbose/{id}",
+		"retweet-v/{id}",
+	})
+	public String selfrt_verbose( @PathVariable long id ) {
+		
+		var rt = this.self.retweet( id );
+		
 		return JsonMapper.stringify( rt );
 	}
 	
