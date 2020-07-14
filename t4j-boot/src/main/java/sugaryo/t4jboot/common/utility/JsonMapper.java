@@ -98,6 +98,22 @@ public class JsonMapper {
 		}
 		
 		/**
+		 * ネストしたオブジェクトの登録
+		 * 
+		 * @param key putするキー
+		 * @return 内包する {@link Map<String, Object>} インスタンスに指定した {@code key} で新しい {@link Map<String, Object>} を登録し、<br>
+		 *         新しい {@link Map<String, Object>} インスタンスに対する {@link MapContext} を返します。
+		 *         
+		 * @see HashMap#put(Object, Object)
+		 */
+		public MapContext nest(String key) {
+			
+			var nested = new MapContext();
+			this.map.put( key, nested.map ); // 新しいcontextを生成し this.map に nested.map を登録する。
+			return nested;
+		}
+		
+		/**
 		 * @return {@link JsonMapper#stringify(Object)}
 		 */
 		public String stringify() {
