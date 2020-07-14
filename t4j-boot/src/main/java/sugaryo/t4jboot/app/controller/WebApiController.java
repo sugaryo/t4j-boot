@@ -221,6 +221,7 @@ public class WebApiController {
 				.nest( "retweeted" )
 						.put( "fv-count", rt.getRetweetedStatus().getFavoriteCount() )
 						.put( "rt-count", rt.getRetweetedStatus().getRetweetCount() )
+				.peel()
 				.stringify();
 		return json;
 	}
