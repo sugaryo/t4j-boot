@@ -84,7 +84,8 @@ public class JsonMapper {
 	public static class MapContext {
 		
 		private final Map<String, Object> map = new HashMap<>();
-		
+		private MapContext parent = null;
+
 		/**
 		 * {@link Map<String,Object>#put} のメソッドジェーン
 		 * 
@@ -110,7 +111,11 @@ public class JsonMapper {
 			
 			var nested = new MapContext();
 			this.map.put( key, nested.map ); // 新しいcontextを生成し this.map に nested.map を登録する。
+			nested.parent = this;
 			return nested;
+		}
+		public MapContext peel() {
+			return null == this.parent ? this : this.parent;
 		}
 		
 		/**
