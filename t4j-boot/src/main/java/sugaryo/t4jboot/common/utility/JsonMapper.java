@@ -99,7 +99,7 @@ public class JsonMapper {
 		}
 		
 		/**
-		 * ネストしたオブジェクトの登録
+		 * ネストしたMapオブジェクトの登録
 		 * 
 		 * @param key putするキー
 		 * @return 内包する {@link Map<String, Object>} インスタンスに指定した {@code key} で新しい {@link Map<String, Object>} を登録し、<br>
@@ -114,6 +114,12 @@ public class JsonMapper {
 			nested.parent = this;
 			return nested;
 		}
+		/**
+		 * ネストしたオブジェクトの親オブジェクト参照を返す。
+		 * 
+		 * @return {@link #nest(String)} で登録した {@link MapContext} の <b>親</b> にあたる {@link MapContext} を返します。<br>
+		 *         最上位の（これ以上親がない） {@link MapContext} だった場合は何もせず {@code this} を返します。
+		 */
 		public MapContext peel() {
 			return null == this.parent ? this : this.parent;
 		}

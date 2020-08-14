@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import sugaryo.t4jboot.app.api.TwitterApiCall;
 import sugaryo.t4jboot.app.config.ConfigSet;
+import sugaryo.t4jboot.app.config.TweetData;
 import sugaryo.t4jboot.common.utility.RandomIdIterator;
 import twitter4j.Status;
 
@@ -40,7 +41,7 @@ public class SelfRetweet {
 
 		log.info( "SelfRetweet retweets preset all." );
 		
-		final long[] ids    = config.nyappi.selfrt.union();
+		final long[] ids    = TweetData.union();
 		final long interval = config.nyappi.selfrt.interval;
 		this.execute( ids, interval );
 	}
@@ -48,7 +49,7 @@ public class SelfRetweet {
 		
 		log.info( "SelfRetweet retweets preset all / limit[{}].", limit );
 		
-		final long[] ids    = config.nyappi.selfrt.union();
+		final long[] ids    = TweetData.union();
 		final long interval = config.nyappi.selfrt.interval;
 		this.execute( suppress(ids, limit), interval );
 	}
@@ -56,7 +57,7 @@ public class SelfRetweet {
 
 		log.info( "SelfRetweet retweets preset of category[{}].", category );
 		
-		final long[] ids    = config.nyappi.selfrt.of( category );
+		final long[] ids    = TweetData.of( category );
 		final long interval = config.nyappi.selfrt.interval;
 		this.execute( ids, interval );
 	}
@@ -64,7 +65,7 @@ public class SelfRetweet {
 
 		log.info( "SelfRetweet retweets preset of category[{}] / limit[{}].", category, limit );
 		
-		final long[] ids    = config.nyappi.selfrt.of( category );
+		final long[] ids    = TweetData.of( category );
 		final long interval = config.nyappi.selfrt.interval;
 		this.execute( suppress(ids, limit), interval );
 	}
