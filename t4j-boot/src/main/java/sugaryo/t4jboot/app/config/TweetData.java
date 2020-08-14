@@ -57,7 +57,7 @@ public class TweetData {
 		private static Map<String, NamedIds> initialize( final String json ) {
 			
 			// JSONを一旦普通にパース。
-			HashMap<String, List<Long>> map = JsonMapper.parse( load(), new TypeReference<HashMap<String, List<Long>>>() {} );
+			HashMap<String, List<Long>> map = JsonMapper.parse( json, new TypeReference<HashMap<String, List<Long>>>() {} );
 			
 			
 			// 綺麗にプリミティブのマップに変換。
