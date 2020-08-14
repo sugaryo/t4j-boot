@@ -19,5 +19,12 @@ twitter4j と SpringBoot でなんか色々やりたい事を詰め込んだ **�
 [SpringBootに入門する為の助走本 - Qiita](https://qiita.com/sugaryo/items/5695bfcc21365f429767)
 
 
+# ざっくり変更履歴
 
+## TweetList
+
+`application.properties` にJSON文字列として定義してたが、  
+`src/resource/data/tweet.json` に変更してconfig系クラスも修正した。
+
+外部定義データをjsonで置いとくパターンとして助走本Tipsに追記したい。
 
