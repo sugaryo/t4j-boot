@@ -17,77 +17,23 @@ public class NyappiCall {
 	
 	private final RandomHolder random;
 	
+	private final Message message;
+	
 	private final TwitterApiCall twitter;
 	
 	public NyappiCall(
 			@Autowired RandomHolder random,
+			@Autowired Message message,
 			@Autowired TwitterApiCall twitter ) {
 		this.random = random;
+		this.message = message;
 		this.twitter = twitter;
 	}
 	
 	public enum NyappiTweetKind {
-		
-		QT_FIRE_MILLE_ILLUST {
-			
-			@Override
-			protected String message() {
-				final DateTimeFormatter YMDHMS = DateTimeFormatter.ISO_DATE_TIME;
-				
-				LocalDateTime now = LocalDateTime.now();
-				String timestamp = now.format( YMDHMS );
-				
-				String message = "にゃっぴコールはキャンセルされました。"
-						+ "\r\n" + "かわりに 固定ツイート を宣伝RTします。"
-						+ "\r\n"
-						+ "\r\n" + timestamp + " #にゃっぴこーる"
-						+ "\r\n"
-						+ "\r\n" + "https://twitter.com/ellnorePZDR297/status/920625245786013696";
-				return message;
-			}
-		},
-		
-		QT_CURRY_NOTE {
-			
-			@Override
-			protected String message() {
-	
-				final DateTimeFormatter YMDHMS = DateTimeFormatter.ISO_DATE_TIME;
-				
-				LocalDateTime now = LocalDateTime.now();
-				String timestamp = now.format( YMDHMS );
-				
-				String message = "にゃっぴコールはキャンセルされました。"
-						+ "\r\n" + "かわりに カレーnote を宣伝します!!"
-						+ "\r\n"
-						+ "\r\n" + timestamp + " #にゃっぴこーる"
-						+ "\r\n"
-						+ "\r\n" + "https://sugaryo1224.hatenablog.com/entry/2019/07/15/040443";
-				return message;
-			}
-		},
-		QT_QIITA_SPRING_BOOT {
-			
-			@Override
-			protected String message() {
-	
-				final DateTimeFormatter YMDHMS = DateTimeFormatter.ISO_DATE_TIME;
-				
-				LocalDateTime now = LocalDateTime.now();
-				String timestamp = now.format( YMDHMS );
-				
-				String message = "にゃっぴコールはキャンセルされました。"
-						+ "\r\n" + "かわりに Qiita記事 を宣伝します。"
-						+ "\r\n"
-						+ "\r\n" + timestamp + " #にゃっぴこーる"
-						+ "\r\n" + "SpringBootに入門する為の助走本（随時更新）"
-						+ "\r\n" + "https://qiita.com/sugaryo/items/5695bfcc21365f429767 #Qiita";
-				return message;
-			}
-		},
-		
-		;
-		protected abstract String message();
+		QT_FIRE_MILLE_ILLUST,
+		ADVERTISE_CURRY_NOTE,
+		ADVERTISE_QIITA_SPRING_BOOT,
 	}
 	
 	public void randomcall() {
@@ -109,11 +55,36 @@ public class NyappiCall {
 		}
 	}
 	
+	// 特殊にゃっぴこーる。
 	public void call( NyappiTweetKind kind ) {
-		String message = kind.message();
-		this.twitter.tweet( message );
+		
+		LocalDateTime now = LocalDateTime.now();
+		String timestamp = now.format( DateTimeFormatter.ISO_DATE_TIME );
+		
+		final String msg;
+		switch( kind ) {
+			
+			case ADVERTISE_CURRY_NOTE:
+				msg = this.message.ofAdvertiseCurryNote( timestamp );
+				break;
+				
+			case ADVERTISE_QIITA_SPRING_BOOT:
+				msg = this.message.ofAdvertiseQiitaSpringBoot( timestamp );
+				break;
+			
+			case QT_FIRE_MILLE_ILLUST:
+				msg = this.message.ofAdvertiseFireMilleIllust( timestamp );
+				break;
+			
+			default:
+				// 無いけどこの場合は通常コールに流しておく。
+				this.call();
+				return;
+		}
+		this.twitter.tweet( msg );
 	}
 	
+	// 通常にゃっぴこーる。
 	public void call() {
 		
 		final DateTimeFormatter MDH = DateTimeFormatter.ofPattern( "M月d日の HH時 " );
@@ -124,12 +95,12 @@ public class NyappiCall {
 		String hour = adjust.format( MDH ); 
 		String timestamp = now.format( YMDHMS );
 		
+		// なるよじ判定
 		final boolean is04H = 4 == adjust.getHour();
-		String message = (is04H 
-						? "なーるーよーじーーーー！！"
-						: "にゃっぴー。" + "\r\n" + hour + "ですよー。")
-				+ "\r\n"
-				+ "\r\n" + timestamp + " #にゃっぴこーる";
-		this.twitter.tweet( message );
+		final String msg = is04H 
+				? this.message.ofNaru4JiCall( timestamp )
+				: this.message.ofNyappiCall( timestamp, hour );
+				
+		this.twitter.tweet( msg );
 	}
 }
