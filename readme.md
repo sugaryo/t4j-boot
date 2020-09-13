@@ -1,4 +1,6 @@
-# t4j-boot
+**【t4j-boot】**
+
+# ■概要
 
 ## これ is 何？
 
@@ -19,7 +21,7 @@ twitter4j と SpringBoot でなんか色々やりたい事を詰め込んだ **�
 [SpringBootに入門する為の助走本 - Qiita](https://qiita.com/sugaryo/items/5695bfcc21365f429767)
 
 
-# ざっくり変更履歴
+# ■ざっくり変更履歴
 
 ## TweetList
 
@@ -27,4 +29,13 @@ twitter4j と SpringBoot でなんか色々やりたい事を詰め込んだ **�
 `src/resource/data/tweet.json` に変更してconfig系クラスも修正した。
 
 外部定義データをjsonで置いとくパターンとして助走本Tipsに追記したい。
+
+# ■このあとやりたい改良メモ
+
+- いわゆるfeatureリスト
+    - メッセージがリテラルベタ書きなのでどうにかしたい。
+    - API機能をキックする簡単な機能画面を追加したい。
+    - readme自体ももうちょっと真面目に書きたい。
+    - gmailでメール飛ばす何かの機能も作りたい。
+
 
