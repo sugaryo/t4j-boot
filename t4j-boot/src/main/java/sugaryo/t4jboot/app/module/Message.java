@@ -1,6 +1,7 @@
 package sugaryo.t4jboot.app.module;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -11,7 +12,9 @@ public class Message {
 	/** Thymeleafのテンプレートエンジン（プレーンテキスト設定） */
 	private final SpringTemplateEngine template;
 	
-	public Message( @Autowired SpringTemplateEngine template ) {
+	public Message( 
+			@Qualifier("messageTemplateEngine")
+			@Autowired SpringTemplateEngine template ) {
 		this.template = template;
 	}
 	
