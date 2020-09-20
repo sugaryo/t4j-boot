@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 /**
  * {@link ObjectMapper} のラップユーティリティ.
@@ -63,8 +64,21 @@ public class JsonMapper {
 	 * @return {@link ObjectMapper#writeValueAsString(Object)}
 	 */
 	public static String stringify( Object obj ) {
+		return stringify( obj, false );
+	}
+	
+	/**
+	 * 指定したオブジェクトをJSON文字列に変換します。
+	 * 
+	 * @param obj    JSON文字列化するオブジェクト
+	 * @param pretty 整形オプション（{@code default false}）
+	 * @return {@link ObjectMapper#writeValueAsString(Object)}
+	 */
+	public static String stringify( Object obj, boolean pretty ) {
 		try {
-			return SingletonHolder.mapper.writeValueAsString( obj );
+			return pretty 
+					? SingletonHolder.pretty.writeValueAsString( obj )
+					: SingletonHolder.mapper.writeValueAsString( obj );
 		} catch ( Exception ex ) {
 			throw new RuntimeException( ex );
 		}
@@ -130,6 +144,12 @@ public class JsonMapper {
 		public String stringify() {
 			return JsonMapper.stringify( this.map );
 		}
+		/**
+		 * @return {@link JsonMapper#stringify(Object)}
+		 */
+		public String stringify(boolean pretty) {
+			return JsonMapper.stringify( this.map, pretty );
+		}
 		
 		/** @inherit */
 		@Override
@@ -154,8 +174,12 @@ public class JsonMapper {
 	 * @author sugaryo
 	 */
 	private static final class SingletonHolder {
+		// Initialization-on-demand-holder idiom
 		
-		/** Initialization-on-demand-holder idiom */
+		/** デフォルトのObjectMapper */
 		private static final ObjectMapper mapper = new ObjectMapper();
+		
+		/** PrettyPrint設定のObjectMapper */
+		private static final ObjectMapper pretty = new ObjectMapper().enable( SerializationFeature.INDENT_OUTPUT );
 	}
 }

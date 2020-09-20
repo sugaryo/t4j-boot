@@ -15,22 +15,37 @@ import twitter4j.Status;
 public class TagTweet {
 	
 	private static final Logger log = LoggerFactory.getLogger( TagTweet.class );
-
-
+	
+	
 	private final TwitterApiCall twitter;
 	private final ConfigSet config;
 	
-	public TagTweet( 
+	public TagTweet(
 			@Autowired TwitterApiCall twitter,
 			@Autowired ConfigSet config ) {
 		this.twitter = twitter;
 		this.config = config;
 	}
 	
+	public String preview( String tags, String content ) {
+		return this.preview( split( tags ), content );
+	}
+	public String preview( String[] tags, String content ) {
+		// Message生成してそれを返す。
+		return this.buildTweetMessage( tags, content );
+	}
+	
 	public Status post( String tags, String content ) {
-		return this.post( split(tags), content );
-	} 
+		return this.post( split( tags ), content );
+	}
 	public Status post( String[] tags, String content ) {
+		
+		// TweetしてStatusを返す。
+		final String message = this.buildTweetMessage( tags, content );
+		return this.twitter.tweet( message );
+	}
+	
+	private String buildTweetMessage( String[] tags, String content ) {
 		
 		// 文字列編集してTwitterにポストするツイート本文を生成。
 		var sb = new StringBuilder();
@@ -43,11 +58,7 @@ public class TagTweet {
 		sb.append( ln );
 		sb.append( content );
 		
-		final String message = sb.toString();
-		
-		
-		// TweetしてStatusを返す。
-		return this.twitter.tweet( message );
+		return sb.toString();
 	}
 	
 	private static String[] split( String tags ) {
