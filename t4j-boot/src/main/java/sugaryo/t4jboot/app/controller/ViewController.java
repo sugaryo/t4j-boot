@@ -127,7 +127,7 @@ public class ViewController {
 						.put( "text", tweet.getText() )
 						.put( "created_at", tweet.getCreatedAt() )
 					.peel()
-					.stringify();
+					.stringify( true );
 			
 			model.addAttribute( "tags", tags );
 			model.addAttribute( "result", result );
