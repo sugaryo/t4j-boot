@@ -137,7 +137,7 @@ public class ViewController {
 		
 		return "tag-tweet";
 	}
-	@PostMapping("tag-tweet/post")
+	@PostMapping("tag-tweet/tweet")
 	public String tagTweetPost(Model model
 			, @RequestParam(required = false, defaultValue = "") String tags
 			, @RequestParam(required = false, defaultValue = "") String content ) {
