@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import sugaryo.t4jboot.app.module.MediaTweetCrawller;
+import sugaryo.t4jboot.app.module.TagTweet;
 import sugaryo.t4jboot.common.utility.JsonMapper;
 import sugaryo.t4jboot.data.values.MediaTweet;
 
@@ -25,6 +26,10 @@ public class ViewController {
 	
 	@Autowired
 	MediaTweetCrawller mediatweet;
+	
+	@Autowired
+	TagTweet tagtweet;
+	
 	
 	@RequestMapping("/")
 	public String index() {
@@ -109,48 +114,27 @@ public class ViewController {
 		// ■初期表示 or 入力なし
 		if ( content.isEmpty() || tags.isEmpty() ) {
 			
-			model.addAttribute("tags",tags);
-			model.addAttribute("result", "");
+			model.addAttribute( "tags", tags );
+			model.addAttribute( "result", "" );
 		}
 		// ■Twitterに送信
 		else {
-			var result = this.postTagTweet(tags, content);
+			var tweet = tagtweet.post( tags, content );
 			
-			model.addAttribute("tags",tags);
-			model.addAttribute("result", result);
+			String result = JsonMapper.map()
+					.put( "id", tweet.getId() )
+					.nest( "tweet" )
+						.put( "text", tweet.getText() )
+						.put( "created_at", tweet.getCreatedAt() )
+					.peel()
+					.stringify();
+			
+			model.addAttribute( "tags", tags );
+			model.addAttribute( "result", result );
 		}
 		
 		return "tag-tweet";
 	}
-	
-	private String postTagTweet( String tags, String content ) {
-		
-		return this.postTagTweet(
-			Stream.of( tags.split(",| ") )
-					.map( x -> x.trim() )
-					.filter( x -> x.length() > 0 )
-					.map( x -> x.startsWith("#") ? x : "#" + x )
-					.toArray( String[]::new )
-			, content);
-	}
-	private String postTagTweet( String[] tags, String content ) {
-		
-		var sb = new StringBuilder();
-		
-		String ln = "\n";
-		for (String tag : tags) {
-			sb.append(tag);
-			sb.append(ln);
-		}
-		sb.append(ln);
-		sb.append(content);
-		
-		final String message = sb.toString();
-		// TODO : TwitterApiCall でトゥイート。
-		
-		return message;
-	}
-	
 	
 	
 	@RequestMapping("test/ex")
