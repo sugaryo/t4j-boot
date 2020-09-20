@@ -6,23 +6,36 @@
 	<meta charset="UTF-8" />
 	<link th:href="@{/css/common.css}" rel="stylesheet"></link>
 	<script th:src="@{/js/common.js}"></script>
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}">
 </head>
 <body>
-
-	<h1 th:text="'■T4J-BOOT menu■'"></h1>
-
-	<div class="border">
-		<ul>
-			<li><a href="#" th:href="@{/t4j-boot/view/images/tweet/id}" 
-			                th:text="'TweetID を指定して メディア情報を取得'"></a>
-			<li><a href="#" th:href="@{/t4j-boot/view/images/tweet/url}" 
-			                th:text="'TweetURL を指定(複数可)して メディア情報を取得'"></a>
-		</ul>
-		<ul>
-			<li><a href="#" th:href="@{/t4j-boot/view/tag-tweet}"
-							th:text="'タグツイートを連投するのだ'"></a>
-		</ul>
+	<div class="container">
+		<h1 th:text="'■T4J-BOOT main-menu■'"></h1>
+		
+		<div>
+			<span class="badge badge-primary">Primary</span>
+			<span class="badge badge-secondary">Secondary</span>
+			<span class="badge badge-success">Success</span>
+			<span class="badge badge-danger">Danger</span>
+			<span class="badge badge-warning">Warning</span>
+			<span class="badge badge-info">Info</span>
+			<span class="badge badge-light">Light</span>
+			<span class="badge badge-dark">Dark</span>
+		</div>
+		
+		<div>
+			<a href="#" th:href="@{/t4j-boot/view/images/tweet/id}" 
+				                th:text="'TweetID を指定して メディア情報を取得'"
+						class="btn btn-outline-primary btn-block" ></a>
+			<a href="#" th:href="@{/t4j-boot/view/images/tweet/url}" 
+			                th:text="'TweetURL を指定(複数可)して メディア情報を取得'"
+						class="btn btn-outline-primary btn-block" ></a>
+			<a href="#" th:href="@{/t4j-boot/view/tag-tweet}"
+							th:text="'タグツイートを連投するのだ'"
+						class="btn btn-outline-primary btn-block" ></a>
+		</div>
+		
 	</div>
-
+    <script th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
 </body>
 </html>
