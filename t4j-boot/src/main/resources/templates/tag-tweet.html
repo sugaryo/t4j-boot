@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>T4J-BOOT</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta charset="UTF-8" />
+	<link th:href="@{/css/common.css}" rel="stylesheet"></link>
+	<script th:src="@{/js/common.js}"></script>
+</head>
+<body>
+	<a href="#" th:href="@{/t4j-boot/view/}" th:text="'>> top'"></a>
+
+	<h1 th:text="'■T4J-BOOT■'"></h1>
+
+	<h2 th:text="'タグとぅいーと。'"></h2>
+	<form action="/t4j-boot/view/tag-tweet" method="post">
+		<div>
+			<input name="tags" type="text" 
+					style="width: 240px;"
+					th:value="${tags}"></input>
+			<textarea name="content" rows="10" ></textarea>
+		</div>
+		<div>
+			<button type="submit">トゥイート！</button>
+		</div>
+	</form>
+	<h2 th:text="'とぅいーと結果。'"></h2>
+	<div class="border">
+		<textarea rows="10" th:text="${result}" readonly="readonly"></textarea>
+	</div>
+
+</body>
+</html>

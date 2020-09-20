@@ -100,6 +100,58 @@ public class ViewController {
 	}
 	
 	
+	@RequestMapping("tag-tweet")
+	public String tagTweet(Model model
+			, @RequestParam(required = false, defaultValue = "") String tags
+			, @RequestParam(required = false, defaultValue = "") String content ) {
+		
+		
+		// ■初期表示 or 入力なし
+		if ( content.isEmpty() || tags.isEmpty() ) {
+			
+			model.addAttribute("tags",tags);
+			model.addAttribute("result", "");
+		}
+		// ■Twitterに送信
+		else {
+			var result = this.postTagTweet(tags, content);
+			
+			model.addAttribute("tags",tags);
+			model.addAttribute("result", result);
+		}
+		
+		return "tag-tweet";
+	}
+	
+	private String postTagTweet( String tags, String content ) {
+		
+		return this.postTagTweet(
+			Stream.of( tags.split(",| ") )
+					.map( x -> x.trim() )
+					.filter( x -> x.length() > 0 )
+					.map( x -> x.startsWith("#") ? x : "#" + x )
+					.toArray( String[]::new )
+			, content);
+	}
+	private String postTagTweet( String[] tags, String content ) {
+		
+		var sb = new StringBuilder();
+		
+		String ln = "\n";
+		for (String tag : tags) {
+			sb.append(tag);
+			sb.append(ln);
+		}
+		sb.append(ln);
+		sb.append(content);
+		
+		final String message = sb.toString();
+		// TODO : TwitterApiCall でトゥイート。
+		
+		return message;
+	}
+	
+	
 	
 	@RequestMapping("test/ex")
 	public String testException() throws Exception {
