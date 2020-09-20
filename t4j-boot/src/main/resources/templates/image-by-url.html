@@ -6,23 +6,35 @@
 	<meta charset="UTF-8" />
 	<link th:href="@{/css/common.css}" rel="stylesheet"></link>
 	<script th:src="@{/js/common.js}"></script>
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}">
 </head>
 <body>
-	<a href="#" th:href="@{/t4j-boot/view/}" th:text="'>> top'"></a>
-
-	<h1 th:text="'■T4J-BOOT■'"></h1>
-
-	<form action="/t4j-boot/view/images/tweet/url" method="post">
-		<textarea name="urls"
-				rows="10" placeholder="ツイートのURLを入力（改行で複数可）"></textarea>
-		<button type="submit">メディアURL取得</button>
-	</form>
-	<div class="border">
-		<textarea rows="5" th:text="${detail}" readonly="readonly" id="metadata">
-			test
-		</textarea>
-		<button type="button" onclick="copy('metadata');">copy</button>
+	<div class="container">
+	
+		<h1 th:text="'■T4J-BOOT get-media-tweet■'"></h1>
+		<a href="#" th:href="@{/t4j-boot/view/}" th:text="'>> top'"></a>
+	
+		<form action="/t4j-boot/view/images/tweet/url" method="post">
+			<div>
+				<textarea name="urls"
+						rows="10" 
+						placeholder="ツイートのURLを入力（改行で複数可）"></textarea>
+				<button type="submit"
+						class="btn btn-primary" >メディアURL取得</button>
+			</div>
+			<div>
+				<textarea id="metadata" 
+						rows="5" 
+						th:text="${detail}" readonly="readonly" >
+					test
+				</textarea>
+				<button type="button"
+						class="btn btn-secondary" 
+						onclick="copy('metadata');" >copy</button>
+			</div>
+		</form>
+	
 	</div>
-
+    <script th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
 </body>
 </html>
