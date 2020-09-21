@@ -12,29 +12,55 @@
 	<div class="container">
 	
 		<h1 th:text="'■T4J-BOOT tag-tweet■'"></h1>
-		<a href="#" th:href="@{/t4j-boot/view/}" th:text="'>> top'"></a>
-	
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="#" th:href="@{/t4j-boot/view/}" >top</a></li>
+				<li class="breadcrumb-item active" aria-current="page">tag-tweet</li>
+			</ol>
+		</nav>
+			
 		<form>
-			<div>
+		
+			<div class="mt-2">
 				<h2 th:text="'タグとぅいーと。'"></h2>
-				<input name="tags" type="text" 
-						style="width: 240px;"
-						th:value="${tags}"></input>
-				<textarea name="content" rows="10" 
-						th:text="${content}"></textarea>
-				<button type="submit" 
-						class="btn btn-info"
-						formaction="/t4j-boot/view/tag-tweet/preview"
-						formmethod="POST" >ぷれびゅー</button>
-						
-				<button type="submit"
-						class="btn btn-primary"
-						formaction="/t4j-boot/view/tag-tweet/tweet" 
-						formmethod="POST" >トゥイート！</button>
+				
+				<div class="input-group mb-1">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">タグ</span>
+					</div>
+					<input type="text" name="tags" 
+							class="form-control"
+							aria-label="tweet-id" 
+							aria-describedby="basic-addon1" 
+							placeholder="タグ１, タグ２, #tag3 #tag4 ..."
+							th:value="${tags}" >
+				</div>
+				
+				<div class="input-group mb-1">
+					<div class="input-group-prepend">
+						<span class="input-group-text">ツイート</span>
+					</div>
+					<textarea name="content" 
+							rows="6"
+							class="form-control" 
+							th:text="${content}" ></textarea>
+				</div>
+				
+				<div>
+					<button type="submit" 
+							class="btn btn-info"
+							formaction="/t4j-boot/view/tag-tweet/preview"
+							formmethod="POST" >ぷれびゅー</button>
+					<button type="submit"
+							class="btn btn-primary"
+							formaction="/t4j-boot/view/tag-tweet/tweet" 
+							formmethod="POST" >トゥイート！</button>
+				</div>
 			</div>
-			<div>
+			
+			<div class="mt-2">
 				<h2 th:text="'とぅいーと結果。'"></h2>
-				<textarea rows="10" 
+				<textarea rows="9" 
 						th:text="${result}" readonly="readonly" ></textarea>
 			</div>
 		</form>
