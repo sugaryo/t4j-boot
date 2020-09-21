@@ -20,10 +20,11 @@
 		</nav>
 			
 		<form>
-			<div>
+		
+			<div class="mt-2">
 				<h2 th:text="'タグとぅいーと。'"></h2>
 				
-				<div class="input-group mb-3">
+				<div class="input-group mb-1">
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="basic-addon1">タグ</span>
 					</div>
@@ -35,7 +36,7 @@
 							th:value="${tags}" >
 				</div>
 				
-				<div class="input-group">
+				<div class="input-group mb-1">
 					<div class="input-group-prepend">
 						<span class="input-group-text">ツイート</span>
 					</div>
@@ -45,20 +46,19 @@
 							th:text="${content}" ></textarea>
 				</div>
 				
-				<span>
-				
+				<div>
 					<button type="submit" 
 							class="btn btn-info"
 							formaction="/t4j-boot/view/tag-tweet/preview"
 							formmethod="POST" >ぷれびゅー</button>
-							
 					<button type="submit"
 							class="btn btn-primary"
 							formaction="/t4j-boot/view/tag-tweet/tweet" 
 							formmethod="POST" >トゥイート！</button>
-				</span>
+				</div>
 			</div>
-			<div>
+			
+			<div class="mt-2">
 				<h2 th:text="'とぅいーと結果。'"></h2>
 				<textarea rows="9" 
 						th:text="${result}" readonly="readonly" ></textarea>

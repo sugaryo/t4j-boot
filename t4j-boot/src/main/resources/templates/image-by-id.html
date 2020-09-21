@@ -20,9 +20,9 @@
 		</nav>
 		
 		<form action="/t4j-boot/view/images/tweet/id">
-			<div>
-
-				<div class="input-group mb-3">
+		
+			<div class="mt-2">
+				<div class="input-group mb-1">
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="basic-addon1">id</span>
 					</div>
@@ -34,7 +34,8 @@
 				<button type="submit"
 						class="btn btn-primary" >メディアURL取得</button>
 			</div>
-			<div>
+			
+			<div class="mt-2">
 				<textarea id="metadata"
 						rows="5" 
 						th:text="${detail}" readonly="readonly" ></textarea>
@@ -42,6 +43,7 @@
 						class="btn btn-secondary" 
 						onclick="copy('metadata');" >copy</button>
 			</div>
+			
 		</form>
 
 	</div>
