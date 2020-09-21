@@ -21,7 +21,16 @@
 		
 		<form action="/t4j-boot/view/images/tweet/id">
 			<div>
-				<input type="text" name="id"></input>
+
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">id</span>
+					</div>
+					<input type="text" name="id" class="form-control"
+						aria-label="tweet-id" 
+						aria-describedby="basic-addon1">
+				</div>
+
 				<button type="submit"
 						class="btn btn-primary" >メディアURL取得</button>
 			</div>

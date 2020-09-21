@@ -21,9 +21,17 @@
 	
 		<form action="/t4j-boot/view/images/tweet/url" method="post">
 			<div>
-				<textarea name="urls"
-						rows="10" 
-						placeholder="ツイートのURLを入力（改行で複数可）"></textarea>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text">tweet URL</span>
+					</div>
+					<textarea name="urls" 
+							rows="12"
+							class="form-control"
+							placeholder="ツイートのURLを入力（改行で複数可）" 
+							></textarea>
+				</div>
+
 				<button type="submit"
 						class="btn btn-primary" >メディアURL取得</button>
 			</div>
