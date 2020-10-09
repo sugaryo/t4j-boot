@@ -1,7 +1,10 @@
 package sugaryo.t4jboot.app.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -236,7 +239,29 @@ public class WebApiController {
 		return JsonMapper.stringify( rt );
 	}
 	
-
+	@GetMapping(path = "test/json")
+	public String test_json_n() {
+		
+		return test_json( false );
+	}
+	@GetMapping(path = "test/json", params = "pretty")
+	public String test_json_p() {
+		
+		return test_json( true );
+	}
+	private String test_json( boolean pretty ) {
+		
+		@SuppressWarnings("serial")
+		Map<String, Object> map = new HashMap<String, Object>() {
+			{
+				put( "id", UUID.randomUUID() );
+				put( "name", "testdata" );
+				put( "value", 123 );
+			}
+		};
+		
+		return JsonMapper.stringify( map, pretty );
+	}
 	
 
 	private static final String CRLF = System.getProperty("line.separator");
