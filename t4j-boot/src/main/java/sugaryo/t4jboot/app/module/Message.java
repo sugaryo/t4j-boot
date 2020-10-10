@@ -9,6 +9,8 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 @Component
 public class Message {
 	
+	// TODO：このクラスもうちょっと何とかならんか？
+	
 	/** Thymeleafのテンプレートエンジン（プレーンテキスト設定） */
 	private final SpringTemplateEngine template;
 	
@@ -37,6 +39,12 @@ public class Message {
 		var context = new Context();
 		context.setVariable( "timestamp", timestamp );
 		return this.template.process( "ad_ill_himiru", context );
+	}
+
+	public String ofAdvertiseKorone563KiroIllust( String timestamp ) {
+		var context = new Context();
+		context.setVariable( "timestamp", timestamp );
+		return this.template.process( "ad_ill_korone_563k", context );
 	}
 	
 	public String ofAdvertiseQiitaSpringBoot( String timestamp ) {

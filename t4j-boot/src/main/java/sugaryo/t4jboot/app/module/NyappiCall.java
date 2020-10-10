@@ -32,6 +32,7 @@ public class NyappiCall {
 	
 	public enum NyappiTweetKind {
 		QT_FIRE_MILLE_ILLUST,
+		QT_KORONE_563K_ILLUST,
 		ADVERTISE_CURRY_NOTE,
 		ADVERTISE_QIITA_SPRING_BOOT,
 		;
@@ -45,6 +46,30 @@ public class NyappiCall {
 			log.debug( "random-{}%13-{}-[{}]", nano, nano13, i );
 			
 			return kinds[i]; 
+		}
+	}
+
+	public String messageOf( NyappiTweetKind kind ) {
+
+		LocalDateTime now = LocalDateTime.now();
+		String timestamp = now.format( DateTimeFormatter.ISO_DATE_TIME );
+		
+		switch( kind ) {
+			
+			case ADVERTISE_CURRY_NOTE:
+				return this.message.ofAdvertiseCurryNote( timestamp );
+				
+			case ADVERTISE_QIITA_SPRING_BOOT:
+				return this.message.ofAdvertiseQiitaSpringBoot( timestamp );
+			
+			case QT_FIRE_MILLE_ILLUST:
+				return this.message.ofAdvertiseFireMilleIllust( timestamp );
+			
+			case QT_KORONE_563K_ILLUST:
+				return this.message.ofAdvertiseKorone563KiroIllust( timestamp );
+				
+			default:
+				return null;
 		}
 	}
 	
@@ -64,54 +89,16 @@ public class NyappiCall {
 		}
 	}
 	
-	public String messageOf( NyappiTweetKind kind ) {
-
-		LocalDateTime now = LocalDateTime.now();
-		String timestamp = now.format( DateTimeFormatter.ISO_DATE_TIME );
-		
-		switch( kind ) {
-			
-			case ADVERTISE_CURRY_NOTE:
-				return this.message.ofAdvertiseCurryNote( timestamp );
-				
-			case ADVERTISE_QIITA_SPRING_BOOT:
-				return this.message.ofAdvertiseQiitaSpringBoot( timestamp );
-			
-			case QT_FIRE_MILLE_ILLUST:
-				return this.message.ofAdvertiseFireMilleIllust( timestamp );
-			
-			default:
-				return "";
-		}
-	}
 	
 	// 特殊にゃっぴこーる。
 	public void call( NyappiTweetKind kind ) {
 		
-		LocalDateTime now = LocalDateTime.now();
-		String timestamp = now.format( DateTimeFormatter.ISO_DATE_TIME );
-		
-		final String msg;
-		switch( kind ) {
-			
-			case ADVERTISE_CURRY_NOTE:
-				msg = this.message.ofAdvertiseCurryNote( timestamp );
-				break;
-				
-			case ADVERTISE_QIITA_SPRING_BOOT:
-				msg = this.message.ofAdvertiseQiitaSpringBoot( timestamp );
-				break;
-			
-			case QT_FIRE_MILLE_ILLUST:
-				msg = this.message.ofAdvertiseFireMilleIllust( timestamp );
-				break;
-			
-			default:
-				// 無いけどこの場合は通常コールに流しておく。
-				this.call();
-				return;
+		final String msg = this.messageOf( kind );
+		if ( null == msg ) {
+			this.call();
+		} else {
+			this.twitter.tweet( msg );
 		}
-		this.twitter.tweet( msg );
 	}
 	
 	// 通常にゃっぴこーる。
