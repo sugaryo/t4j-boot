@@ -64,6 +64,27 @@ public class NyappiCall {
 		}
 	}
 	
+	public String messageOf( NyappiTweetKind kind ) {
+
+		LocalDateTime now = LocalDateTime.now();
+		String timestamp = now.format( DateTimeFormatter.ISO_DATE_TIME );
+		
+		switch( kind ) {
+			
+			case ADVERTISE_CURRY_NOTE:
+				return this.message.ofAdvertiseCurryNote( timestamp );
+				
+			case ADVERTISE_QIITA_SPRING_BOOT:
+				return this.message.ofAdvertiseQiitaSpringBoot( timestamp );
+			
+			case QT_FIRE_MILLE_ILLUST:
+				return this.message.ofAdvertiseFireMilleIllust( timestamp );
+			
+			default:
+				return "";
+		}
+	}
+	
 	// 特殊にゃっぴこーる。
 	public void call( NyappiTweetKind kind ) {
 		
