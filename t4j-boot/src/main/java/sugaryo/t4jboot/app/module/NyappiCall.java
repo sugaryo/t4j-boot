@@ -34,6 +34,18 @@ public class NyappiCall {
 		QT_FIRE_MILLE_ILLUST,
 		ADVERTISE_CURRY_NOTE,
 		ADVERTISE_QIITA_SPRING_BOOT,
+		;
+		public static NyappiTweetKind random() {
+
+			NyappiTweetKind[] kinds = NyappiTweetKind.values();
+			final int nano = LocalDateTime.now().getNano();
+			final int nano13 = nano % 13;
+			final int i = nano13 % kinds.length;
+
+			log.debug( "random-{}%13-{}-[{}]", nano, nano13, i );
+			
+			return kinds[i]; 
+		}
 	}
 	
 	public void randomcall() {
@@ -42,11 +54,8 @@ public class NyappiCall {
 		if ( this.random.rand() ) {
 			log.info( "特殊にゃっぴこーる。" );
 			
-			NyappiTweetKind[] kinds = NyappiTweetKind.values();
-			int nano13 = LocalDateTime.now().getNano() % 13;
-			int i = nano13 % kinds.length;
-			
-			this.call( kinds[i] );
+			NyappiTweetKind kind = NyappiTweetKind.random();
+			this.call( kind );
 		} 
 		// ヒットしなかった場合は、通常のにゃっぴこーる。
 		else {
