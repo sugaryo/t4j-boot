@@ -36,7 +36,7 @@ public class Message {
 	public String ofAdvertiseFireMilleIllust( String timestamp ) {
 		var context = new Context();
 		context.setVariable( "timestamp", timestamp );
-		return this.template.process( "ad_himiru", context );
+		return this.template.process( "ad_ill_himiru", context );
 	}
 	
 	public String ofAdvertiseQiitaSpringBoot( String timestamp ) {
