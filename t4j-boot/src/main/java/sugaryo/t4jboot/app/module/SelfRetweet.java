@@ -18,6 +18,7 @@ public class SelfRetweet {
 	
 	private static final Logger log = LoggerFactory.getLogger( SelfRetweet.class );
 	
+	private static final int RETWEET_LIMIT = 20;
 	
 	private final TwitterApiCall twitter;
 	private final ConfigSet config;
@@ -43,7 +44,7 @@ public class SelfRetweet {
 		
 		final long[] ids    = TweetData.union();
 		final long interval = config.nyappi.selfrt.interval;
-		this.execute( ids, interval );
+		this.execute( suppress(ids), interval );
 	}
 	public void retweets(final int limit) {
 		
@@ -59,7 +60,7 @@ public class SelfRetweet {
 		
 		final long[] ids    = TweetData.of( category );
 		final long interval = config.nyappi.selfrt.interval;
-		this.execute( ids, interval );
+		this.execute( suppress(ids), interval );
 	}
 	public void retweets(final String category, final int limit) {
 
@@ -81,13 +82,19 @@ public class SelfRetweet {
 			sleep( interval );
 		}
 	}
-
+	
+	private static final long[] suppress(final long[] ids) {
+		return suppress( ids, RETWEET_LIMIT );
+	}
 	private static final long[] suppress(final long[] ids, final int size) {
-
-		final long[] suppressed = RandomIdIterator.iterate( ids, size );
-		log.debug( "suppress(ids, {})", size );
-		log.debug( "    - before : {}", ids );
-		log.debug( "    - after  : {}", suppressed );
+		
+		// min
+		final int n = size < RETWEET_LIMIT ? size : RETWEET_LIMIT;
+		
+		final long[] suppressed = RandomIdIterator.iterate( ids, n );
+		log.debug( "suppress ids." );
+		log.debug( "    - before : {}", ids.length );
+		log.debug( "    - after  : {} [{}]", suppressed.length, suppressed );
 		return suppressed;
 	}
 }

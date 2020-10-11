@@ -14,10 +14,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import sugaryo.t4jboot.app.config.ConfigSet;
+import sugaryo.t4jboot.app.config.TweetData;
 import sugaryo.t4jboot.app.module.MediaTweetCrawller;
 import sugaryo.t4jboot.app.module.NyappiCall;
 import sugaryo.t4jboot.app.module.RandomHolder;
@@ -27,24 +29,28 @@ import sugaryo.t4jboot.common.utility.RandomIdIterator;
 import sugaryo.t4jboot.common.utility.StringUtil;
 import sugaryo.t4jboot.data.values.MediaTweet;
 
-
+// TODO：リソース別に綺麗にコントローラ分けたい。
 @RestController
 @RequestMapping("t4j-boot/api")
 public class WebApiController {
+	
+	// TODO： -verbose オプション持ちのエンドポイントには、ついでに ?pretty オプションも付けたい。
+	// TODO：というか共通化できそうなら全部 ?pretty オプション欲しいよね？
 	
 	private static final Logger log = LoggerFactory.getLogger( WebApiController.class );
 	
 	@Autowired
 	MediaTweetCrawller mediatweets;
-
+	
 	@Autowired
 	NyappiCall nyappi;
 	
 	@Autowired
 	SelfRetweet self;
 	
-	@Autowired ConfigSet config;
-
+	@Autowired
+	ConfigSet config;
+	
 	
 
 	// TweetID 指定でのメディアURL情報取得
@@ -171,19 +177,43 @@ public class WebApiController {
 	}
 	
 
-	@GetMapping("nyappi") 
+	@RequestMapping("nyappi") 
 	public void nyappi() {
 		this.nyappi.call();
 	}
 	
-	@GetMapping("retweets")
+	
+	@GetMapping("retweets/category")
+	public String categories() {
+		
+		return JsonMapper.stringify( TweetData.names() );
+	}
+	
+	@GetMapping({
+		"retweets/category-v",
+		"retweets/category-verbose",
+	})
+	public String categories_verbose() {
+		
+		final var map = JsonMapper.map();
+		final var categories = map.nest( "categories" );
+		TweetData.each()
+				.forEach( ( x ) ->
+				{
+					categories.put( x.name, x.ids.length );
+				} );
+		return map.stringify();
+	}
+	
+	
+	@PostMapping("retweets")
 	public void selfrts() {
 		
 		// category/all と同じ。
 		this.self.retweets();
 	}
 	
-	@GetMapping("retweets/category/{category}")
+	@PostMapping("retweets/category/{category}")
 	public void selfrts( @PathVariable String category ) {
 
 		log.info( "★ /api/retweets/category/{}", category );
@@ -197,7 +227,7 @@ public class WebApiController {
 			this.self.retweets( category );
 		}
 	}
-	@GetMapping("retweets/category/{category}/{size}")
+	@PostMapping("retweets/category/{category}/{size}")
 	public void selfrts( @PathVariable String category, @PathVariable int size ) {
 
 		log.info( "★ /api/retweets/category/{}/{}", category, size );
@@ -212,7 +242,7 @@ public class WebApiController {
 		}
 	}
 	
-	@RequestMapping("retweet/{id}")
+	@PostMapping("retweet/{id}")
 	public String selfrt( @PathVariable long id ) {
 		
 		var rt = this.self.retweet( id );
@@ -228,7 +258,7 @@ public class WebApiController {
 				.stringify();
 		return json;
 	}
-	@RequestMapping({
+	@PostMapping({
 		"retweet-verbose/{id}",
 		"retweet-v/{id}",
 	})
@@ -241,12 +271,14 @@ public class WebApiController {
 	
 	
 	
+	
+	// TODO：動作検証用のTestAPIは別にコントローラ切った方が良いな。
+	
 	@GetMapping(path = "test/random-nyappi")
 	public String test_random_nyappi() {
 		var kind = NyappiCall.NyappiTweetKind.random();
 		return this.nyappi.messageOf( kind );
 	}
-	
 	
 	@GetMapping(path = "test/json")
 	public String test_json_n() {
