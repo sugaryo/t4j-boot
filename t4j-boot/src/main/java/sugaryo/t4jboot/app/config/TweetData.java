@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,14 @@ import sugaryo.t4jboot.data.values.NamedIds;
 public class TweetData {
 	
 	private static final Logger log = LoggerFactory.getLogger( TweetData.class );
+	
+	public static Stream<NamedIds> each() {
+		return SingletonHolder.datasource.values().stream();
+	}
+	
+	public static String[] names() {
+		return each().map( x -> x.name ).toArray( String[]::new );
+	}
 
 	public static long[] of(final String name) {
 		long[] ids = SingletonHolder.datasource.containsKey( name ) 
@@ -71,6 +80,8 @@ public class TweetData {
 						.toArray( Long[]::new );
 				final long[] ids = Int64.of( list );
 				
+				// TODO：ついでにここでカテゴリ内での重複排除もしておきたい。
+				
 				// NamedIds のインスタンスを作ってマップに登録。
 				NamedIds nids = new NamedIds( name, ids );
 				instance.put( nids.name, nids );
@@ -80,6 +91,7 @@ public class TweetData {
 		}
 		
 		// C# の File.ReadAllText みたいな
+		// FIXME：標準ライブラリに相当機能あるので置き換える。
 		private static String load() {
 			
 			log.info( "★ data/tweet.json 読み込み★" );
