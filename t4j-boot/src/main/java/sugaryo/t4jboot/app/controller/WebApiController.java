@@ -239,6 +239,15 @@ public class WebApiController {
 		return JsonMapper.stringify( rt );
 	}
 	
+	
+	
+	@GetMapping(path = "test/random-nyappi")
+	public String test_random_nyappi() {
+		var kind = NyappiCall.NyappiTweetKind.random();
+		return this.nyappi.messageOf( kind );
+	}
+	
+	
 	@GetMapping(path = "test/json")
 	public String test_json_n() {
 		
