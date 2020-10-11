@@ -62,5 +62,6 @@ HTML用設定のエンジンもBean登録し、且つこいつを `@Primary` 指
     - 画面がのっぺらぼう過ぎるので流石に何かやりたい。
         - bootstrapを試しに適用してみた。
     - actuatorを導入。
+    - 機能追加：retweets/categoryのGETエンドポイントを追加したい。
 
 
