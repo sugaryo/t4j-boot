@@ -1,7 +1,5 @@
 package sugaryo.t4jboot.app.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -12,10 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import sugaryo.t4jboot.app.module.TwitterApiCall;
+import sugaryo.t4jboot.app.module.MediaTweetCrawller;
+import sugaryo.t4jboot.app.module.TagTweet;
 import sugaryo.t4jboot.common.utility.JsonMapper;
 import sugaryo.t4jboot.data.values.MediaTweet;
 
@@ -26,7 +26,11 @@ public class ViewController {
 	private static final Logger log = LoggerFactory.getLogger( ViewController.class );
 	
 	@Autowired
-	TwitterApiCall twitter;
+	MediaTweetCrawller mediatweet;
+	
+	@Autowired
+	TagTweet tagtweet;
+	
 	
 	@RequestMapping("/")
 	public String index() {
@@ -41,12 +45,12 @@ public class ViewController {
 		
 		if ( 0 != id ) {
 			
-			var medias = this.twitter.medias( id );
+			var medias = this.mediatweet.byTweet( id );
 			
 			String ln = "";
 			for ( MediaTweet media : medias ) {
 				sb.append( ln );
-				sb.append( media.toString() );
+				sb.append( media.metadata() );
 				ln = "\n";
 			}
 		}
@@ -85,11 +89,11 @@ public class ViewController {
 			String ln = "";
 			for ( long id : ids ) {
 				
-				var medias = this.twitter.medias( id );
+				var medias = this.mediatweet.byTweet( id );
 				for ( MediaTweet media : medias ) {
 
 					sb.append( ln );
-					sb.append( media.toString() );
+					sb.append( media.metadata() );
 					ln = "\n";
 				}
 			}
@@ -101,6 +105,70 @@ public class ViewController {
 		return "image-by-url";
 	}
 	
+	
+	@RequestMapping("tag-tweet")
+	public String tagTweet(Model model) {
+
+		model.addAttribute( "tags", "" );
+		model.addAttribute( "content", "" );
+		model.addAttribute( "result", "" );
+		return "tag-tweet";
+	}
+	@PostMapping("tag-tweet/preview")
+	public String tagTweetPreview(Model model
+			, @RequestParam(required = false, defaultValue = "") String tags
+			, @RequestParam(required = false, defaultValue = "") String content ) {
+		
+		// ■入力なし
+		if ( content.isEmpty() || tags.isEmpty() ) {
+			
+			model.addAttribute( "tags", tags );
+			model.addAttribute( "content", "" );
+			model.addAttribute( "result", "" );
+		}
+		// ■ぷれびゅー機能でメッセージ編集結果を受け取る。
+		else {
+			String message = tagtweet.preview( tags, content );
+			
+			model.addAttribute( "tags", tags );
+			model.addAttribute( "content", content ); // ぷれびゅーの場合は入力内容をそのまま残す。
+			model.addAttribute( "result", message );
+		}
+		
+		return "tag-tweet";
+	}
+	@PostMapping("tag-tweet/tweet")
+	public String tagTweetPost(Model model
+			, @RequestParam(required = false, defaultValue = "") String tags
+			, @RequestParam(required = false, defaultValue = "") String content ) {
+		
+		// ■入力なし
+		if ( content.isEmpty() || tags.isEmpty() ) {
+			
+			model.addAttribute( "tags", tags );
+			model.addAttribute( "content", "" );
+			model.addAttribute( "result", "" );
+		}
+		// ■Twitterに送信
+		else {
+			var tweet = tagtweet.post( tags, content );
+			
+			String result = JsonMapper.map()
+					.put( "mode", "post" )
+					.put( "id", tweet.getId() )
+					.nest( "tweet" )
+						.put( "text", tweet.getText() )
+						.put( "created_at", tweet.getCreatedAt() )
+					.peel()
+					.stringify( true );
+			
+			model.addAttribute( "tags", tags );
+			model.addAttribute( "content", "" ); // 送信したら次の処理のためにクリアして返す。
+			model.addAttribute( "result", result );
+		}
+		
+		return "tag-tweet";
+	}
 	
 	
 	@RequestMapping("test/ex")

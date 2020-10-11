@@ -2,6 +2,8 @@ package sugaryo.t4jboot.data.values;
 
 import java.text.MessageFormat;
 
+import sugaryo.t4jboot.common.utility.StringUtil;
+
 public class MediaTweet {
 	public final String userName;
 	public final String userId;
@@ -22,9 +24,14 @@ public class MediaTweet {
 		this.url = url;
 	}
 	
+	public String metadata() {
+		String[] token = { this.userName, this.userId, this.tweetId, this.url };
+		return StringUtil.join( "\t", token );
+	}
+	
 	@Override
 	public String toString() {
-		return MessageFormat.format( "{0}\t{1}\t{2}\t{3}",
+		return MessageFormat.format( "{0}({1}).tweet[{2}].url[{3}]",
 				this.userName,
 				this.userId,
 				this.tweetId,

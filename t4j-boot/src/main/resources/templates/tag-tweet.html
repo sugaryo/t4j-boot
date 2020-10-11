@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>T4J-BOOT</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta charset="UTF-8" />
+	<link th:href="@{/css/common.css}" rel="stylesheet"></link>
+	<script th:src="@{/js/common.js}"></script>
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}">
+</head>
+<body>
+	<div class="container">
+	
+		<h1 th:text="'■T4J-BOOT tag-tweet■'"></h1>
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="#" th:href="@{/t4j-boot/view/}" >top</a></li>
+				<li class="breadcrumb-item active" aria-current="page">tag-tweet</li>
+			</ol>
+		</nav>
+			
+		<form>
+		
+			<div class="mt-2">
+				<h2 th:text="'タグとぅいーと。'"></h2>
+				
+				<div class="input-group mb-1">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">タグ</span>
+					</div>
+					<input type="text" name="tags" 
+							class="form-control"
+							aria-label="tweet-id" 
+							aria-describedby="basic-addon1" 
+							placeholder="タグ１, タグ２, #tag3 #tag4 ..."
+							th:value="${tags}" >
+				</div>
+				
+				<div class="input-group mb-1">
+					<div class="input-group-prepend">
+						<span class="input-group-text">ツイート</span>
+					</div>
+					<textarea name="content" 
+							rows="6"
+							class="form-control" 
+							th:text="${content}" ></textarea>
+				</div>
+				
+				<div>
+					<button type="submit" 
+							class="btn btn-info"
+							formaction="/t4j-boot/view/tag-tweet/preview"
+							formmethod="POST" >ぷれびゅー</button>
+					<button type="submit"
+							class="btn btn-primary"
+							formaction="/t4j-boot/view/tag-tweet/tweet" 
+							formmethod="POST" >トゥイート！</button>
+				</div>
+			</div>
+			
+			<div class="mt-2">
+				<h2 th:text="'とぅいーと結果。'"></h2>
+				<textarea rows="9" 
+						th:text="${result}" readonly="readonly" ></textarea>
+			</div>
+		</form>
+		
+	</div>
+    <script th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
+</body>
+</html>
