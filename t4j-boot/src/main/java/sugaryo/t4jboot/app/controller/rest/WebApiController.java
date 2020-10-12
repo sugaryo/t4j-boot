@@ -1,4 +1,4 @@
-package sugaryo.t4jboot.app.controller;
+package sugaryo.t4jboot.app.controller.rest;
 
 import java.util.HashMap;
 import java.util.List;

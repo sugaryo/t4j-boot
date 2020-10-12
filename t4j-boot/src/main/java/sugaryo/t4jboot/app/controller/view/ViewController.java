@@ -1,4 +1,4 @@
-package sugaryo.t4jboot.app.controller;
+package sugaryo.t4jboot.app.controller.view;
 
 import java.util.stream.Stream;
 
