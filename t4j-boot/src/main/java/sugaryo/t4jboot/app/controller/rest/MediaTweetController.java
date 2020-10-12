@@ -7,27 +7,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import sugaryo.t4jboot.app.config.ConfigSet;
-import sugaryo.t4jboot.app.config.TweetData;
 import sugaryo.t4jboot.app.module.MediaTweetCrawller;
-import sugaryo.t4jboot.app.module.NyappiCall;
-import sugaryo.t4jboot.app.module.SelfRetweet;
-import sugaryo.t4jboot.common.utility.JsonMapper;
 import sugaryo.t4jboot.common.utility.StringUtil;
 import sugaryo.t4jboot.data.values.MediaTweet;
 
+
+
 @RestController
 @RequestMapping("t4j-boot/api")
-public class WebApiController {
+public class MediaTweetController {
 	
-	// TODO： -verbose オプション持ちのエンドポイントには、ついでに ?pretty オプションも付けたい。
-	// TODO：というか共通化できそうなら全部 ?pretty オプション欲しいよね？
-	
-	private static final Logger log = LoggerFactory.getLogger( WebApiController.class );
+	private static final Logger log = LoggerFactory.getLogger( MediaTweetController.class );
 
 	@Autowired
 	ConfigSet config;
@@ -35,14 +29,9 @@ public class WebApiController {
 	@Autowired
 	MediaTweetCrawller mediatweets;
 	
-	@Autowired
-	NyappiCall nyappi;
 	
-	@Autowired
-	SelfRetweet self;
 	
-
-	// TweetID 指定でのメディアURL情報取得
+	// ■TweetID 指定でのメディアURL情報取得
 
 	@GetMapping("images/tweet/{id}")
 	public List<MediaTweet> imgByTweet( @PathVariable long id ) throws Exception {
@@ -50,6 +39,7 @@ public class WebApiController {
 		List<MediaTweet> medias = this.mediatweets.byTweet( id );
 		return medias;
 	}
+	
 	@GetMapping("images-url/tweet/{id}")
 	public String[] imgUrlByTweet( @PathVariable long id ) throws Exception {
 		
@@ -60,6 +50,7 @@ public class WebApiController {
 		
 		return urls;
 	}
+	
 	@GetMapping("images-metadata/tweet/{id}")
 	public String imgMetadataByTweet( @PathVariable long id ) throws Exception {
 		
@@ -74,7 +65,7 @@ public class WebApiController {
 	}
 	
 	
-	// ListID 指定でのメディアURL情報取得
+	// ■ListID 指定でのメディアURL情報取得
 
 	@GetMapping("images/list/{id}")
 	public List<MediaTweet> imgByList( @PathVariable long id ) {
@@ -105,7 +96,7 @@ public class WebApiController {
 		return planetext;
 	}
 	
-	// ListID 指定 ＋ページング指定 でのメディアURL情報取得
+	// ■ListID 指定 ＋ページング指定 でのメディアURL情報取得
 	
 	@GetMapping({
 			"images/list/{id}/page/{p}",
@@ -163,105 +154,5 @@ public class WebApiController {
 		String planetext = StringUtil.join( "\n", metadata );
 		log.debug( planetext );
 		return planetext;
-	}
-	
-
-	@RequestMapping("nyappi") 
-	public void nyappi() {
-		this.nyappi.call();
-	}
-	
-	
-	@GetMapping("retweets/category")
-	public String categories() {
-		
-		return JsonMapper.stringify( TweetData.names() );
-	}
-	
-	@GetMapping({
-		"retweets/category-v",
-		"retweets/category-verbose",
-	})
-	public String categories_verbose() {
-		
-		final var map = JsonMapper.map();
-		final var categories = map.nest( "categories" );
-		TweetData.each()
-				.forEach( ( x ) ->
-				{
-					categories.put( x.name, x.ids.length );
-				} );
-		return map.stringify();
-	}
-	
-	
-	@PostMapping("retweets")
-	public void selfrts() {
-		
-		// category/all と同じ。
-		this.self.retweets();
-	}
-	
-	@PostMapping("retweets/category/{category}")
-	public void selfrts( @PathVariable String category ) {
-
-		log.info( "★ /api/retweets/category/{}", category );
-
-		// category/all は別名定義。
-		if ( "all".equals( category ) ) {
-			this.self.retweets();
-		} 
-		// category を指定してリツイート。
-		else {
-			this.self.retweets( category );
-		}
-	}
-	@PostMapping("retweets/category/{category}/{size}")
-	public void selfrts( @PathVariable String category, @PathVariable int size ) {
-
-		log.info( "★ /api/retweets/category/{}/{}", category, size );
-
-		// category/all は別名定義。
-		if ( "all".equals( category ) ) {
-			this.self.retweets( size );
-		} 
-		// category,size を指定してリツイート。
-		else {
-			this.self.retweets( category, size );
-		}
-	}
-	
-	@PostMapping("retweet/{id}")
-	public String selfrt( @PathVariable long id ) {
-		
-		var rt = this.self.retweet( id );
-		
-		String json = JsonMapper.map()
-				.put( "id", rt.getId() )
-				.put( "name", rt.getUser().getName() )
-				.put( "text", rt.getText() )
-				.nest( "retweeted" )
-						.put( "fv-count", rt.getRetweetedStatus().getFavoriteCount() )
-						.put( "rt-count", rt.getRetweetedStatus().getRetweetCount() )
-				.peel()
-				.stringify();
-		return json;
-	}
-	@PostMapping({
-		"retweet-verbose/{id}",
-		"retweet-v/{id}",
-	})
-	public String selfrt_verbose( @PathVariable long id ) {
-		
-		var rt = this.self.retweet( id );
-		
-		return JsonMapper.stringify( rt );
-	}
-	
-
-	
-	@RequestMapping("ex")
-	String testException() throws Exception {
-		throw new RuntimeException( "エラー発生" );
 	}
 }
