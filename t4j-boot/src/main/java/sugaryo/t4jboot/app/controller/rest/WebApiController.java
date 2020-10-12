@@ -1,17 +1,10 @@
 package sugaryo.t4jboot.app.controller.rest;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,14 +15,11 @@ import sugaryo.t4jboot.app.config.ConfigSet;
 import sugaryo.t4jboot.app.config.TweetData;
 import sugaryo.t4jboot.app.module.MediaTweetCrawller;
 import sugaryo.t4jboot.app.module.NyappiCall;
-import sugaryo.t4jboot.app.module.RandomHolder;
 import sugaryo.t4jboot.app.module.SelfRetweet;
 import sugaryo.t4jboot.common.utility.JsonMapper;
-import sugaryo.t4jboot.common.utility.RandomIdIterator;
 import sugaryo.t4jboot.common.utility.StringUtil;
 import sugaryo.t4jboot.data.values.MediaTweet;
 
-// TODO：リソース別に綺麗にコントローラ分けたい。
 @RestController
 @RequestMapping("t4j-boot/api")
 public class WebApiController {
@@ -38,6 +28,9 @@ public class WebApiController {
 	// TODO：というか共通化できそうなら全部 ?pretty オプション欲しいよね？
 	
 	private static final Logger log = LoggerFactory.getLogger( WebApiController.class );
+
+	@Autowired
+	ConfigSet config;
 	
 	@Autowired
 	MediaTweetCrawller mediatweets;
@@ -47,10 +40,6 @@ public class WebApiController {
 	
 	@Autowired
 	SelfRetweet self;
-	
-	@Autowired
-	ConfigSet config;
-	
 	
 
 	// TweetID 指定でのメディアURL情報取得
@@ -269,93 +258,10 @@ public class WebApiController {
 		return JsonMapper.stringify( rt );
 	}
 	
-	
-	
-	
-	// TODO：動作検証用のTestAPIは別にコントローラ切った方が良いな。
-	
-	@GetMapping(path = "test/random-nyappi")
-	public String test_random_nyappi() {
-		var kind = NyappiCall.NyappiTweetKind.random();
-		return this.nyappi.messageOf( kind );
-	}
-	
-	@GetMapping(path = "test/json")
-	public String test_json_n() {
-		
-		return test_json( false );
-	}
-	@GetMapping(path = "test/json", params = "pretty")
-	public String test_json_p() {
-		
-		return test_json( true );
-	}
-	private String test_json( boolean pretty ) {
-		
-		@SuppressWarnings("serial")
-		Map<String, Object> map = new HashMap<String, Object>() {
-			{
-				put( "id", UUID.randomUUID() );
-				put( "name", "testdata" );
-				put( "value", 123 );
-			}
-		};
-		
-		return JsonMapper.stringify( map, pretty );
-	}
-	
 
-	private static final String CRLF = System.getProperty("line.separator");
-
-	@GetMapping("test/random/{count}")
-	String testRandomHolder(@PathVariable int count) {
 	
-		// ここではDIコンテナ管理しているRandomHolderとは別にテスト実行したいので普通にnewする。
-		var random = new RandomHolder( this.config );
-		
-		var sb = new StringBuilder();
-		String crlf = "";
-		for ( int n = 0; n < count; n++ ) {
-			
-			if ( 0 == n % 10 ) {
-				sb.append( crlf );
-				crlf = CRLF; // 初回だけ無視したいので遅延代入。
-			}
-			sb.append( random.rand() ? "●" : "○" );
-		}
-		sb.append( crlf ); // 最後に改行入れておかないとcurlの結果が変になるので末尾改行しておく。
-
-		return sb.toString();
-	}
-	
-	@GetMapping("test/random-id-iterator/{s}/{n}")
-	String testRandomIdIterator(@PathVariable int s, @PathVariable int n) {
-
-		int[] index = RandomIdIterator.indexer( s, n );
-
-		String json = JsonMapper.stringify( index );
-		log.info( "総数 {} - 抽出 {} : {}", s, n, json );
-		return json;
-	}
-	
-	@RequestMapping("test/ex")
+	@RequestMapping("ex")
 	String testException() throws Exception {
-		
 		throw new RuntimeException( "エラー発生" );
-	}
-	
-	@ExceptionHandler
-	private ResponseEntity<String> onError( Exception ex ) {
-		
-		log.error( ex.getMessage(), ex );
-		
-		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-		String json = JsonMapper.map()
-				.put( "message", "API エラー" )
-				.put( "detail", ex.getMessage() )
-				.put( "status", status.value() )
-				.stringify();
-		
-		return new ResponseEntity<String>( json, status );
 	}
 }
