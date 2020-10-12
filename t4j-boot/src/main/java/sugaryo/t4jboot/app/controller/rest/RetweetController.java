@@ -16,8 +16,13 @@ import sugaryo.t4jboot.app.module.NyappiCall;
 import sugaryo.t4jboot.app.module.SelfRetweet;
 import sugaryo.t4jboot.common.utility.JsonMapper;
 
+
+
 @RestController
-@RequestMapping("t4j-boot/api")
+@RequestMapping({
+	"t4jb/api",
+	"t4j-boot/api",
+	"nyappi/api", })
 public class RetweetController {
 	
 	private static final Logger log = LoggerFactory.getLogger( RetweetController.class );

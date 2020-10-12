@@ -20,7 +20,10 @@ import sugaryo.t4jboot.common.utility.JsonMapper;
 import sugaryo.t4jboot.data.values.MediaTweet;
 
 @Controller
-@RequestMapping("t4j-boot/view")
+@RequestMapping({
+		"t4jb/view",
+		"t4j-boot/view",
+		"nyappi/view", })
 public class ViewController {
 	
 	private static final Logger log = LoggerFactory.getLogger( ViewController.class );

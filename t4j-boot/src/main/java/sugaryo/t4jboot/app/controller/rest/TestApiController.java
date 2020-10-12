@@ -18,8 +18,13 @@ import sugaryo.t4jboot.app.module.RandomHolder;
 import sugaryo.t4jboot.common.utility.JsonMapper;
 import sugaryo.t4jboot.common.utility.RandomIdIterator;
 
+
+
 @RestController
-@RequestMapping("t4j-boot/api/test")
+@RequestMapping({
+	"t4jb/api",
+	"t4j-boot/api",
+	"nyappi/api", })
 public class TestApiController {
 	
 	private static final Logger log = LoggerFactory.getLogger( TestApiController.class );
@@ -32,19 +37,19 @@ public class TestApiController {
 	
 	
 	
-	@GetMapping(path = "test/random-nyappi")
+	@GetMapping(path = "random-nyappi")
 	public String test_random_nyappi() {
 		var kind = NyappiCall.NyappiTweetKind.random();
 		return this.nyappi.messageOf( kind );
 	}
 	
-	@GetMapping(path = "test/json")
+	@GetMapping(path = "json")
 	public String test_json_n() {
 		
 		return test_json( false );
 	}
 	
-	@GetMapping(path = "test/json", params = "pretty")
+	@GetMapping(path = "json", params = "pretty")
 	public String test_json_p() {
 		
 		return test_json( true );
@@ -68,7 +73,7 @@ public class TestApiController {
 	
 	private static final String CRLF = System.getProperty( "line.separator" );
 	
-	@GetMapping("test/random/{count}")
+	@GetMapping("random/{count}")
 	String testRandomHolder( @PathVariable int count ) {
 		
 		// ここではDIコンテナ管理しているRandomHolderとは別にテスト実行したいので普通にnewする。
@@ -89,7 +94,7 @@ public class TestApiController {
 		return sb.toString();
 	}
 	
-	@GetMapping("test/random-id-iterator/{s}/{n}")
+	@GetMapping("random-id-iterator/{s}/{n}")
 	String testRandomIdIterator( 
 			@PathVariable int s, 
 			@PathVariable int n ) {

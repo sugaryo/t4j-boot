@@ -18,7 +18,10 @@ import sugaryo.t4jboot.data.values.MediaTweet;
 
 
 @RestController
-@RequestMapping("t4j-boot/api")
+@RequestMapping({
+	"t4jb/api",
+	"t4j-boot/api",
+	"nyappi/api", })
 public class MediaTweetController {
 	
 	private static final Logger log = LoggerFactory.getLogger( MediaTweetController.class );

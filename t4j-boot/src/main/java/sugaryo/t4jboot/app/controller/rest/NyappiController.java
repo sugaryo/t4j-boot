@@ -10,8 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 import sugaryo.t4jboot.app.config.ConfigSet;
 import sugaryo.t4jboot.app.module.NyappiCall;
 
+
+
 @RestController
-@RequestMapping("t4j-boot/api")
+@RequestMapping({
+	"t4jb/api",
+	"t4j-boot/api",
+	"nyappi/api", })
 public class NyappiController {
 	
 	// TODO： -verbose オプション持ちのエンドポイントには、ついでに ?pretty オプションも付けたい。
@@ -26,7 +31,7 @@ public class NyappiController {
 	NyappiCall nyappi;
 	
 	
-	@PostMapping("nyappi") 
+	@PostMapping("call") 
 	public void nyappi() {
 		this.nyappi.call();
 	}
