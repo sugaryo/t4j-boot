@@ -5,8 +5,10 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta charset="UTF-8" />
 	<link th:href="@{/css/common.css}" rel="stylesheet"></link>
-	<script th:src="@{/js/common.js}"></script>
 	<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}">
+	<script th:src="@{/js/common.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
 </head>
 <body>
 	<div class="container">
@@ -14,58 +16,62 @@
 		<h1 th:text="'■T4J-BOOT tag-tweet■'"></h1>
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="#" th:href="@{/t4j-boot/view/}" >top</a></li>
+				<li class="breadcrumb-item"><a href="#" th:href="@{/nyappi/view/}" >top</a></li>
 				<li class="breadcrumb-item active" aria-current="page">tag-tweet</li>
 			</ol>
 		</nav>
 			
 		<form>
 		
-			<div class="mt-2">
+			<div class="mt-4">
 				<h2 th:text="'タグとぅいーと。'"></h2>
 				
 				<div class="input-group mb-1">
 					<div class="input-group-prepend">
-						<span class="input-group-text" id="basic-addon1">タグ</span>
+						<span style="width: 120px" 
+								class="input-group-text" >タグ</span>
 					</div>
 					<input type="text" name="tags" 
 							class="form-control"
-							aria-label="tweet-id" 
-							aria-describedby="basic-addon1" 
 							placeholder="タグ１, タグ２, #tag3 #tag4 ..."
 							th:value="${tags}" >
 				</div>
 				
 				<div class="input-group mb-1">
 					<div class="input-group-prepend">
-						<span class="input-group-text">ツイート</span>
+						<span style="width: 120px" 
+								class="input-group-text">ツイート</span>
 					</div>
 					<textarea name="content" 
 							rows="6"
 							class="form-control" 
-							th:text="${content}" ></textarea>
+							th:text="${content}" autofocus></textarea>
 				</div>
 				
-				<div>
+				<div class="mt-2">
 					<button type="submit" 
-							class="btn btn-info"
-							formaction="/t4j-boot/view/tag-tweet/preview"
-							formmethod="POST" >ぷれびゅー</button>
+							class="btn w-25 btn-info"
+							accesskey="p"
+							formaction="/nyappi/view/tag-tweet/preview"
+							formmethod="POST" ><b>[P]</b> ぷれびゅー</button>
+				</div>
+				<div class="mt-2">
 					<button type="submit"
-							class="btn btn-primary"
-							formaction="/t4j-boot/view/tag-tweet/tweet" 
-							formmethod="POST" >トゥイート！</button>
+							class="btn w-25 btn-primary"
+							accesskey="t"
+							formaction="/nyappi/view/tag-tweet/tweet" 
+							formmethod="POST" ><b>[T]</b> トゥイート！</button>
 				</div>
 			</div>
 			
-			<div class="mt-2">
+			<div class="mt-4">
 				<h2 th:text="'とぅいーと結果。'"></h2>
 				<textarea rows="9" 
+						class="bg-dark text-info"
 						th:text="${result}" readonly="readonly" ></textarea>
 			</div>
 		</form>
 		
 	</div>
-    <script th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
 </body>
 </html>

@@ -5,8 +5,10 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta charset="UTF-8" />
 	<link th:href="@{/css/common.css}" rel="stylesheet"></link>
-	<script th:src="@{/js/common.js}"></script>
 	<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}">
+	<script th:src="@{/js/common.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
 </head>
 <body>
 	<div class="container">
@@ -14,12 +16,12 @@
 		<h1 th:text="'■T4J-BOOT get-media-tweet■'"></h1>
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="#" th:href="@{/t4j-boot/view/}" >top</a></li>
+				<li class="breadcrumb-item"><a href="#" th:href="@{/nyappi/view/}" >top</a></li>
 				<li class="breadcrumb-item active" aria-current="page">get media-tweet</li>
 			</ol>
 		</nav>
 	
-		<form action="/t4j-boot/view/images/tweet/url" method="post">
+		<form action="/nyappi/view/images/tweet/url" method="post">
 		
 			<div class="mt-2">
 				<div class="input-group mb-1">
@@ -56,6 +58,5 @@
 		</form>
 	
 	</div>
-    <script th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
 </body>
 </html>

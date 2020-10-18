@@ -5,8 +5,10 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta charset="UTF-8" />
 	<link th:href="@{/css/common.css}" rel="stylesheet"></link>
-	<script th:src="@{/js/common.js}"></script>
 	<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}">
+	<script th:src="@{/js/common.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
 </head>
 <body>
 	<div class="container">
@@ -30,20 +32,23 @@
 		</div>
 		
 		<div class="mt-2">
-			<a href="#" th:href="@{/t4j-boot/view/images/tweet/id}" 
+			<a href="#" th:href="@{/nyappi/view/images/tweet/id}" 
 						th:text="'TweetID を指定して メディア情報を取得'"
 						class="btn btn-outline-primary btn-block" ></a>
 						
-			<a href="#" th:href="@{/t4j-boot/view/images/tweet/url}" 
+			<a href="#" th:href="@{/nyappi/view/images/tweet/url}" 
 						th:text="'TweetURL を指定(複数可)して メディア情報を取得'"
 						class="btn btn-outline-primary btn-block" ></a>
 			
-			<a href="#" th:href="@{/t4j-boot/view/tag-tweet}"
+			<a href="#" th:href="@{/nyappi/view/tag-tweet}"
 						th:text="'タグツイートを連投するのだ'"
 						class="btn btn-outline-primary btn-block" ></a>
+						
+			<a href="#" th:href="@{/nyappi/view/api-call}"
+						th:text="'API CALL'"
+						class="btn btn-outline-info btn-block" ></a>
 		</div>
 		
 	</div>
-    <script th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
 </body>
 </html>

@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>T4J-BOOT</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta charset="UTF-8" />
+	<link th:href="@{/css/common.css}" rel="stylesheet"></link>
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}">
+	<script th:src="@{/js/common.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container">
+	
+		<h1 th:text="'■T4J-BOOT api-call■'"></h1>
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="#" th:href="@{/nyappi/view/}" >top</a></li>
+				<li class="breadcrumb-item active" aria-current="page">api-call</li>
+			</ol>
+		</nav>
+		
+		<h1 th:text="'■API機能■'"></h1>
+		<div class="accordion" id="api-accordion">
+			
+			<!-- card1 -->
+			<div class="card">
+				<div class="card-header">
+					<h2 class="mb-0">
+						<button class="btn btn-link btn-block text-left" 
+								data-toggle="collapse" 
+								data-target="#api-1"
+								type="button">Action API</button>
+					</h2>
+				</div>
+				<div id="api-1" 
+						class="collapse show"
+						data-parent="#api-accordion">
+						
+					<form class="card-body">
+						<button type="button"
+								class="btn btn-block btn-primary"
+								formaction="/nyappi/api/call" 
+								formmethod="POST" >にゃっぴこーる</button>
+								
+						<button type="button"
+								class="btn btn-block btn-info"
+								formaction="" 
+								formmethod="POST" >ほげ</button>
+								
+						<button type="button"
+								class="btn btn-block btn-warning"
+								formaction="" 
+								formmethod="POST" >もげ</button>
+								
+						<button type="button"
+								class="btn btn-block btn-danger"
+								formaction="" 
+								formmethod="POST" >ぴよ</button>
+					</form>
+				</div>
+			</div>
+			
+			<!-- card2 -->
+			<div class="card">
+				<div class="card-header">
+					<h2 class="mb-0">
+						<button class="btn btn-link btn-block text-left" 
+								data-toggle="collapse" 
+								data-target="#api-2"
+								type="button">カテゴりついーと。</button>
+					</h2>
+				</div>
+				<div id="api-2" 
+						class="collapse"
+						data-parent="#api-accordion">
+					<div class="card-body">工事中</div>
+				</div>
+			</div>
+			
+			<!-- card3 -->
+			<div class="card">
+				<div class="card-header">
+					<h2 class="mb-0">
+						<button class="btn btn-link btn-block text-left" 
+								data-toggle="collapse" 
+								data-target="#api-3"
+								type="button">他の機能</button>
+					</h2>
+				</div>
+				<div id="api-3" 
+						class="collapse"
+						data-parent="#api-accordion">
+					<div class="card-body">工事中</div>
+				</div>
+			</div>
+			
+		<!-- div.accordion -->
+		</div>
+		
+	</div>
+</body>
+</html>
