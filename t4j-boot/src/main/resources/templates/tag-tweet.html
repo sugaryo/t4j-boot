@@ -6,9 +6,9 @@
 	<meta charset="UTF-8" />
 	<link th:href="@{/css/common.css}" rel="stylesheet"></link>
 	<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}">
-	<script th:src="@{/js/common.js}"></script>
 	<script type="text/javascript" th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
 	<script type="text/javascript" th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/common.js}"></script>
 </head>
 <body>
 	<div class="container">
@@ -45,22 +45,25 @@
 					<textarea name="content" 
 							rows="6"
 							class="form-control" 
+							onkeydown="return altenter(event, $(this), $('button#tweet'));"
 							th:text="${content}" autofocus></textarea>
 				</div>
 				
 				<div class="mt-2">
 					<button type="submit" 
-							class="btn w-25 btn-info"
+							id="preview"
+							class="w-25 text-left btn btn-info"
 							accesskey="p"
 							formaction="/nyappi/view/tag-tweet/preview"
 							formmethod="POST" ><b>[P]</b> ぷれびゅー</button>
 				</div>
 				<div class="mt-2">
 					<button type="submit"
-							class="btn w-25 btn-primary"
+							id="tweet"
+							class="w-25 text-left btn btn-primary"
 							accesskey="t"
 							formaction="/nyappi/view/tag-tweet/tweet" 
-							formmethod="POST" ><b>[T]</b> トゥイート！</button>
+							formmethod="POST" ><b>[T] [Enter]</b> トゥイート！</button>
 				</div>
 			</div>
 			
