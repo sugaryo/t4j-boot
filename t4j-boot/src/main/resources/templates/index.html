@@ -5,8 +5,10 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta charset="UTF-8" />
 	<link th:href="@{/css/common.css}" rel="stylesheet"></link>
-	<script th:src="@{/js/common.js}"></script>
 	<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}">
+	<script th:src="@{/js/common.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
 </head>
 <body>
 	<div class="container">
@@ -41,9 +43,9 @@
 			<a href="#" th:href="@{/nyappi/view/tag-tweet}"
 						th:text="'タグツイートを連投するのだ'"
 						class="btn btn-outline-primary btn-block" ></a>
+						
 		</div>
 		
 	</div>
-    <script th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
 </body>
 </html>
