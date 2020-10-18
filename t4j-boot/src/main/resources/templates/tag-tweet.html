@@ -23,46 +23,51 @@
 			
 		<form>
 		
-			<div class="mt-2">
+			<div class="mt-4">
 				<h2 th:text="'タグとぅいーと。'"></h2>
 				
 				<div class="input-group mb-1">
 					<div class="input-group-prepend">
-						<span class="input-group-text" id="basic-addon1">タグ</span>
+						<span style="width: 120px" 
+								class="input-group-text" >タグ</span>
 					</div>
 					<input type="text" name="tags" 
 							class="form-control"
-							aria-label="tweet-id" 
-							aria-describedby="basic-addon1" 
 							placeholder="タグ１, タグ２, #tag3 #tag4 ..."
 							th:value="${tags}" >
 				</div>
 				
 				<div class="input-group mb-1">
 					<div class="input-group-prepend">
-						<span class="input-group-text">ツイート</span>
+						<span style="width: 120px" 
+								class="input-group-text">ツイート</span>
 					</div>
 					<textarea name="content" 
 							rows="6"
 							class="form-control" 
-							th:text="${content}" ></textarea>
+							th:text="${content}" autofocus></textarea>
 				</div>
 				
-				<div>
+				<div class="mt-2">
 					<button type="submit" 
-							class="btn btn-info"
+							class="btn w-25 btn-info"
+							accesskey="p"
 							formaction="/nyappi/view/tag-tweet/preview"
-							formmethod="POST" >ぷれびゅー</button>
+							formmethod="POST" ><b>[P]</b> ぷれびゅー</button>
+				</div>
+				<div class="mt-2">
 					<button type="submit"
-							class="btn btn-primary"
+							class="btn w-25 btn-primary"
+							accesskey="t"
 							formaction="/nyappi/view/tag-tweet/tweet" 
-							formmethod="POST" >トゥイート！</button>
+							formmethod="POST" ><b>[T]</b> トゥイート！</button>
 				</div>
 			</div>
 			
-			<div class="mt-2">
+			<div class="mt-4">
 				<h2 th:text="'とぅいーと結果。'"></h2>
 				<textarea rows="9" 
+						class="bg-dark text-info"
 						th:text="${result}" readonly="readonly" ></textarea>
 			</div>
 		</form>
