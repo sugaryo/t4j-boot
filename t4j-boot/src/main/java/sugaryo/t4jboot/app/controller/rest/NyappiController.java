@@ -14,14 +14,9 @@ import sugaryo.t4jboot.app.module.NyappiCall;
 
 @RestController
 @RequestMapping({
-	"t4jb/api",
-	"t4j-boot/api",
-	"nyappi/api", })
+	"api/nyappi", })
 public class NyappiController {
 	
-	// TODO： -verbose オプション持ちのエンドポイントには、ついでに ?pretty オプションも付けたい。
-	// TODO：というか共通化できそうなら全部 ?pretty オプション欲しいよね？
-
 	private static final Logger log = LoggerFactory.getLogger( NyappiController.class );
 
 	@Autowired

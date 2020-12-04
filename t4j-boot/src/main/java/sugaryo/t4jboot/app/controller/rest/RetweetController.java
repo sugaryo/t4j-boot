@@ -17,12 +17,11 @@ import sugaryo.t4jboot.app.module.SelfRetweet;
 import sugaryo.t4jboot.common.utility.JsonMapper;
 
 
-
 @RestController
 @RequestMapping({
-	"t4jb/api",
-	"t4j-boot/api",
-	"nyappi/api", })
+	"api/retweet",
+	"api/rt", 
+})
 public class RetweetController {
 	
 	private static final Logger log = LoggerFactory.getLogger( RetweetController.class );
@@ -41,16 +40,14 @@ public class RetweetController {
 	
 
 	
-	
-	@GetMapping("retweets/category")
+	@GetMapping("category")
 	public String categories() {
 		
 		return JsonMapper.stringify( TweetData.names() );
 	}
-	
 	@GetMapping({
-		"retweets/category-v",
-		"retweets/category-verbose",
+		"category/verbose",
+		"category/v",
 	})
 	public String categories_verbose() {
 		
@@ -64,17 +61,8 @@ public class RetweetController {
 		return map.stringify();
 	}
 	
-	
-	@Deprecated
-	@PostMapping("retweets")
-	public void selfrts() {
-		
-		// category/all と同じ。
-		this.self.retweets();
-	}
-	
-	@PostMapping("retweets/category/{category}")
-	public void selfrts( @PathVariable String category ) {
+	@PostMapping("category/{category}")
+	public void rt_category( @PathVariable String category ) {
 
 		log.info( "★ /api/retweets/category/{}", category );
 
@@ -87,8 +75,8 @@ public class RetweetController {
 			this.self.retweets( category );
 		}
 	}
-	@PostMapping("retweets/category/{category}/{size}")
-	public void selfrts( @PathVariable String category, @PathVariable int size ) {
+	@PostMapping("category/{category}/{size}")
+	public void rt_category( @PathVariable String category, @PathVariable int size ) {
 
 		log.info( "★ /api/retweets/category/{}/{}", category, size );
 
@@ -102,8 +90,8 @@ public class RetweetController {
 		}
 	}
 	
-	@PostMapping("retweet/{id}")
-	public String selfrt( @PathVariable long id ) {
+	@PostMapping("id/{id}")
+	public String rt_id( @PathVariable long id ) {
 		
 		var rt = this.self.retweet( id );
 		
@@ -119,10 +107,10 @@ public class RetweetController {
 		return json;
 	}
 	@PostMapping({
-		"retweet-verbose/{id}",
-		"retweet-v/{id}",
+		"id/{id}/verbose",
+		"id/{id}/v",
 	})
-	public String selfrt_verbose( @PathVariable long id ) {
+	public String rt_id_v( @PathVariable long id ) {
 		
 		var rt = this.self.retweet( id );
 		

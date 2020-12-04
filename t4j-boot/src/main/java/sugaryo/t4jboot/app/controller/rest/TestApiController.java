@@ -22,9 +22,9 @@ import sugaryo.t4jboot.common.utility.RandomIdIterator;
 
 @RestController
 @RequestMapping({
-	"t4jb/api",
-	"t4j-boot/api",
-	"nyappi/api", })
+	"api/test",
+	"test",
+})
 public class TestApiController {
 	
 	private static final Logger log = LoggerFactory.getLogger( TestApiController.class );
@@ -43,18 +43,17 @@ public class TestApiController {
 		return this.nyappi.messageOf( kind );
 	}
 	
+	// FIXME : pretty を後で共通化。
 	@GetMapping(path = "json")
 	public String test_json_n() {
 		
 		return test_json( false );
 	}
-	
 	@GetMapping(path = "json", params = "pretty")
 	public String test_json_p() {
 		
 		return test_json( true );
 	}
-	
 	private String test_json( boolean pretty ) {
 		
 		@SuppressWarnings("serial")
