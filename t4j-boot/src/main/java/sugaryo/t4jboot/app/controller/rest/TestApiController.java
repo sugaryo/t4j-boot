@@ -2,6 +2,7 @@ package sugaryo.t4jboot.app.controller.rest;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import sugaryo.t4jboot.app.config.ConfigSet;
@@ -22,9 +24,9 @@ import sugaryo.t4jboot.common.utility.RandomIdIterator;
 
 @RestController
 @RequestMapping({
-	"t4jb/api",
-	"t4j-boot/api",
-	"nyappi/api", })
+	"api/test",
+	"test",
+})
 public class TestApiController {
 	
 	private static final Logger log = LoggerFactory.getLogger( TestApiController.class );
@@ -37,24 +39,16 @@ public class TestApiController {
 	
 	
 	
-	@GetMapping(path = "random-nyappi")
+	@GetMapping("random-nyappi")
 	public String test_random_nyappi() {
 		var kind = NyappiCall.NyappiTweetKind.random();
 		return this.nyappi.messageOf( kind );
 	}
 	
-	@GetMapping(path = "json")
-	public String test_json_n() {
-		
-		return test_json( false );
+	@GetMapping("json")
+	public String test_json(@RequestParam(required = false) Optional<String> pretty) {
+		return test_json( pretty.isPresent() );
 	}
-	
-	@GetMapping(path = "json", params = "pretty")
-	public String test_json_p() {
-		
-		return test_json( true );
-	}
-	
 	private String test_json( boolean pretty ) {
 		
 		@SuppressWarnings("serial")
