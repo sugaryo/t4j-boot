@@ -35,13 +35,13 @@ public class MediaListController {
 	
 	// ■ListID 指定でのメディアURL情報取得
 
-	@GetMapping("list/{id}")
+	@GetMapping("{id}")
 	public List<MediaTweet> imgByList( @PathVariable long id ) {
 		
 		List<MediaTweet> medias = this.mediatweets.byList( id );
 		return medias;
 	}
-	@GetMapping("list/{id}/url")
+	@GetMapping("{id}/url")
 	public String[] imgUrlByList( @PathVariable long id ) {
 		
 		String[] urls = this.mediatweets.byList( id )
@@ -51,7 +51,7 @@ public class MediaListController {
 
 		return urls;
 	}
-	@GetMapping("list/{id}/plain-text")
+	@GetMapping("{id}/plain-text")
 	public String imgMetadataByList( @PathVariable long id ) {
 		
 		String[] metadata = this.mediatweets.byList( id )
@@ -69,8 +69,8 @@ public class MediaListController {
 	// ■ListID 指定 ＋ページング指定 でのメディアURL情報取得
 	
 	@GetMapping({
-			"list/{id}/page/{p}",
-			"list/{id}/page/{p}/{n}"
+			"{id}/page/{p}",
+			"{id}/page/{p}/{n}"
 	})
 	public List<MediaTweet> imgByPagingList( 
 			@PathVariable final long id, 
@@ -84,8 +84,8 @@ public class MediaListController {
 		return medias;
 	}
 	@GetMapping({
-			"list/{id}/url/page/{p}",
-			"list/{id}/url/page/{p}/{n}"
+			"{id}/url/page/{p}",
+			"{id}/url/page/{p}/{n}"
 	})
 	public String[] imgUrlByPagingList( 
 			@PathVariable final long id, 
@@ -104,8 +104,8 @@ public class MediaListController {
 		return urls;
 	}
 	@GetMapping({
-			"list/{id}/plain-text/page/{p}",
-			"list/{id}/plain-text/page/{p}/{n}"
+			"{id}/plain-text/page/{p}",
+			"{id}/plain-text/page/{p}/{n}"
 	})
 	public String imgMetadataByPagingList( 
 			@PathVariable final long id, 
