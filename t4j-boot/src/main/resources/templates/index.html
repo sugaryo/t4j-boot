@@ -1,8 +1,11 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}">
 <head th:replace="common/head">
 </head>
 <body>
+<div layout:fragment="content">
 	<div class="container">
 		<h1 th:text="'■T4J-BOOT main-menu■'"></h1>
 		
@@ -42,5 +45,6 @@
 		</div>
 		
 	</div>
+</div>
 </body>
 </html>

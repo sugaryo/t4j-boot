@@ -64,7 +64,21 @@
 			<artifactId>bootstrap</artifactId>
 			<version>4.5.2</version>
 		</dependency>
+		
+    	<!-- Thymeleaf layout on -->
+		<dependency>
+			<groupId>nz.net.ultraq.thymeleaf</groupId>
+			<artifactId>thymeleaf-layout-dialect</artifactId>
+			<!-- 【暫定対応：これ除いておかないとSpringBootApplication起動時に初期化エラーが起きる】 -->
+			<exclusions>
+				<exclusion>
+					<groupId>org.codehaus.groovy</groupId>
+					<artifactId>groovy</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	
+    	<!-- SpringBoot actuator on -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
