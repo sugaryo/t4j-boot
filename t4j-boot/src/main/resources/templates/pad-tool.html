@@ -22,7 +22,6 @@
 		</nav>
 		
 		<form>
-
 			<div class="row">
 				<div class="input-group mb-1">
 					<div class="input-group-prepend">
@@ -69,6 +68,7 @@
 				</div>
 			</div>
 			
+
 			<div class="row mt-2">
 				<button type="submit"
 						id="tweet"
@@ -76,6 +76,19 @@
 						accesskey="t"
 						formaction="/nyappi/view/pad/roulette" 
 						formmethod="POST" >計算</button>
+			</div>
+
+
+			<div class="mt-4" th:if="${calc}">
+				<div class="row mb-1">
+					<b>ルーレット回転：</b> <div th:text="${round} + '周'"></div>
+				</div>
+				<div class="row mb-1">
+					<b>あまり時間：</b> <div th:text="${remtm} + '秒'"></div>
+				</div>
+				<div class="row mb-1">
+					<img th:each="d : ${drops}" th:src="@{'/img/' + ${d} + '.png'}">
+				</div>
 			</div>
 		</form>
 
