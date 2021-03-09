@@ -6,3 +6,9 @@ form {
 textarea {
 	width: 100%;
 }
+
+.ex-append-right-round {
+	border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+    border: 1px solid gray;
+}
