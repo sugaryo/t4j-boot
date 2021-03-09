@@ -47,10 +47,17 @@ public class Message {
 		return this.template.process( "ad_ill_korone_563k", context );
 	}
 	
+	@Deprecated
 	public String ofAdvertiseQiitaSpringBoot( String timestamp ) {
 		var context = new Context();
 		context.setVariable( "timestamp", timestamp );
 		return this.template.process( "ad_qiita_spring_boot", context );
+	}
+	
+	public String ofAdvertiseZennSpringBoot( String timestamp ) {
+		var context = new Context();
+		context.setVariable( "timestamp", timestamp );
+		return this.template.process( "ad_zenn_spring_boot", context );
 	}
 	
 	public String ofAdvertiseCurryNote( String timestamp ) {
