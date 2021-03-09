@@ -34,7 +34,7 @@ public class NyappiCall {
 		QT_FIRE_MILLE_ILLUST,
 		QT_KORONE_563K_ILLUST,
 		ADVERTISE_CURRY_NOTE,
-		ADVERTISE_QIITA_SPRING_BOOT,
+		ADVERTISE_ZENN_SPRING_BOOT,
 		;
 		public static NyappiTweetKind random() {
 
@@ -59,8 +59,8 @@ public class NyappiCall {
 			case ADVERTISE_CURRY_NOTE:
 				return this.message.ofAdvertiseCurryNote( timestamp );
 				
-			case ADVERTISE_QIITA_SPRING_BOOT:
-				return this.message.ofAdvertiseQiitaSpringBoot( timestamp );
+			case ADVERTISE_ZENN_SPRING_BOOT:
+				return this.message.ofAdvertiseZennSpringBoot( timestamp );
 			
 			case QT_FIRE_MILLE_ILLUST:
 				return this.message.ofAdvertiseFireMilleIllust( timestamp );
