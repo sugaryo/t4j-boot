@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import sugaryo.t4jboot.app.api.TwitterApiCall;
+import twitter4j.Status;
 
 @Component
 public class NyappiCall {
@@ -73,36 +74,35 @@ public class NyappiCall {
 		}
 	}
 	
-	public void randomcall() {
+	public Status randomcall() {
 		
 		// 制御乱数でヒットしたら、にゃっぴキャンセルからの特殊コール。
 		if ( this.random.rand() ) {
 			log.info( "特殊にゃっぴこーる。" );
 			
 			NyappiTweetKind kind = NyappiTweetKind.random();
-			this.call( kind );
+			return this.call( kind );
 		} 
 		// ヒットしなかった場合は、通常のにゃっぴこーる。
 		else {
 			log.info( "通常にゃっぴこーる。" );
-			this.call();
+			return this.call();
 		}
 	}
 	
 	
 	// 特殊にゃっぴこーる。
-	public void call( NyappiTweetKind kind ) {
+	public Status call( NyappiTweetKind kind ) {
 		
 		final String msg = this.messageOf( kind );
-		if ( null == msg ) {
-			this.call();
-		} else {
-			this.twitter.tweet( msg );
-		}
+		
+		return null == msg
+				? this.call()
+				: this.twitter.tweet( msg );
 	}
 	
 	// 通常にゃっぴこーる。
-	public void call() {
+	public Status call() {
 		
 		final DateTimeFormatter MDH = DateTimeFormatter.ofPattern( "M月d日の HH時 " );
 		final DateTimeFormatter YMDHMS = DateTimeFormatter.ISO_DATE_TIME;
@@ -118,6 +118,6 @@ public class NyappiCall {
 				? this.message.ofNaru4JiCall( timestamp )
 				: this.message.ofNyappiCall( timestamp, hour );
 				
-		this.twitter.tweet( msg );
+		return this.twitter.tweet( msg );
 	}
 }

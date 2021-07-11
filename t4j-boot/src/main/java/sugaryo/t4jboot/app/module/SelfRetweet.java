@@ -2,6 +2,9 @@ package sugaryo.t4jboot.app.module;
 
 import static sugaryo.t4jboot.common.utility.ThreadUtil.sleep;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +26,16 @@ public class SelfRetweet {
 	private final TwitterApiCall twitter;
 	private final ConfigSet config;
 	
+	// ctor
+	
 	public SelfRetweet(
 			@Autowired TwitterApiCall twitter,
 			@Autowired ConfigSet config ) {
 		this.twitter = twitter;
 		this.config = config;
 	}
+	
+	// retweet
 	
 	public Status retweet( final long id ) {
 		
@@ -37,58 +44,82 @@ public class SelfRetweet {
 		return this.twitter.retweet( id );
 	}
 	
-
-	public void retweets() {
+	
+	// retweets
+	
+	public List<Status> retweets() {
 
 		log.info( "SelfRetweet retweets preset all." );
 		
 		final long[] ids    = TweetData.union();
 		final long interval = config.nyappi.selfrt.interval;
-		this.execute( suppress(ids), interval );
+		return this.execute( suppress(ids), interval );
 	}
-	public void retweets(final int limit) {
+	public List<Status> retweets(final int limit) {
 		
 		log.info( "SelfRetweet retweets preset all / limit[{}].", limit );
 		
 		final long[] ids    = TweetData.union();
 		final long interval = config.nyappi.selfrt.interval;
-		this.execute( suppress(ids, limit), interval );
+		return this.execute( suppress(ids, limit), interval );
 	}
-	public void retweets(final String category) {
+	public List<Status> retweets(final String category) {
 
 		log.info( "SelfRetweet retweets preset of category[{}].", category );
 		
 		final long[] ids    = TweetData.of( category );
 		final long interval = config.nyappi.selfrt.interval;
-		this.execute( suppress(ids), interval );
+		return this.execute( suppress(ids), interval );
 	}
-	public void retweets(final String category, final int limit) {
+	public List<Status> retweets(final String category, final int limit) {
 
 		log.info( "SelfRetweet retweets preset of category[{}] / limit[{}].", category, limit );
 		
 		final long[] ids    = TweetData.of( category );
 		final long interval = config.nyappi.selfrt.interval;
-		this.execute( suppress(ids, limit), interval );
+		return this.execute( suppress(ids, limit), interval );
 	}
-
-	//TODO：APIのレスポンス用に戻り値を用意したい。
-	private void execute(
+	
+	
+	private List<Status> execute(
 		final long[] ids,
 		final long interval ) {
 		
+		List<Status> tweets = new ArrayList<>();
+		
 		log.info( "  - ids.length : {}", ids.length );
 		for ( final long id : ids ) {
-			this.twitter.retweet( id );
+			var tweet = this.twitter.retweet( id );
+			tweets.add( tweet );
 			sleep( interval );
 		}
+		
+		return tweets;
 	}
 	
+	
+	/**
+	 * 要素数制限（ランダム抽出）
+	 * 
+	 * @param ids RTするツイートのID配列
+	 * @return {@code ids} から デフォルト値 {@value #RETWEET_LIMIT} で制限したID配列  
+	 * 
+	 * @see sugaryo.t4jboot.common.utility.RandomIdIterator
+	 */
 	private static final long[] suppress(final long[] ids) {
 		return suppress( ids, RETWEET_LIMIT );
 	}
+	/**
+	 * 要素数制限（ランダム抽出）
+	 * 
+	 * @param ids  RTするツイートのID配列
+	 * @param size 制限する要素数（デフォルト値 {@value #RETWEET_LIMIT}）
+	 * @return {@code ids} から 指定の要素数 {@code size} で制限したID配列
+	 * 
+	 * @see sugaryo.t4jboot.common.utility.RandomIdIterator
+	 */
 	private static final long[] suppress(final long[] ids, final int size) {
 		
-		// min
 		final int n = size < RETWEET_LIMIT ? size : RETWEET_LIMIT;
 		
 		final long[] suppressed = RandomIdIterator.iterate( ids, n );
