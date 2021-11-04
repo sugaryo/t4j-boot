@@ -112,11 +112,26 @@ public class NyappiCall {
 		String hour = adjust.format( MDH ); 
 		String timestamp = now.format( YMDHMS );
 		
-		// なるよじ判定
-		final boolean is04H = 4 == adjust.getHour();
-		final String msg = is04H 
-				? this.message.ofNaru4JiCall( timestamp )
-				: this.message.ofNyappiCall( timestamp, hour );
+		// 補正した「時」を取得
+		final int h = adjust.getHour();
+		final String msg;
+		switch ( h ) {
+			
+			case 3:
+				// 夜中の３時は大惨事。
+				msg = this.message.ofDai3JiCall( timestamp );
+				break;
+			
+			case 4:
+				// 夜中の４時はパズドラの朝が明ける。
+				msg = this.message.ofNaru4JiCall( timestamp );
+				break;
+			
+			default:
+				// それ以外は普通。
+				msg = this.message.ofNyappiCall( timestamp, hour );
+				break;
+		}
 				
 		this.twitter.tweet( msg );
 	}
