@@ -10,6 +10,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 public class Message {
 	
 	// TODO：このクラスもうちょっと何とかならんか？
+	// FIXME：マジで何とかしたいのだが、、、RestTemplateのexchangeみたいな形にするしかないか？？
 	
 	/** Thymeleafのテンプレートエンジン（プレーンテキスト設定） */
 	private final SpringTemplateEngine template;
@@ -27,11 +28,15 @@ public class Message {
 		context.setVariable( "hour", hour );
 		return this.template.process( "nyappi_call", context );
 	}
-	
+	public String ofDai3JiCall( String timestamp ) {
+		var context = new Context();
+		context.setVariable( "timestamp", timestamp );
+		return this.template.process( "nyappi_03", context );
+	}
 	public String ofNaru4JiCall( String timestamp ) {
 		var context = new Context();
 		context.setVariable( "timestamp", timestamp );
-		return this.template.process( "na_ru_yo_ji", context );
+		return this.template.process( "nyappi_04", context );
 	}
 	
 	
