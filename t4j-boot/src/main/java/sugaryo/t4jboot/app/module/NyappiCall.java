@@ -101,6 +101,34 @@ public class NyappiCall {
 		}
 	}
 	
+	private static final String[] BATTERI = {
+			"██████ ██████", // 0
+			"██████ █████▒", // 1
+			"██████ █████ ", // 2
+			"██████ ████▒ ", // 3
+			"██████ ████  ", // 4
+			"██████ ███▒  ", // 5
+			"██████ ███   ", // 6
+			"██████ ██▒   ", // 7
+			"██████ ██    ", // 8
+			"██████ █▒    ", // 9
+			"██████ █     ", // 10
+			"██████ ▒     ", // 11
+			"██████       ", // 12
+			"█████▒       ", // 13
+			"█████        ", // 14
+			"████▒        ", // 15
+			"████         ", // 16
+			"███▒         ", // 17
+			"███          ", // 18
+			"██▒          ", // 19
+			"██           ", // 20
+			"█▒           ", // 21
+			"█            ", // 22
+			"▒            ", // 23
+			"██████ ██████", // 24
+	};
+	
 	// 通常にゃっぴこーる。
 	public void call() {
 		
@@ -115,21 +143,22 @@ public class NyappiCall {
 		// 補正した「時」を取得
 		final int h = adjust.getHour();
 		final String msg;
+		final String batteri = BATTERI[h];
 		switch ( h ) {
 			
 			case 3:
 				// 夜中の３時は大惨事。
-				msg = this.message.ofDai3JiCall( timestamp );
+				msg = this.message.ofDai3JiCall( timestamp, batteri );
 				break;
 			
 			case 4:
 				// 夜中の４時はパズドラの朝が明ける。
-				msg = this.message.ofNaru4JiCall( timestamp );
+				msg = this.message.ofNaru4JiCall( timestamp, batteri );
 				break;
 			
 			default:
 				// それ以外は普通。
-				msg = this.message.ofNyappiCall( timestamp, hour );
+				msg = this.message.ofNyappiCall( timestamp, batteri, hour );
 				break;
 		}
 				
