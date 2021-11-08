@@ -22,20 +22,23 @@ public class Message {
 	}
 	
 
-	public String ofNyappiCall( String timestamp, String hour ) {
+	public String ofNyappiCall( String timestamp, String batteri, String hour ) {
 		var context = new Context();
 		context.setVariable( "timestamp", timestamp );
+		context.setVariable( "batteri", batteri );
 		context.setVariable( "hour", hour );
 		return this.template.process( "nyappi_call", context );
 	}
-	public String ofDai3JiCall( String timestamp ) {
+	public String ofDai3JiCall( String timestamp, String batteri ) {
 		var context = new Context();
 		context.setVariable( "timestamp", timestamp );
+		context.setVariable( "batteri", batteri );
 		return this.template.process( "nyappi_03", context );
 	}
-	public String ofNaru4JiCall( String timestamp ) {
+	public String ofNaru4JiCall( String timestamp, String batteri ) {
 		var context = new Context();
 		context.setVariable( "timestamp", timestamp );
+		context.setVariable( "batteri", batteri );
 		return this.template.process( "nyappi_04", context );
 	}
 	
