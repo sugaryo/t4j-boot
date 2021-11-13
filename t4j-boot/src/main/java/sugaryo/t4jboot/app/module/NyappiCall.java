@@ -101,6 +101,34 @@ public class NyappiCall {
 				: this.twitter.tweet( msg );
 	}
 	
+	private static final String[] BATTERI = {
+			"██████ ██████", // 0
+			"██████ █████▅", // 1
+			"██████ █████_", // 2
+			"██████ ████▅_", // 3
+			"██████ ████__", // 4
+			"██████ ███▅__", // 5
+			"██████ ███___", // 6
+			"██████ ██▅___", // 7
+			"██████ ██____", // 8
+			"██████ █▅____", // 9
+			"██████ █_____", // 10
+			"██████ ▅_____", // 11
+			"██████ ______", // 12
+			"█████▅ ______", // 13
+			"█████_ ______", // 14
+			"████▅_ ______", // 15
+			"████__ ______", // 16
+			"███▅__ ______", // 17
+			"███___ ______", // 18
+			"██▅___ ______", // 19
+			"██____ ______", // 20
+			"█▅____ ______", // 21
+			"█_____ ______", // 22
+			"▅_____ ______", // 23
+			"██████ ██████", // 24
+	};
+	
 	// 通常にゃっぴこーる。
 	public Status call() {
 		
@@ -112,11 +140,27 @@ public class NyappiCall {
 		String hour = adjust.format( MDH ); 
 		String timestamp = now.format( YMDHMS );
 		
-		// なるよじ判定
-		final boolean is04H = 4 == adjust.getHour();
-		final String msg = is04H 
-				? this.message.ofNaru4JiCall( timestamp )
-				: this.message.ofNyappiCall( timestamp, hour );
+		// 補正した「時」を取得
+		final int h = adjust.getHour();
+		final String msg;
+		final String batteri = BATTERI[h];
+		switch ( h ) {
+			
+			case 3:
+				// 夜中の３時は大惨事。
+				msg = this.message.ofDai3JiCall( timestamp, batteri );
+				break;
+			
+			case 4:
+				// 夜中の４時はパズドラの朝が明ける。
+				msg = this.message.ofNaru4JiCall( timestamp, batteri );
+				break;
+			
+			default:
+				// それ以外は普通。
+				msg = this.message.ofNyappiCall( timestamp, batteri, hour );
+				break;
+		}
 				
 		return this.twitter.tweet( msg );
 	}
