@@ -5,11 +5,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +40,31 @@ public class TestApiController {
 	@Autowired
 	NyappiCall nyappi;
 	
+	
+	
+	@Autowired
+	HttpServletRequest req;
+	
+	@RequestMapping("hoge")
+	public String hoge() {
+		
+		
+		var params = req.getParameterMap();
+		
+		log.info( JsonMapper.stringify( params ) );
+
+		boolean p = params.containsKey( "p" )
+				||  params.containsKey( "pretty" );
+		boolean v = params.containsKey( "v" )
+				||  params.containsKey( "verbose" );
+		
+		if ( p && v ) return "hoge?p&v";
+		
+		if ( p ) return "hoge?p";
+		if ( v ) return "hoge?v";
+		
+		return "hoge";
+	}
 	
 	
 	@GetMapping("random-nyappi")
