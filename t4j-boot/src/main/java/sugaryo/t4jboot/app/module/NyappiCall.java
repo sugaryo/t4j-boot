@@ -119,7 +119,7 @@ public class NyappiCall {
 		// メインメッセージ
 		final String MAIN = "{0}"
 				+ "\r\n"
-				+ "✧*。◝(*'▿'*)◜✧*。"
+				+ "✧*。◝(*'▿'*)◜ ✧*。"
 				+ "\r\n"
 				+ "\r\n"
 				+ "- tweet at {1}";
