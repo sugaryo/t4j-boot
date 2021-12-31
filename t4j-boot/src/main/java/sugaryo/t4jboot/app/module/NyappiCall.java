@@ -106,8 +106,10 @@ public class NyappiCall {
 		
 		
 		// カウントダウン
-		final String COUNT_DOWN = "count down {0}...\r\n"
-				+ "tweet posted at {1}";
+		final String COUNT_DOWN = "count down {0}..."
+				+ "\r\n"
+				+ "\r\n"
+				+ "- tweet at {1}";
 		for ( int i = 0; i < count; i++ ) {
 			int n = count - 1;
 			tweet.accept( MessageFormat.format( COUNT_DOWN, n, LocalDateTime.now().format( TIMESTAMP_FORMAT ) ) );
@@ -115,8 +117,12 @@ public class NyappiCall {
 		}
 		
 		// メインメッセージ
-		final String MAIN = "{0}\r\n"
-				+ "tweet posted at {1}";
+		final String MAIN = "{0}"
+				+ "\r\n"
+				+ "✧*。◝(*'▿'*)◜✧*。"
+				+ "\r\n"
+				+ "\r\n"
+				+ "- tweet at {1}";
 		tweet.accept( MessageFormat.format( MAIN, message, LocalDateTime.now().format( TIMESTAMP_FORMAT ) ) );
 	}
 	
