@@ -1,5 +1,7 @@
 package sugaryo.t4jboot.app.scheduler;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,18 @@ public class NyappiScheduler {
 	
 	@Scheduled(cron = "${schedule.nyappi_call.cron}")
 	public void cron() {
-		this.nyappi.randomcall();
+		this.nyappi.callRandom();
+	}
+	
+	
+	@Scheduled(cron = "${schedule.happy_new_year.test}")
+	public void happyNewYear_debug() {
+		final int NEW_YEAR = LocalDateTime.now().getYear() + 1;
+		this.nyappi.callCountDown( true, "TEST [" + NEW_YEAR + "] " ); // debug=true
+	}
+	@Scheduled(cron = "${schedule.happy_new_year.call}")
+	public void happyNewYear_call() {
+		final int NEW_YEAR = LocalDateTime.now().getYear() + 1; 
+		this.nyappi.callCountDown( false, "HAPPY NEW YEAR [" + NEW_YEAR + "] " ); // debug=false
 	}
 }
