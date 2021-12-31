@@ -111,7 +111,7 @@ public class NyappiCall {
 				+ "\r\n"
 				+ "- tweet at {1}";
 		for ( int i = 0; i < count; i++ ) {
-			int n = count - 1;
+			int n = count - i;
 			tweet.accept( MessageFormat.format( COUNT_DOWN, n, LocalDateTime.now().format( TIMESTAMP_FORMAT ) ) );
 			ThreadUtil.sleep( 1000 );
 		}
