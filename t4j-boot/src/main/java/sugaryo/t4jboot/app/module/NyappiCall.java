@@ -1,7 +1,9 @@
 package sugaryo.t4jboot.app.module;
 
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import sugaryo.t4jboot.app.api.TwitterApiCall;
+import sugaryo.t4jboot.common.utility.ThreadUtil;
 
 @Component
 public class NyappiCall {
@@ -20,6 +23,9 @@ public class NyappiCall {
 	private final Message message;
 	
 	private final TwitterApiCall twitter;
+	
+	private static final DateTimeFormatter TIMESTAMP_FORMAT = DateTimeFormatter.ISO_DATE_TIME;
+	private static final DateTimeFormatter DAY_HOUR_FORMAT = DateTimeFormatter.ofPattern( "M月d日の HH時 " );
 	
 	public NyappiCall(
 			@Autowired RandomHolder random,
@@ -52,7 +58,7 @@ public class NyappiCall {
 	public String messageOf( NyappiTweetKind kind ) {
 
 		LocalDateTime now = LocalDateTime.now();
-		String timestamp = now.format( DateTimeFormatter.ISO_DATE_TIME );
+		String timestamp = now.format( TIMESTAMP_FORMAT );
 		
 		switch( kind ) {
 			
@@ -73,7 +79,7 @@ public class NyappiCall {
 		}
 	}
 	
-	public void randomcall() {
+	public void callRandom() {
 		
 		// 制御乱数でヒットしたら、にゃっぴキャンセルからの特殊コール。
 		if ( this.random.rand() ) {
@@ -87,6 +93,37 @@ public class NyappiCall {
 			log.info( "通常にゃっぴこーる。" );
 			this.call();
 		}
+	}
+	
+	public void callCountDown(final int count, final boolean debug, final String message) {
+		
+		log.info( "★ call count-down." );
+		
+		// デバッグモードの場合は log 出すだけで Twitter API には post しない。
+		Consumer<String> tweet = debug 
+				? log::debug
+				: this.twitter::tweet;
+		
+		
+		// カウントダウン
+		final String COUNT_DOWN = "count down {0}..."
+				+ "\r\n"
+				+ "\r\n"
+				+ "- tweet at {1}";
+		for ( int i = 0; i < count; i++ ) {
+			int n = count - 1;
+			tweet.accept( MessageFormat.format( COUNT_DOWN, n, LocalDateTime.now().format( TIMESTAMP_FORMAT ) ) );
+			ThreadUtil.sleep( 1000 );
+		}
+		
+		// メインメッセージ
+		final String MAIN = "{0}"
+				+ "\r\n"
+				+ "✧*。◝(*'▿'*)◜✧*。"
+				+ "\r\n"
+				+ "\r\n"
+				+ "- tweet at {1}";
+		tweet.accept( MessageFormat.format( MAIN, message, LocalDateTime.now().format( TIMESTAMP_FORMAT ) ) );
 	}
 	
 	
@@ -132,13 +169,11 @@ public class NyappiCall {
 	// 通常にゃっぴこーる。
 	public void call() {
 		
-		final DateTimeFormatter MDH = DateTimeFormatter.ofPattern( "M月d日の HH時 " );
-		final DateTimeFormatter YMDHMS = DateTimeFormatter.ISO_DATE_TIME;
 		LocalDateTime now = LocalDateTime.now();
 		LocalDateTime adjust = now.plusMinutes( 1 );// cron誤差対応のため１分加算。
 		
-		String hour = adjust.format( MDH ); 
-		String timestamp = now.format( YMDHMS );
+		String hour = adjust.format( DAY_HOUR_FORMAT ); 
+		String timestamp = now.format( TIMESTAMP_FORMAT );
 		
 		// 補正した「時」を取得
 		final int h = adjust.getHour();
