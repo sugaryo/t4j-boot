@@ -95,24 +95,26 @@ public class NyappiCall {
 		}
 	}
 	
-	public void callCountDown(final boolean debug, final String message) {
+	public void callCountDown(final int count, final boolean debug, final String message) {
 		
 		log.info( "★ call count-down." );
 		
+		// デバッグモードの場合は log 出すだけで Twitter API には post しない。
 		Consumer<String> tweet = debug 
 				? log::debug
 				: this.twitter::tweet;
 		
-		final long SPAN = 1000;
+		
+		// カウントダウン
 		final String COUNT_DOWN = "count down {0}...\r\n"
 				+ "tweet posted at {1}";
-		tweet.accept( MessageFormat.format( COUNT_DOWN, 3, LocalDateTime.now().format( TIMESTAMP_FORMAT ) ) );
-		ThreadUtil.sleep( SPAN );
-		tweet.accept( MessageFormat.format( COUNT_DOWN, 2, LocalDateTime.now().format( TIMESTAMP_FORMAT ) ) );
-		ThreadUtil.sleep( SPAN );
-		tweet.accept( MessageFormat.format( COUNT_DOWN, 1, LocalDateTime.now().format( TIMESTAMP_FORMAT ) ) );
-		ThreadUtil.sleep( SPAN );
+		for ( int i = 0; i < count; i++ ) {
+			int n = count - 1;
+			tweet.accept( MessageFormat.format( COUNT_DOWN, n, LocalDateTime.now().format( TIMESTAMP_FORMAT ) ) );
+			ThreadUtil.sleep( 1000 );
+		}
 		
+		// メインメッセージ
 		final String MAIN = "{0}\r\n"
 				+ "tweet posted at {1}";
 		tweet.accept( MessageFormat.format( MAIN, message, LocalDateTime.now().format( TIMESTAMP_FORMAT ) ) );

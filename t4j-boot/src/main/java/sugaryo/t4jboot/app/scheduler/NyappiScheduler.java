@@ -23,11 +23,13 @@ public class NyappiScheduler {
 	@Scheduled(cron = "${schedule.happy_new_year.test}")
 	public void happyNewYear_debug() {
 		final int NEW_YEAR = LocalDateTime.now().getYear() + 1;
-		this.nyappi.callCountDown( true, "TEST [" + NEW_YEAR + "] " ); // debug=true
+		this.nyappi.callCountDown( 3, true, 
+				"TEST [" + NEW_YEAR + "] " ); // debug=true
 	}
 	@Scheduled(cron = "${schedule.happy_new_year.call}")
 	public void happyNewYear_call() {
 		final int NEW_YEAR = LocalDateTime.now().getYear() + 1; 
-		this.nyappi.callCountDown( false, "HAPPY NEW YEAR [" + NEW_YEAR + "] " ); // debug=false
+		this.nyappi.callCountDown( 3, false, 
+				"HAPPY NEW YEAR [" + NEW_YEAR + "] " ); // debug=false
 	}
 }
