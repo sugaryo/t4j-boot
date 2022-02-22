@@ -22,14 +22,38 @@ public class NyappiScheduler {
 	
 	@Scheduled(cron = "${schedule.happy_new_year.test}")
 	public void happyNewYear_debug() {
-		final int NEW_YEAR = LocalDateTime.now().getYear() + 1;
-		this.nyappi.callCountDown( 3, true, // debug=true
-				"TEST [" + NEW_YEAR + "] " );
+		this.countdownNewYear( true ); // debug=true
 	}
 	@Scheduled(cron = "${schedule.happy_new_year.call}")
 	public void happyNewYear_call() {
-		final int NEW_YEAR = LocalDateTime.now().getYear() + 1; 
-		this.nyappi.callCountDown( 3, false, // debug=false
-				"HAPPY NEW YEAR [" + NEW_YEAR + "] " );
+		this.countdownNewYear( false ); // debug=false
+	}
+	private void countdownNewYear(final boolean debug) {
+		final int year = LocalDateTime.now().getYear() + 1;
+		final String content 
+				= "HAPPY NEW YEAR [" + year + "] "
+				+ "\r\n"
+				+ "✧*。◝(*'▿'*)◜ ✧*。"
+				+ "\r\n";
+		this.nyappi.callCountDown( 3, debug, content );
+	}
+
+	@Scheduled(cron = "${schedule.happy_neco_nyan.test}")
+	public void happyNecoNyaaaaaan_debug() {
+		this.countdownNyaaaaaaaaaaan( true ); // debug=true
+	}
+	@Scheduled(cron = "${schedule.happy_neco_nyan.call}")
+	public void happyNecoNyaaaaaan_call() {
+		this.countdownNyaaaaaaaaaaan( false ); // debug=false
+	}
+	private void countdownNyaaaaaaaaaaan(final boolean debug) {
+		final String neco = "₍˄ ·͈ ༝ ·͈ ˄₎◞ ̑̑";    // ねこ。
+		final String content 
+				= "Nyaaaaaaaaaaaaaaaaaaaaaaaaaaaan!!!!"
+				+ "\r\n"
+				+ neco
+				+ "\r\n"
+				+ "\r\n";
+		this.nyappi.callCountDown( 3, debug, content );
 	}
 }

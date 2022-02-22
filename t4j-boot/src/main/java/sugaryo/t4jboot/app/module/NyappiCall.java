@@ -95,7 +95,7 @@ public class NyappiCall {
 		}
 	}
 	
-	public void callCountDown(final int count, final boolean debug, final String message) {
+	public void callCountDown(final int count, final boolean debug, final String content) {
 		
 		log.info( "★ call count-down." );
 		
@@ -106,24 +106,22 @@ public class NyappiCall {
 		
 		
 		// カウントダウン
-		final String COUNT_DOWN = "count down {0}..."
+		final String countdown = "count down {0}..."
 				+ "\r\n"
 				+ "\r\n"
 				+ "- tweet at {1}";
 		for ( int i = 0; i < count; i++ ) {
 			int n = count - i;
-			tweet.accept( MessageFormat.format( COUNT_DOWN, n, LocalDateTime.now().format( TIMESTAMP_FORMAT ) ) );
+			tweet.accept( MessageFormat.format( countdown, n, LocalDateTime.now().format( TIMESTAMP_FORMAT ) ) );
 			ThreadUtil.sleep( 1000 );
 		}
 		
 		// メインメッセージ
-		final String MAIN = "{0}"
-				+ "\r\n"
-				+ "✧*。◝(*'▿'*)◜ ✧*。"
-				+ "\r\n"
+		final String message = (debug ? "★DEBUG★ \r\n" : "")
+				+ "{0}"
 				+ "\r\n"
 				+ "- tweet at {1}";
-		tweet.accept( MessageFormat.format( MAIN, message, LocalDateTime.now().format( TIMESTAMP_FORMAT ) ) );
+		tweet.accept( MessageFormat.format( message, content, LocalDateTime.now().format( TIMESTAMP_FORMAT ) ) );
 	}
 	
 	
