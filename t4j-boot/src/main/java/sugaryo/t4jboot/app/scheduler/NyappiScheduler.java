@@ -37,6 +37,23 @@ public class NyappiScheduler {
 				+ "\r\n";
 		this.nyappi.callCountDown( 3, debug, content );
 	}
-	
-	// TODO : ねこ。
+
+	@Scheduled(cron = "${schedule.happy_neco_nyan.test}")
+	public void happyNecoNyaaaaaan_debug() {
+		this.countdownNyaaaaaaaaaaan( true ); // debug=true
+	}
+	@Scheduled(cron = "${schedule.happy_neco_nyan.call}")
+	public void happyNecoNyaaaaaan_call() {
+		this.countdownNyaaaaaaaaaaan( false ); // debug=false
+	}
+	private void countdownNyaaaaaaaaaaan(final boolean debug) {
+		final String neco = "₍˄ ·͈ ༝ ·͈ ˄₎◞ ̑̑";    // ねこ。
+		final String content 
+				= "Nyaaaaaaaaaaaaaaaaaaaaaaaaaaaan!!!!"
+				+ "\r\n"
+				+ neco
+				+ "\r\n"
+				+ "\r\n";
+		this.nyappi.callCountDown( 3, debug, content );
+	}
 }
