@@ -22,14 +22,24 @@ public class NyappiScheduler {
 	
 	@Scheduled(cron = "${schedule.happy_new_year.test}")
 	public void happyNewYear_debug() {
-		final int NEW_YEAR = LocalDateTime.now().getYear() + 1;
-		this.nyappi.callCountDown( 3, true, 
-				"TEST [" + NEW_YEAR + "] " ); // debug=true
+		final int year = LocalDateTime.now().getYear() + 1;
+		final String content 
+				= "TEST [" + year + "] " // FIXME : content 合わせれば実装寄せられるな・・・
+				+ "\r\n"
+				+ "✧*。◝(*'▿'*)◜ ✧*。"
+				+ "\r\n";
+		this.nyappi.callCountDown( 3, true, content ); // debug=true
 	}
 	@Scheduled(cron = "${schedule.happy_new_year.call}")
 	public void happyNewYear_call() {
-		final int NEW_YEAR = LocalDateTime.now().getYear() + 1; 
-		this.nyappi.callCountDown( 3, false, 
-				"HAPPY NEW YEAR [" + NEW_YEAR + "] " ); // debug=false
+		final int year = LocalDateTime.now().getYear() + 1;
+		final String content 
+				= "HAPPY NEW YEAR [" + year + "] "
+				+ "\r\n"
+				+ "✧*。◝(*'▿'*)◜ ✧*。"
+				+ "\r\n";
+		this.nyappi.callCountDown( 3, false, content ); // debug=false
 	}
+	
+	// TODO : ねこ。
 }
