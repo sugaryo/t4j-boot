@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import sugaryo.t4jboot.app.api.TwitterApiCall;
@@ -95,6 +96,7 @@ public class NyappiCall {
 		}
 	}
 	
+	@Async
 	public void callCountDown(final int count, final boolean debug, final String content) {
 		
 		log.info( "★ call count-down." );
