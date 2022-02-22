@@ -117,7 +117,8 @@ public class NyappiCall {
 		}
 		
 		// メインメッセージ
-		final String message = "{0}"
+		final String message = (debug ? "★DEBUG★ \r\n" : "")
+				+ "{0}"
 				+ "\r\n"
 				+ "- tweet at {1}";
 		tweet.accept( MessageFormat.format( message, content, LocalDateTime.now().format( TIMESTAMP_FORMAT ) ) );
