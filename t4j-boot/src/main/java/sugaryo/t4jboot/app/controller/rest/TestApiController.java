@@ -1,8 +1,7 @@
 package sugaryo.t4jboot.app.controller.rest;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -11,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import sugaryo.t4jboot.app.config.ConfigSet;
+import sugaryo.t4jboot.app.controller.rest.strategy.ResponseParameterStrategy;
 import sugaryo.t4jboot.app.module.NyappiCall;
 import sugaryo.t4jboot.app.module.RandomHolder;
 import sugaryo.t4jboot.common.utility.JsonMapper;
@@ -37,6 +36,8 @@ public class TestApiController {
 	@Autowired
 	NyappiCall nyappi;
 	
+	@Autowired
+	ResponseParameterStrategy response;
 	
 	
 	@GetMapping("random-nyappi")
@@ -46,58 +47,62 @@ public class TestApiController {
 	}
 	
 	@GetMapping("json")
-	public String test_json(@RequestParam(required = false) Optional<String> pretty) {
-		return test_json( pretty.isPresent() );
-	}
-	private String test_json( boolean pretty ) {
-		
-		@SuppressWarnings("serial")
-		Map<String, Object> map = new HashMap<String, Object>() {
-			{
-				put( "id", UUID.randomUUID() );
-				put( "name", "testdata" );
-				put( "value", 123 );
-			}
-		};
-		
-		return JsonMapper.stringify( map, pretty );
+	public String test_json() {
+
+		return JsonMapper.map()
+				.put( "id", UUID.randomUUID() )
+				.put( "name", "testdata" )
+				.put( "value", 123 )
+				.stringify( this.response.pretty() );
 	}
 	
-	
-	
-	private static final String CRLF = System.getProperty( "line.separator" );
 	
 	@GetMapping("random/{count}")
-	String testRandomHolder( @PathVariable int count ) {
+	public String testRandomHolder( @PathVariable int count ) {
 		
 		// ここではDIコンテナ管理しているRandomHolderとは別にテスト実行したいので普通にnewする。
 		var random = new RandomHolder( this.config );
 		
-		var sb = new StringBuilder();
-		String crlf = "";
-		for ( int n = 0; n < count; n++ ) {
-			
-			if ( 0 == n % 10 ) {
-				sb.append( crlf );
-				crlf = CRLF; // 初回だけ無視したいので遅延代入。
+		List<String> lines = new ArrayList<>();
+		{			
+			var buff = new StringBuilder();
+			for ( int n = 1; n <= count; n++ ) {
+				
+				buff.append( random.rand() ? "●" : "○" );
+				
+				if ( 0 == n % 10 ) {
+					// 一行確定
+					lines.add( buff.toString() );
+					
+					// バッファリセット
+					buff.setLength( 0 );
+				}
 			}
-			sb.append( random.rand() ? "●" : "○" );
+			// バッファに残りがあれば確定。
+			if ( 0 < buff.length() ) {
+				lines.add( buff.toString() );
+			}
 		}
-		sb.append( crlf ); // 最後に改行入れておかないとcurlの結果が変になるので末尾改行しておく。
 		
-		return sb.toString();
+		return this.response.stringify( lines ); 
 	}
 	
 	@GetMapping("random-id-iterator/{s}/{n}")
-	String testRandomIdIterator( 
+	public String testRandomIdIterator( 
 			@PathVariable int s, 
 			@PathVariable int n ) {
 		
 		int[] index = RandomIdIterator.indexer( s, n );
 		
-		String json = JsonMapper.stringify( index );
-		log.info( "総数 {} - 抽出 {} : {}", s, n, json );
-		return json;
+		log.info( "総数 {} - 抽出 {} : {}", s, n, JsonMapper.stringify( index ) );
+		
+		return JsonMapper.map()
+				.nest( "conditions" )
+					.put( "s", s )
+					.put( "n", n )
+				.peel()
+				.put( "index", index )
+				.stringify( this.response.pretty() );
 	}
 	
 	
