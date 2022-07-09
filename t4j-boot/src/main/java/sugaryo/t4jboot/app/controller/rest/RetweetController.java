@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import sugaryo.t4jboot.app.config.ConfigSet;
 import sugaryo.t4jboot.app.config.TweetData;
+import sugaryo.t4jboot.app.controller.rest.strategy.ResponseParameterStrategy;
 import sugaryo.t4jboot.app.module.MediaTweetCrawller;
 import sugaryo.t4jboot.app.module.NyappiCall;
 import sugaryo.t4jboot.app.module.SelfRetweet;
@@ -41,15 +42,15 @@ public class RetweetController {
 	@Autowired
 	SelfRetweet self;
 	
+	@Autowired
+	ResponseParameterStrategy response;
 
 	
 	@GetMapping("category")
-	public String categories(
-			@RequestParam(required = false) Optional<String> verbose,
-			@RequestParam(required = false) Optional<String> v) {
+	public String categories() {
 		
 		// -verbose
-		if( verbose.isPresent() || v.isPresent() )
+		if( this.response.verbose() )
 		{
 			final var map = JsonMapper.map();
 			final var categories = map.nest( "categories" );
@@ -58,11 +59,11 @@ public class RetweetController {
 					{
 						categories.put( x.name, x.ids.length );
 					} );
-			return map.stringify();
+			return map.stringify( this.response.pretty() );
 		}
 		// normal
 		else {
-			return JsonMapper.stringify( TweetData.names() );
+			return this.response.stringify( TweetData.names() );
 		}		
 	}
 	
@@ -100,16 +101,14 @@ public class RetweetController {
 	}
 	
 	@PostMapping("id/{id}")
-	public String rt_id( @PathVariable long id,
-			@RequestParam(required = false) Optional<String> verbose,
-			@RequestParam(required = false) Optional<String> v ) {
+	public String rt_id( @PathVariable long id ) {
 		
 		var rt = this.self.retweet( id );
 		
 		// -verbose 
-		if ( verbose.isPresent() || v.isPresent() ) {
+		if ( this.response.verbose() ) {
 			
-			String json = JsonMapper.map()
+			return JsonMapper.map()
 					.put( "id", rt.getId() )
 					.put( "name", rt.getUser().getName() )
 					.put( "text", rt.getText() )
@@ -117,12 +116,11 @@ public class RetweetController {
 						.put( "fv-count", rt.getRetweetedStatus().getFavoriteCount() )
 						.put( "rt-count", rt.getRetweetedStatus().getRetweetCount() )
 					.peel()
-					.stringify();
-			return json;
+					.stringify( this.response.pretty() );
 		}
 		// normal
 		else {
-			return JsonMapper.stringify( rt );
+			return this.response.stringify( rt );
 		}	
 	}
 }
