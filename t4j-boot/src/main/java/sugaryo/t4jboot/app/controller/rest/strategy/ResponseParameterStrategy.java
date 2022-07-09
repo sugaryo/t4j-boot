@@ -14,30 +14,24 @@ public class ResponseParameterStrategy {
 	HttpServletRequest request; // thread-local
 	
 	public boolean pretty() {
-		
-		final var pretty = this.anyParameter( "pretty", "p", "-p" );
-		
-		// 指定されてない場合は false
-		if ( null == pretty ) return false;
-		
-		// 明示的に false が指定された場合も false
-		if ( pretty.equalsIgnoreCase( "false" ) ) return false;
-		
-		// 上記以外は全て true  
-		return true;
+		return this.is( "pretty", "p", "-p", "-pv" );
 	}
 	
 	public boolean verbose() {
+		return this.is( "verbose", "v", "-v", "-pv" );
+	}
+	
+	private boolean is( String... params ) {
 		
-		final var verbose = this.anyParameter( "verbose", "v", "-v" );
+		final String value = this.anyParameter( params );
 		
 		// 指定されてない場合は false
-		if ( null == verbose ) return false;
+		if ( null == value ) return false;
 		
 		// 明示的に false が指定された場合も false
-		if ( verbose.equalsIgnoreCase( "false" ) ) return false;
-		
-		// 上記以外は全て true  
+		if ( value.equalsIgnoreCase( "false" ) ) return false;
+
+		// 上記以外は全て true
 		return true;
 	}
 	
