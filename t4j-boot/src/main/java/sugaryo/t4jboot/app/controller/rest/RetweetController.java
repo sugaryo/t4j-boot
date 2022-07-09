@@ -71,6 +71,8 @@ public class RetweetController {
 
 		log.info( "★ /api/retweets/category/{}", category );
 
+		//FIXME:ここも SelfRetweet モジュールが戻り値対応してないので、まだ使えない。
+		
 		// category/all は別名定義。
 		if ( "all".equals( category ) ) {
 			this.self.retweets();
@@ -85,6 +87,8 @@ public class RetweetController {
 
 		log.info( "★ /api/retweets/category/{}/{}", category, size );
 
+		//FIXME:ここも SelfRetweet モジュールが戻り値対応してないので、まだ使えない。
+		
 		// category/all は別名定義。
 		if ( "all".equals( category ) ) {
 			this.self.retweets( size );
