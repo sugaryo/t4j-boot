@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import sugaryo.t4jboot.app.config.ConfigSet;
+import sugaryo.t4jboot.app.controller.rest.strategy.ResponseParameterStrategy;
 import sugaryo.t4jboot.app.module.MediaTweetCrawller;
 import sugaryo.t4jboot.common.utility.StringUtil;
 import sugaryo.t4jboot.data.values.MediaTweet;
@@ -31,25 +32,28 @@ public class MediaListController {
 	@Autowired
 	MediaTweetCrawller mediatweets;
 	
+	@Autowired
+	ResponseParameterStrategy response;
 	
 	
 	// ■ListID 指定でのメディアURL情報取得
 
 	@GetMapping("{id}")
-	public List<MediaTweet> imgByList( @PathVariable long id ) {
+	public String imgByList( @PathVariable long id ) {
 		
 		List<MediaTweet> medias = this.mediatweets.byList( id );
-		return medias;
+		
+		return this.response.stringify( medias );
 	}
 	@GetMapping("{id}/url")
-	public String[] imgUrlByList( @PathVariable long id ) {
+	public String imgUrlByList( @PathVariable long id ) {
 		
 		String[] urls = this.mediatweets.byList( id )
 				.stream()
 				.map( x -> x.url )
 				.toArray( String[]::new );
 
-		return urls;
+		return this.response.stringify( urls );
 	}
 	@GetMapping("{id}/plain-text")
 	public String imgMetadataByList( @PathVariable long id ) {
@@ -72,7 +76,7 @@ public class MediaListController {
 			"{id}/page/{p}",
 			"{id}/page/{p}/{n}"
 	})
-	public List<MediaTweet> imgByPagingList( 
+	public String imgByPagingList( 
 			@PathVariable final long id, 
 			@PathVariable final int p, 
 			@PathVariable(required = false) Optional<Integer> n ) {
@@ -80,14 +84,14 @@ public class MediaListController {
 		List<MediaTweet> medias = n.isPresent()
 				? this.mediatweets.byList( id, p, n.get() )
 				: this.mediatweets.byList( id, p );
-		
-		return medias;
+
+		return this.response.stringify( medias );
 	}
 	@GetMapping({
 			"{id}/url/page/{p}",
 			"{id}/url/page/{p}/{n}"
 	})
-	public String[] imgUrlByPagingList( 
+	public String imgUrlByPagingList( 
 			@PathVariable final long id, 
 			@PathVariable final int p, 
 			@PathVariable(required = false) Optional<Integer> n ) {
@@ -101,8 +105,9 @@ public class MediaListController {
 				.map( x -> x.url )
 				.toArray( String[]::new );
 
-		return urls;
+		return this.response.stringify( urls );
 	}
+	
 	@GetMapping({
 			"{id}/plain-text/page/{p}",
 			"{id}/plain-text/page/{p}/{n}"

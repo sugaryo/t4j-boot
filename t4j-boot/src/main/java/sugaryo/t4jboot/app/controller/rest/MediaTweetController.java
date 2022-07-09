@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import sugaryo.t4jboot.app.config.ConfigSet;
+import sugaryo.t4jboot.app.controller.rest.strategy.ResponseParameterStrategy;
 import sugaryo.t4jboot.app.module.MediaTweetCrawller;
 import sugaryo.t4jboot.common.utility.StringUtil;
 import sugaryo.t4jboot.data.values.MediaTweet;
@@ -30,25 +31,27 @@ public class MediaTweetController {
 	@Autowired
 	MediaTweetCrawller mediatweets;
 	
+	@Autowired
+	ResponseParameterStrategy response;
 	
 	
 	// ■TweetID 指定でのメディアURL情報取得
 
 	@GetMapping("{id}")
-	public List<MediaTweet> imgByTweet( @PathVariable long id ) throws Exception {
+	public String imgByTweet( @PathVariable long id ) throws Exception {
 		
 		List<MediaTweet> medias = this.mediatweets.byTweet( id );
-		return medias;
+		return this.response.stringify( medias );
 	}	
 	@GetMapping("{id}/url")
-	public String[] imgUrlByTweet( @PathVariable long id ) throws Exception {
+	public String imgUrlByTweet( @PathVariable long id ) throws Exception {
 		
 		String[] urls = this.mediatweets.byTweet( id )
 				.stream()
 				.map( x -> x.url )
 				.toArray( String[]::new );
 		
-		return urls;
+		return this.response.stringify( urls );
 	}
 	@GetMapping("{id}/plain-text")
 	public String imgMetadataByTweet( @PathVariable long id ) throws Exception {
