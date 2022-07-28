@@ -68,7 +68,7 @@ public class NyappiScheduler {
 	}
 	
 
-	@Scheduled(cron = "${schedule.shuffle_name.call}")
+	@Scheduled(cron = "${schedule.shuffle_name.cron}")
 	private void shuffleDisplayName() {
 		final String name = this.displayname.shuffle();
 		log.info( "★ shuffle display-name : [{}]", name );
