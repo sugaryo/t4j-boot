@@ -10,11 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import sugaryo.t4jboot.common.utility.StringUtil;
 import twitter4j.Paging;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.User;
 
 @Component
 public class TwitterApiCall {
@@ -126,6 +128,69 @@ public class TwitterApiCall {
 			log.debug( "▲retweet▲[{}]", rt.getId() );
 			
 			return rt;
+		}
+		// 検査例外はRuntimeでくるんでポイ。
+		catch ( TwitterException ex ) {
+			throw new RuntimeException( ex );
+		}
+	}
+	
+	
+	// ■UserAccount系
+	
+	public String test() {
+		// 実験・動作確認用。
+		try {
+			// AccountSettings
+			var account = this.twitter.getAccountSettings();
+			// User
+			var id = this.twitter.getId();
+			log.info( "twitter.id : {}", this.twitter.getId() );
+			log.info( "   user.id : {}", id );
+			var user = twitter.showUser( id );
+			// debug log.
+			log.debug( "account::{}", account );
+			log.debug( "user::{}", user );
+			
+			
+			final String data;
+			{
+				final String[] userdata = {
+						user.getScreenName(),
+						user.getName(),
+						user.getLang(),
+						user.getLocation(),
+						user.getDescription(),
+						user.getEmail(),
+						user.getStatus().getText(),
+				};
+				data = StringUtil.join( "[", ",", "]", userdata );
+			}
+			log.info( "user-data::{}", data );
+			return data;
+		}
+		// 検査例外はRuntimeでくるんでポイ。
+		catch ( TwitterException ex ) {
+			throw new RuntimeException( ex );
+		}
+	}
+	
+	public User updateDisplayName( String name ) {
+		
+		try {
+			// update-profile : name, url, location, description
+			final var user = this.twitter.updateProfile( name, null, null, null );
+			
+			// 更新後のユーザ情報
+			log.info( "user@{}(name:{})[location:{},url:{},description:{}]"
+					, user.getScreenName() 
+					// いわゆる【EditProfile】画面で弄れる４項目。
+					, user.getName()
+					, user.getLocation()
+					, user.getURL()
+					, user.getDescription()
+			);
+			return user;
 		}
 		// 検査例外はRuntimeでくるんでポイ。
 		catch ( TwitterException ex ) {
