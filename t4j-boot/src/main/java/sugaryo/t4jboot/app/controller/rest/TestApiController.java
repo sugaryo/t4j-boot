@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import sugaryo.t4jboot.app.api.TwitterApiCall;
 import sugaryo.t4jboot.app.config.ConfigSet;
 import sugaryo.t4jboot.app.controller.rest.strategy.ResponseParameterStrategy;
 import sugaryo.t4jboot.app.module.NyappiCall;
@@ -38,6 +39,9 @@ public class TestApiController {
 	
 	@Autowired
 	ResponseParameterStrategy response;
+	
+	@Autowired
+	TwitterApiCall api;
 	
 	
 	@GetMapping("random-nyappi")
@@ -104,10 +108,16 @@ public class TestApiController {
 				.put( "index", index )
 				.stringify( this.response.pretty() );
 	}
-	
+
+	@RequestMapping("update-prof")
+	public String test_update_profile() {
+		
+		var user = this.api.updateDisplayName( "える/tweet 999;test" );
+		return this.response.stringify( user );
+	}
 	
 	@RequestMapping("ex")
-	String testException() throws Exception {
+	String test_ex() throws Exception {
 		throw new RuntimeException( "エラー発生" );
 	}
 }
