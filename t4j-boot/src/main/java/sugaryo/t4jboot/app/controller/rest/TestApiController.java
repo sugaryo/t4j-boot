@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import sugaryo.t4jboot.app.module.NyappiCall;
 import sugaryo.t4jboot.app.module.RandomHolder;
 import sugaryo.t4jboot.common.utility.JsonMapper;
 import sugaryo.t4jboot.common.utility.RandomIdIterator;
+import sugaryo.t4jboot.common.utility.RandomSelector;
 
 
 
@@ -108,7 +110,13 @@ public class TestApiController {
 				.put( "index", index )
 				.stringify( this.response.pretty() );
 	}
-
+	
+	@RequestMapping("http-status") 
+	public String test_http_status() {
+		final var status = RandomSelector.select( HttpStatus.values() );
+		return status.value() + ";" + status.name();
+	}
+	
 	@RequestMapping("update-prof")
 	public String test_update_profile() {
 		
