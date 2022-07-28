@@ -2,20 +2,30 @@ package sugaryo.t4jboot.app.scheduler;
 
 import java.time.LocalDateTime;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import sugaryo.t4jboot.app.module.DisplayNameChanger;
 import sugaryo.t4jboot.app.module.NyappiCall;
 
 @Component
 public class NyappiScheduler {
 	
+	private static final Logger log = LoggerFactory.getLogger( NyappiScheduler.class );
+	
 	@Autowired
 	NyappiCall nyappi;
 	
+	@Autowired
+	DisplayNameChanger displayname;
+	
+	
 	@Scheduled(cron = "${schedule.nyappi_call.cron}")
 	public void cron() {
+		log.info( "にゃっぴ。" );
 		this.nyappi.callRandom();
 	}
 	
@@ -56,4 +66,12 @@ public class NyappiScheduler {
 				+ "\r\n";
 		this.nyappi.callCountDown( 3, debug, content );
 	}
+	
+
+	@Scheduled(cron = "${schedule.shuffle_name.call}")
+	private void shuffleDisplayName() {
+		final String name = this.displayname.shuffle();
+		log.info( "★ shuffle display-name : [{}]", name );
+	}
+	
 }

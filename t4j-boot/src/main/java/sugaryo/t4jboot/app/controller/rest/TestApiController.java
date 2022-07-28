@@ -7,17 +7,20 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import sugaryo.t4jboot.app.api.TwitterApiCall;
 import sugaryo.t4jboot.app.config.ConfigSet;
 import sugaryo.t4jboot.app.controller.rest.strategy.ResponseParameterStrategy;
 import sugaryo.t4jboot.app.module.NyappiCall;
 import sugaryo.t4jboot.app.module.RandomHolder;
 import sugaryo.t4jboot.common.utility.JsonMapper;
 import sugaryo.t4jboot.common.utility.RandomIdIterator;
+import sugaryo.t4jboot.common.utility.RandomSelector;
 
 
 
@@ -39,6 +42,9 @@ public class TestApiController {
 	@Autowired
 	ResponseParameterStrategy response;
 	
+	@Autowired
+	TwitterApiCall api;
+	
 	
 	@GetMapping("random-nyappi")
 	public String test_random_nyappi() {
@@ -58,7 +64,7 @@ public class TestApiController {
 	
 	
 	@GetMapping("random/{count}")
-	public String testRandomHolder( @PathVariable int count ) {
+	public String test_random_holder( @PathVariable int count ) {
 		
 		// ここではDIコンテナ管理しているRandomHolderとは別にテスト実行したいので普通にnewする。
 		var random = new RandomHolder( this.config );
@@ -88,7 +94,7 @@ public class TestApiController {
 	}
 	
 	@GetMapping("random-id-iterator/{s}/{n}")
-	public String testRandomIdIterator( 
+	public String test_random_id_itor( 
 			@PathVariable int s, 
 			@PathVariable int n ) {
 		
@@ -105,9 +111,21 @@ public class TestApiController {
 				.stringify( this.response.pretty() );
 	}
 	
+	@RequestMapping("http-status") 
+	public String test_http_status() {
+		final var status = RandomSelector.select( HttpStatus.values() );
+		return status.value() + ";" + status.name();
+	}
+	
+	@RequestMapping("update-prof")
+	public String test_update_profile() {
+		
+		var user = this.api.updateDisplayName( "える/tweet 999;test" );
+		return this.response.stringify( user );
+	}
 	
 	@RequestMapping("ex")
-	String testException() throws Exception {
+	String test_ex() throws Exception {
 		throw new RuntimeException( "エラー発生" );
 	}
 }
