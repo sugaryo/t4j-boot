@@ -58,7 +58,7 @@ public class TestApiController {
 	
 	
 	@GetMapping("random/{count}")
-	public String testRandomHolder( @PathVariable int count ) {
+	public String test_random_holder( @PathVariable int count ) {
 		
 		// ここではDIコンテナ管理しているRandomHolderとは別にテスト実行したいので普通にnewする。
 		var random = new RandomHolder( this.config );
@@ -88,7 +88,7 @@ public class TestApiController {
 	}
 	
 	@GetMapping("random-id-iterator/{s}/{n}")
-	public String testRandomIdIterator( 
+	public String test_random_id_itor( 
 			@PathVariable int s, 
 			@PathVariable int n ) {
 		
