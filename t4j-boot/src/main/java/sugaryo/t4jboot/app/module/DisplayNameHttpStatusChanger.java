@@ -8,12 +8,12 @@ import sugaryo.t4jboot.app.api.TwitterApiCall;
 import sugaryo.t4jboot.common.utility.RandomSelector;
 
 @Component
-public class DisplayNameChanger {
+public class DisplayNameHttpStatusChanger {
 	
 	final TwitterApiCall twitter;
 	
-	public DisplayNameChanger( @Autowired TwitterApiCall api ) {
-		this.twitter = api;
+	public DisplayNameHttpStatusChanger( @Autowired TwitterApiCall twitter ) {
+		this.twitter = twitter;
 	}
 	
 	public String change( final int httpStatusCode ) {
