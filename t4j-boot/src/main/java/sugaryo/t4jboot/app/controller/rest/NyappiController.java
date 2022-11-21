@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import sugaryo.t4jboot.app.config.ConfigSet;
 import sugaryo.t4jboot.app.controller.rest.strategy.ResponseParameterStrategy;
+import sugaryo.t4jboot.app.module.DisplayNameExtendTypeChanger;
 import sugaryo.t4jboot.app.module.DisplayNameHttpStatusChanger;
 import sugaryo.t4jboot.app.module.NyappiCall;
 
@@ -28,10 +29,11 @@ public class NyappiController {
 	@Autowired
 	NyappiCall nyappi;
 	
+	//FIXME: ここもモジュールの切り替えどうにかならんかな。
 	@Autowired
-	DisplayNameHttpStatusChanger displayname;
+	DisplayNameExtendTypeChanger displayname;
 	
-	//FIXME : NyyappiCall モジュールの方が戻り値対応出来てないので、まだ使えない。
+	//FIXME: NyyappiCall モジュールの方が戻り値対応出来てないので、まだ使えない。
 	@Autowired
 	ResponseParameterStrategy response;
 	
@@ -46,10 +48,10 @@ public class NyappiController {
 	public String shuffleDisplayName() {
 		return this.displayname.shuffle();
 	}
-	@PostMapping("display-name/change/{code}")
-	public String changeDisplayName(@PathVariable int code) {
-		return this.displayname.change(code);
-	}
+//	@PostMapping("display-name/change/{code}")
+//	public String changeDisplayName(@PathVariable int code) {
+//		return this.displayname.change(code);
+//	}
 	
 	
 }

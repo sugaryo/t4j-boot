@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import sugaryo.t4jboot.app.module.DisplayNameExtendTypeChanger;
 import sugaryo.t4jboot.app.module.DisplayNameHttpStatusChanger;
 import sugaryo.t4jboot.app.module.NyappiCall;
 
@@ -19,9 +20,12 @@ public class NyappiScheduler {
 	@Autowired
 	NyappiCall nyappi;
 	
-	@Autowired
-	DisplayNameHttpStatusChanger displayname;
 	
+	// FIXME: ここなんか上手い切り替え方法無いかな。
+//	@Autowired
+//	DisplayNameHttpStatusChanger displayname;
+	@Autowired
+	DisplayNameExtendTypeChanger displayname;
 	
 	@Scheduled(cron = "${schedule.nyappi_call.cron}")
 	public void cron() {
