@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import sugaryo.t4jboot.app.config.ConfigSet;
 import sugaryo.t4jboot.app.controller.rest.strategy.ResponseParameterStrategy;
-import sugaryo.t4jboot.app.module.DisplayNameChanger;
+import sugaryo.t4jboot.app.module.DisplayNameHttpStatusChanger;
 import sugaryo.t4jboot.app.module.NyappiCall;
 
 
@@ -29,7 +29,7 @@ public class NyappiController {
 	NyappiCall nyappi;
 	
 	@Autowired
-	DisplayNameChanger displayname;
+	DisplayNameHttpStatusChanger displayname;
 	
 	//FIXME : NyyappiCall モジュールの方が戻り値対応出来てないので、まだ使えない。
 	@Autowired
