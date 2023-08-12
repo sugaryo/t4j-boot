@@ -11,17 +11,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import sugaryo.t4jboot.common.utility.StringUtil;
-import twitter4j.Paging;
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.User;
+//FIXME : twitter4j v2 対応.
+//import twitter4j.Paging;
+//import twitter4j.Status;
+//import twitter4j.Twitter;
+//import twitter4j.TwitterException;
+//import twitter4j.TwitterFactory;
+//import twitter4j.User;
+import sugaryo.t4jboot.app.api.Dummy.*;
 
+@Deprecated
 @Component
 public class TwitterApiCall {
 	
 	private static final Logger log = LoggerFactory.getLogger( TwitterApiCall.class );
+	
+	
 	
 	private Twitter twitter;
 	
@@ -156,13 +161,14 @@ public class TwitterApiCall {
 			final String data;
 			{
 				final String[] userdata = {
-						user.getScreenName(),
-						user.getName(),
-						user.getLang(),
-						user.getLocation(),
-						user.getDescription(),
-						user.getEmail(),
-						user.getStatus().getText(),
+//FIXME : 流石にここはコメントアウト
+//						user.getScreenName(),
+//						user.getName(),
+//						user.getLang(),
+//						user.getLocation(),
+//						user.getDescription(),
+//						user.getEmail(),
+//						user.getStatus().getText(),
 				};
 				data = StringUtil.join( "[", ",", "]", userdata );
 			}
@@ -183,12 +189,13 @@ public class TwitterApiCall {
 			
 			// 更新後のユーザ情報
 			log.info( "user@{}(name:{})[location:{},url:{},description:{}]"
-					, user.getScreenName() 
-					// いわゆる【EditProfile】画面で弄れる４項目。
-					, user.getName()
-					, user.getLocation()
-					, user.getURL()
-					, user.getDescription()
+//FIXME : 流石にここはコメントアウト
+//					, user.getScreenName() 
+//					// いわゆる【EditProfile】画面で弄れる４項目。
+//					, user.getName()
+//					, user.getLocation()
+//					, user.getURL()
+//					, user.getDescription()
 			);
 			return user;
 		}

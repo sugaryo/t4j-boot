@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 
 import sugaryo.t4jboot.app.api.TwitterApiCall;
 import sugaryo.t4jboot.app.config.ConfigSet;
-import twitter4j.Status;
+//import twitter4j.Status;
+import sugaryo.t4jboot.app.api.Dummy.*;
 
 @Component
 public class TagTweet {

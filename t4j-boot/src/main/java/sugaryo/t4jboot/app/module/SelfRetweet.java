@@ -11,7 +11,8 @@ import sugaryo.t4jboot.app.api.TwitterApiCall;
 import sugaryo.t4jboot.app.config.ConfigSet;
 import sugaryo.t4jboot.app.config.TweetData;
 import sugaryo.t4jboot.common.utility.RandomIdIterator;
-import twitter4j.Status;
+//import twitter4j.Status;
+import sugaryo.t4jboot.app.api.Dummy.*;
 
 @Component
 public class SelfRetweet {

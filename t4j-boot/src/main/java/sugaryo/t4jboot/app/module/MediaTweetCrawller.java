@@ -8,8 +8,9 @@ import org.springframework.stereotype.Component;
 
 import sugaryo.t4jboot.app.api.TwitterApiCall;
 import sugaryo.t4jboot.data.values.MediaTweet;
-import twitter4j.MediaEntity;
-import twitter4j.Status;
+//import twitter4j.MediaEntity;
+//import twitter4j.Status;
+import sugaryo.t4jboot.app.api.Dummy.*;
 
 @Component
 public class MediaTweetCrawller {
